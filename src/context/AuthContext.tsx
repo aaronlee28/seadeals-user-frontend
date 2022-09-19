@@ -2,17 +2,14 @@ import React, {
   createContext, FC, useMemo, useState,
 } from 'react';
 
-interface AuthToken {
-  token?: string
-}
 interface Props {
   children: JSX.Element;
 }
-const AuthContext = createContext<{ auth: AuthToken, setAuth:(auth: AuthToken) => void }>(
-  { auth: { token: '' }, setAuth: () => {} });
+
+const AuthContext:any = createContext(null);
 
 export const AuthProvider: FC<Props> = ({ children }) => {
-  const [auth, setAuth] = useState<AuthToken>({});
+  const [auth, setAuth] = useState(null);
 
   const providerAuth = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
 
