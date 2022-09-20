@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import WalletTrxItem from '../components/WalletTrxItem';
+import WalletAccounts from '../components/WalletAccounts';
 
 const Wallet = () => (
   <div className="">
@@ -18,6 +19,13 @@ const Wallet = () => (
                   <small className="border p-2 rounded border-1">Change PIN</small>
                 </Link>
               </div>
+              {/* <div className="normal-link"> */}
+              {/*  <Link to="/"> */}
+              {/*    <small className="p-2 rounded border-1 bg-warning"> */}
+              {/*      Set Up PIN */}
+              {/*    </small> */}
+              {/*  </Link> */}
+              {/* </div> */}
             </div>
           </div>
           <div className="px-4 mb-4">
@@ -44,19 +52,7 @@ const Wallet = () => (
             <div className="">
               <div className="text-start">
                 <h6 className="mb-2">SeaLabsPay Accounts</h6>
-                <div className="border rounded">
-                  <div className="saved-slp-box">
-                    <div className="p-2 border-bottom">
-                      <code className="mb-0 text-dark">1234 5678 9101</code>
-                    </div>
-                    <div className="p-2 border-bottom">
-                      <code className="mb-0 text-dark">1234 5678 9101</code>
-                    </div>
-                    <div className="p-2 border-bottom">
-                      <code className="mb-0 text-dark">1234 5678 9101</code>
-                    </div>
-                  </div>
-                </div>
+                <WalletAccounts />
               </div>
             </div>
           </div>
@@ -76,6 +72,7 @@ const Wallet = () => (
           <Link to="/">
             <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
           </Link>
+          {/* <small className="text-secondary">No Transactions Yet!</small> */}
         </div>
       </div>
     </div>
