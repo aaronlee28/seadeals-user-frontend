@@ -4,6 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import WalletHistory from './pages/WalletHistory';
+import WalletTrxDetails from './pages/WalletTrxDetails';
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Login />} />
         <Route path="" element={<Home />} />
+        <Route path="/wallet/history" element={<WalletHistory />} />
+        <Route path="/wallet/history/:id" element={<WalletTrxDetails />} />
       </Route>
     </Routes>
   );
