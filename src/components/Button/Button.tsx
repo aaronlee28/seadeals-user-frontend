@@ -1,38 +1,48 @@
-import './Button.scss'
+import React from 'react';
+
+import './Button.scss';
 
 type ButtonProps = {
-  buttonType: string,
-  text: string,
-  iconUrl: string,
-  iconName: string,
+  buttonType: string;
+  text: string;
+  iconUrl: string;
+  iconName: string;
   handleClickedButton: () => void;
-}
+};
 
 const Button = (props: ButtonProps) => {
+  const {
+    buttonType,
+    text,
+    iconUrl,
+    iconName,
+    handleClickedButton,
+  } = props;
+
   return (
     <button
       type="button"
-      className={`button ${props.buttonType}`}
-      onClick={props.handleClickedButton}
+      className={`button ${buttonType}`}
+      onClick={handleClickedButton}
     >
       {
-        props.text &&
-        (
-          <p className="text">{ props.text }</p>
+        text
+        && (
+          <p className="text">{text}</p>
         )
       }
       {
-        props.iconUrl &&
-        (
+        iconUrl
+        && (
           <img
             className="icon"
-            src={props.iconUrl}
-            alt={props.iconName}
+            src={iconUrl}
+            alt={iconName}
           />
         )
       }
     </button>
-  )
-}
+  );
+};
 
 export default Button;
