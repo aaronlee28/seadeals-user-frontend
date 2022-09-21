@@ -1,0 +1,64 @@
+.card_product_list_container {
+  width: 100%;
+  max-width: 200px;
+  min-height: 337px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  .card_product_list_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .image {
+      width: 196px;
+      height: 196px;
+      margin: 2px;
+      object-fit: cover;
+    }
+    .name {
+      margin: 10px;
+      max-width: 180px;
+      font-weight: 400;
+      font-size: 12px;
+      color: #000000;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+    .center_content {
+      min-height: 16px;
+      margin: 0 10px;
+    }
+    .prince_content {
+      margin: 10px;
+      .currency, .price {
+        font-weight: 400;
+        color: #1E46A2;
+      }
+      .currency {
+        font-size: 10px;
+      }
+      .price {
+        font-size: 14px;
+      }
+    }
+    .bottom_content {
+      margin: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      .rating {
+        /* LATER */
+        font-size: 14px;
+      }
+      .sold_count {
+        font-weight: 400;
+        font-size: 12px;
+        color: #000000;
+      }
+    }
+  }
+}

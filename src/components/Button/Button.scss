@@ -1,0 +1,57 @@
+.button {
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  cursor: pointer;
+
+  .text {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .icon {
+    max-width: 40px;
+  }
+  &.primary {
+    background: #2658CD;
+    border: solid 1px #2658CD;
+    padding: 10px 20px;
+
+    .text {
+      color: #FFFFFF;
+    }
+    &:hover {
+      background: #FFFFFF;
+
+      .text {
+        color: #2658CD;
+      }
+    }
+    &_alt {
+      background: #FFFFFF;
+
+      .text {
+        color: #2658CD;
+      }
+      &:hover {
+        background: #2658CD;
+        .text {
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+  &.secondary {
+
+  }
+  &.plain {
+    .text {
+
+    }
+    .icon {
+
+    }
+  }
+}
