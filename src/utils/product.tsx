@@ -1,4 +1,4 @@
-const formatSoldCount = (count) => {
+const formatSoldCount = (count: number) => {
   if (count >= 10000) {
     return '10RB+ Terjual';
   }
