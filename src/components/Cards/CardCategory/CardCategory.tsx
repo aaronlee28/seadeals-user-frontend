@@ -5,6 +5,7 @@ type CardCategoryProps = {
   data: {
     name: string;
     imgUrl: string;
+    path: string;
   };
 };
 
@@ -13,10 +14,19 @@ const CardCategory = (props: CardCategoryProps) => {
   const {
     name,
     imgUrl,
+    path,
   } = data;
 
+  const goToPath = () => {
+    console.log(path);
+  };
+
   return (
-    <div className="card_category_container">
+    <div
+      className="card_category_container"
+      onClick={goToPath}
+      role="presentation"
+    >
       <div className="card_category_content">
         <div className="top_content">
           <img
