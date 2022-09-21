@@ -4,13 +4,14 @@
   align-items: center;
   text-align: center;
   padding: 10px 20px;
+  cursor: pointer;
 
   .text {
     font-weight: 500;
     font-size: 16px;
   }
   .icon {
-    /* LATER */
+    max-width: 40px;
   }
   &.primary {
     background: #2658CD;
@@ -19,12 +20,36 @@
     .text {
       color: #FFFFFF;
     }
+    &:hover {
+      background: #FFFFFF;
+
+      .text {
+        color: #2658CD;
+      }
+    }
     &_alt {
       background: #FFFFFF;
 
       .text {
         color: #2658CD;
       }
+      &:hover {
+        background: #2658CD;
+        .text {
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+  &.secondary {
+
+  }
+  &.plain {
+    .text {
+
+    }
+    .icon {
+
     }
   }
 }

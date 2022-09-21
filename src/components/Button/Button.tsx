@@ -2,12 +2,25 @@ import React from 'react';
 
 import './Button.scss';
 
-type ButtonProps = {
+type ButtonRequiredProps = {
   buttonType: string;
-  text: string;
-  iconUrl: string;
-  iconName: string;
   handleClickedButton: () => void;
+};
+
+type ButtonOptionalProps = {
+  text?: string;
+  iconUrl?: string;
+  iconName?: string;
+};
+
+interface ButtonProps
+  extends ButtonRequiredProps,
+  ButtonOptionalProps {}
+
+const defaultProps: ButtonOptionalProps = {
+  text: '',
+  iconUrl: '',
+  iconName: '',
 };
 
 const Button = (props: ButtonProps) => {
@@ -26,7 +39,7 @@ const Button = (props: ButtonProps) => {
       onClick={handleClickedButton}
     >
       {
-        text
+        text !== ''
         && (
           <p className="text">{text}</p>
         )
@@ -44,5 +57,7 @@ const Button = (props: ButtonProps) => {
     </button>
   );
 };
+
+Button.defaultProps = defaultProps;
 
 export default Button;
