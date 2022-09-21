@@ -9,7 +9,7 @@ type ButtonRequiredProps = {
 
 type ButtonOptionalProps = {
   text?: string;
-  iconUrl?: string;
+  iconUrl?: any;
   iconName?: string;
 };
 
@@ -19,7 +19,7 @@ interface ButtonProps
 
 const defaultProps: ButtonOptionalProps = {
   text: '',
-  iconUrl: '',
+  iconUrl: null,
   iconName: '',
 };
 
@@ -47,11 +47,7 @@ const Button = (props: ButtonProps) => {
       {
         iconUrl
         && (
-          <img
-            className="icon"
-            src={iconUrl}
-            alt={iconName}
-          />
+          React.createElement(iconUrl, { className: iconName })
         )
       }
     </button>
