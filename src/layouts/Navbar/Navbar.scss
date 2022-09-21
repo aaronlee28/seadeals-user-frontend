@@ -1,0 +1,30 @@
+.navbar_container {
+  width: 100%;
+  min-height: 100px;
+  .navbar_content {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    box-sizing: border-box;
+    .left_content {
+      .image {
+        max-width: 252px;
+      }
+    }
+    .center_content {
+      .icon {
+        max-width: 40px;
+      }
+    }
+    .right_content {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+}

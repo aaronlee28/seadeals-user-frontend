@@ -1,7 +1,8 @@
 import React from 'react';
+import Navbar from '../layouts/Navbar/Navbar';
 
 const Home = () => (
-  <h1>Hello</h1>
+  <Navbar />
 );
 
 export default Home;
