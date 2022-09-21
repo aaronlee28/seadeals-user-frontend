@@ -39,15 +39,15 @@ const Button = (props: ButtonProps) => {
       onClick={handleClickedButton}
     >
       {
-        text !== ''
-        && (
-          <p className="text">{text}</p>
-        )
-      }
-      {
         iconUrl
         && (
           React.createElement(iconUrl, { className: iconName })
+        )
+      }
+      {
+        text !== ''
+        && (
+          <p className="text">{text}</p>
         )
       }
     </button>

@@ -1,9 +1,10 @@
 .button {
   border-radius: 10px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+  gap: 10px;
   text-align: center;
-  padding: 10px 20px;
   cursor: pointer;
 
   .text {
@@ -16,6 +17,7 @@
   &.primary {
     background: #2658CD;
     border: solid 1px #2658CD;
+    padding: 10px 20px;
 
     .text {
       color: #FFFFFF;
