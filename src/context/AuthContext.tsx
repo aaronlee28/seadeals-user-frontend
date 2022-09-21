@@ -6,10 +6,10 @@ interface Props {
   children: JSX.Element;
 }
 
-const AuthContext:any = createContext(null);
+const AuthContext = createContext({});
 
 export const AuthProvider: FC<Props> = ({ children }) => {
-  const [auth, setAuth] = useState(null);
+  const [auth, setAuth] = useState({});
 
   const providerAuth = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
 

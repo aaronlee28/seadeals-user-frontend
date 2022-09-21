@@ -1,23 +1,56 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 import useAuth from '../hooks/useAuth';
+import axios from '../api/axios';
+
+const LOGIN_URL = '/sign_in';
 
 const Login = () => {
   const { setAuth } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const loginAsUser = () => {
-    setAuth({ username: 'john', email: 'johndoe@mail.com', roles: 'user' });
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
-  const loginAsSeller = () => {
-    setAuth({ username: 'john', email: 'seller@mail.com', roles: 'user seller' });
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        },
+      );
+      const decode:any = jwt_decode(response.data.data.id_token);
+      const accessToken = response?.data?.data.id_token;
+      const { user, scope } = decode;
+
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      setEmail('');
+      setPassword('');
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <main>
       <h1>Login dulu</h1>
-      <button onClick={loginAsUser} type="button">Login As User</button>
-      <button onClick={loginAsSeller} type="button">Login As Seller</button>
+      <div className="p-2 border rounded">
+        <form onSubmit={handleSubmit}>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button type="submit">Login</button>
+        </form>
+      </div>
       <div>
         <Link to="/seller">SELLER</Link>
       </div>
