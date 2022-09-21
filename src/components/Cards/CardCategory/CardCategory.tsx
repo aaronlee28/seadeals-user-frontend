@@ -1,4 +1,5 @@
 import React from 'react';
+import './CardCategory.scss';
 
 type CardCategoryProps = {
   data: {

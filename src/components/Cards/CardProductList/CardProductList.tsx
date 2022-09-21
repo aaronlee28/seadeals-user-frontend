@@ -2,6 +2,8 @@ import React from 'react';
 
 import formatSoldCount from '../../../utils/product';
 
+import './CardProductList.scss';
+
 type CardProductListProps = {
   data: {
     imgUrl: string;
