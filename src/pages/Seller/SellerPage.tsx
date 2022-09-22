@@ -15,7 +15,7 @@ const SellerPage = () => {
 
     const getSellerInfo = async () => {
       try {
-        const response = await axios.get(`sellers/detail/${slug}`, {
+        const response = await axios.get(`sellers?slug=${slug}`, {
           signal: controller.signal,
         });
         const { data } = response.data;
