@@ -28,7 +28,7 @@ const AppRoutes = () => (
           </Route>
 
           <Route path="/toko/">
-            <Route path=":sellerSlug/" element={<SellerPage />} />
+            <Route path=":slug/" element={<SellerPage />} />
           </Route>
         </Route>
 
