@@ -6,8 +6,8 @@ type SellerInfoProps = {
   desc: string,
 };
 
-const SellerInfo: FC<SellerInfoProps> = ({ icon, info, desc }) => (
-  <div className="seller-info d-flex gap-2 align-items-center mb-1 col-sm-5
+const SellerInfoItem: FC<SellerInfoProps> = ({ icon, info, desc }) => (
+  <div className="seller-info d-flex gap-2 align-items-center mb-1 col-sm-6 col-md-5
     justify-content-md-start justify-content-sm-center"
   >
     <img alt="" src={icon} />
@@ -16,4 +16,4 @@ const SellerInfo: FC<SellerInfoProps> = ({ icon, info, desc }) => (
   </div>
 );
 
-export default SellerInfo;
+export default SellerInfoItem;
