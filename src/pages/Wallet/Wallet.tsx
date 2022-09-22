@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import WalletTrxItem from '../components/WalletTrxItem';
-import WalletAccounts from '../components/WalletAccounts';
+import WalletTrxItem from '../../components/Wallet/WalletTrxItem';
+import WalletAccounts from '../../components/Wallet/WalletAccounts';
 
 const Wallet = () => (
   <div className="">
@@ -11,7 +11,7 @@ const Wallet = () => (
           <div className="px-4 mb-4">
             <div className="d-flex justify-content-between">
               <div className="text-start">
-                <h3>SeaDeals Wallet</h3>
+                <h3 className="fw-bold">SeaDeals Wallet</h3>
                 <p className="text-secondary mb-2">Welcome back, John Doe</p>
               </div>
               <div className="normal-link">
@@ -39,7 +39,7 @@ const Wallet = () => (
                   </div>
                 </div>
                 <div className="normal-link">
-                  <Link to="/">
+                  <Link to="/wallet/topup">
                     <div className="border border-2 rounded p-2 px-3">
                       <span className="mb-0 fw-bold">+ &nbsp; Top Up</span>
                     </div>
@@ -61,7 +61,7 @@ const Wallet = () => (
       <div className="mx-auto my-4 rounded bg-light shadow-sm rounded">
         <div className="px-4 py-3">
           <div className="d-flex justify-content-between">
-            <h5 className="mb-0">Riwayat Transaksi</h5>
+            <h5 className="mb-0 fw-bold">Riwayat Transaksi</h5>
             <small className="">Last 3 Transactions</small>
           </div>
         </div>
@@ -69,7 +69,7 @@ const Wallet = () => (
         <WalletTrxItem type="credit" />
         <WalletTrxItem type="debit" />
         <div className="text-center px-4 py-3 border-top normal-link">
-          <Link to="/">
+          <Link to="/wallet/history">
             <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
           </Link>
           {/* <small className="text-secondary">No Transactions Yet!</small> */}

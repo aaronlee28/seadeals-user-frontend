@@ -60,3 +60,7 @@ code {
   max-height: 5rem;
   overflow-y: scroll;
 }
+
+.main-content{
+  padding-top: 6.5rem;
+}
