@@ -26,7 +26,8 @@ const Register = () => {
           <div className="logo d-sm-none d-md-block col-12 col-md-6 my-auto">
             <img alt="" className="img-fluid" src={logo} />
           </div>
-          <div className="form center col-6 p-2">
+          <div className="vertical-line" />
+          <div className="form center col-5 ml-5 p-2">
             <div>
               <h1 className="header">
                 <b>

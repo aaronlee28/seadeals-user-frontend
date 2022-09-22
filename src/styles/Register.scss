@@ -38,7 +38,7 @@ body {
 
 .register-card-body {
   background-color: #FFFFFF;
-  width: 1330px;
+  width: 1200px;
   height: 580px;
   border-radius: 20px;
   position: relative;
@@ -55,13 +55,16 @@ input {
 
 .form-control {
   font-size: 15px;
-
   background-color: #F2F2F2;
 }
 
 .form {
   max-height: 100%;
   position: relative;
+}
+
+.card-right-side {
+  background-color: #1E46A2;
 }
 
 button {
@@ -100,4 +103,11 @@ button {
 .google-button {
   height: 45px;
   align-content: center;
+}
+
+div.vertical-line{
+  width: 5px;
+  background-color: #1E46A2;
+  float: left;
+  height: 580px;
 }
