@@ -11,6 +11,7 @@ import SellerLayout from '../layouts/SellerLayout';
 import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
+import SellerPage from '../pages/Seller/SellerPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -24,6 +25,10 @@ const AppRoutes = () => (
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
+          </Route>
+
+          <Route path="/toko/">
+            <Route path=":slug/" element={<SellerPage />} />
           </Route>
         </Route>
 
