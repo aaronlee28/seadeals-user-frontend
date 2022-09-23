@@ -28,18 +28,24 @@ body {
   border-right: #2658CD;
 }
 
+.header-m {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 0;
+  color: #2658CD;
+  border-right: #2658CD;
+}
+
 .register-body {
   margin: 0;
-  padding-top: 6rem;
-  padding-bottom: 5rem;
-  height: 758px;
+  padding-top: 5rem;
+  padding-bottom: 4.9rem;
+  height: 100%;
   background-color: #1E46A2;
 }
 
 .register-card-body {
   background-color: #FFFFFF;
-  width: 1200px;
-  height: 580px;
   border-radius: 20px;
   position: relative;
 }
@@ -58,9 +64,21 @@ input {
   background-color: #F2F2F2;
 }
 
+.form-select {
+  width: 100%;
+  font-size: 15px;
+  border: 1px solid #ced4da;
+  padding-left: 0.5rem;
+  color: #495057;
+}
+
 .form {
   max-height: 100%;
   position: relative;
+}
+
+form {
+  width: 400px;
 }
 
 .card-right-side {
@@ -102,6 +120,7 @@ button {
 
 .google-button {
   height: 45px;
+  border: 2px solid #F69113 !important;
   align-content: center;
 }
 
@@ -109,5 +128,14 @@ div.vertical-line{
   width: 5px;
   background-color: #1E46A2;
   float: left;
-  height: 580px;
+  height: 600px;
+}
+
+div.horizontal-line{
+  background-color: #1E46A2;
+}
+
+.form-m {
+  max-height: 100%;
+  position: relative;
 }
