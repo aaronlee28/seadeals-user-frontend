@@ -1,27 +1,32 @@
 import React from 'react';
 
-import formatSoldCount from '../../../utils/product';
+import { formatSoldCount, formatPrice } from '../../../utils/product';
 
 import './CardProductList.scss';
 
 type CardProductListProps = {
   data: {
-    imgUrl: string;
-    name: string;
+    media_url: string;
+    product_name: string;
+    slug: string;
     price: string;
     rating: number;
-    soldCount: number;
+    bought: number;
+    min_price: number;
+    max_price: number;
   }
 };
 
 const CardProductList = (props: CardProductListProps) => {
   const { data } = props;
+  const name = data.product_name;
+  const mediaUrl = data.media_url;
+  const minPrice = data.min_price;
+  const maxPrice = data.max_price;
   const {
-    imgUrl,
-    name,
-    price,
+    slug,
     rating,
-    soldCount,
+    bought,
   } = data;
 
   return (
@@ -29,18 +34,32 @@ const CardProductList = (props: CardProductListProps) => {
       <div className="card_product_list_content">
         <img
           className="image"
-          src={imgUrl}
-          alt={name}
+          src={mediaUrl}
+          alt={slug}
         />
-        <p className="name">{ name }</p>
+        <div className="name_content">
+          <p className="name">{ name }</p>
+        </div>
         <div className="center_content">...</div>
-        <div className="price_content">
-          <p className="currency">Rp</p>
-          <p className="price">{ price }</p>
+        <div className="price_container">
+          <div className="price_content">
+            <p className="currency">Rp</p>
+            <p className="price">{ formatPrice(minPrice) }</p>
+          </div>
+          {
+            minPrice !== maxPrice
+            && (
+              <div className="price_content">
+                <p className="connector">&nbsp;-&nbsp;</p>
+                <p className="currency">Rp</p>
+                <p className="price">{ formatPrice(maxPrice) }</p>
+              </div>
+            )
+          }
         </div>
         <div className="bottom_content">
           <div className="rating">{ rating }</div>
-          <p className="sold_count">{ formatSoldCount(soldCount) }</p>
+          <p className="sold_count">{ formatSoldCount(bought) }</p>
         </div>
       </div>
     </div>
