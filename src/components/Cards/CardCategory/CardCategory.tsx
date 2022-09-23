@@ -4,24 +4,36 @@ import './CardCategory.scss';
 type CardCategoryProps = {
   data: {
     name: string;
-    imgUrl: string;
+    // slug: string;
+    icon_url: string;
+    // path: string;
   };
 };
 
 const CardCategory = (props: CardCategoryProps) => {
   const { data } = props;
+  const iconUrl = data.icon_url;
   const {
     name,
-    imgUrl,
+    // slug,
+    // path,
   } = data;
 
+  const goToPath = () => {
+    console.log(iconUrl);
+  };
+
   return (
-    <div className="card_category_container">
+    <div
+      className="card_category_container"
+      onClick={goToPath}
+      role="presentation"
+    >
       <div className="card_category_content">
         <div className="top_content">
           <img
             className="image"
-            src={imgUrl}
+            src={iconUrl}
             alt={name}
           />
         </div>
