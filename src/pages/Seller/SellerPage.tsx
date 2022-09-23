@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import './SellerPage.css';
 import axios from '../../api/axios';
 import SellerHeader from '../../components/Seller/SellerHeader';
 import SellerProductList from '../../components/Seller/SellerProductList';
-// import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
+import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
+import { getActiveTabName } from '../../utils/urlParamValidator';
 
 const SellerPage = () => {
   const { slug } = useParams();
+  const [searchParam, setSearchParam] = useSearchParams();
   const [sellerInfo, setSellerInfo] = useState<any>({});
   const [loadingSellerInfo, setLoadingSellerInfo] = useState<boolean>(true);
 
-  const [sortOption, setSortOption] = useState('price');
-  const [sortOrder, setSortOrder] = useState('desc');
+  const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
+  const [sortOrder, setSortOrder] = useState(searchParam.get('sort') || '');
+  const [activeTab, setActiveTab] = useState(getActiveTabName(sortOption, sortOrder));
+  // const [filterCat, setFilterCat] = useState('');
+  const [pageNum, setPageNum] = useState(1);
 
-  // const [sellerProducts, setSellerProducts] = useState([]);
-  useEffect(() => {
+  const [sellerProducts, setSellerProducts] = useState([]);
+
+  useEffect(() => { // validate url params on render
+    // const category = searchParam.get('categoryID');
+    // const pageNumber =
+    setActiveTab(getActiveTabName(sortOption, sortOrder));
+  });
+
+  useEffect(() => { // get seller info
     let isMounted = true;
     const controller = new AbortController();
 
@@ -51,32 +63,34 @@ const SellerPage = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // let isMounted = true;
+  useEffect(() => { // get sort-able filter-able products
+    let isMounted = true;
     const controller = new AbortController();
 
     const getSellerProducts = async () => {
-      // try {
-      //   const sellerID = 1;
-      //   const option = validateSortOption(sortOption);
-      //   const order = validateSortOrder(sortOrder);
-      //   const response = await axios.get(
-      //   `sellers/${sellerID}/products?sort=${order}&sortBy=${option}`,
-      //   {
-      //     signal: controller.signal,
-      //   });
-      //   const { data } = response.data;
-      //   if (isMounted) {
-      //     console.log(data);
-      //   }
-      // } catch (err) {
-      //   console.error(err);
-      // }
+      try {
+        const sellerID = 1;
+        const option = validateSortOption(sortOption);
+        const order = validateSortOrder(sortOrder);
+        const response = await axios.get(
+          `/products?sellerID=${sellerID}&limit=20&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
+          {
+            signal: controller.signal,
+          },
+        );
+        const { data } = response.data;
+        if (isMounted) {
+          setSellerProducts(data.products);
+          setPageNum(1);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     };
     getSellerProducts();
 
     return () => {
-      // isMounted = false;
+      isMounted = false;
       controller.abort();
     };
   }, [sortOrder, sortOption]);
@@ -87,6 +101,9 @@ const SellerPage = () => {
       <SellerProductList
         option={{ sortOption, setSortOption }}
         order={{ sortOrder, setSortOrder }}
+        products={sellerProducts}
+        setParam={setSearchParam}
+        activeTab={activeTab}
       />
     </div>
   );

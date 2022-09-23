@@ -9,7 +9,8 @@ interface PaginationProps {
 const Pagination: FC<PaginationProps> = ({ numbers }) => (
   <div className="">
     <div className="d-flex gap-2">
-      {Array(numbers).fill(0).map((el, i) => <PaginationItem pageNumber={`${i + 1}`} />)}
+      {/* eslint-disable-next-line react/no-array-index-key */}
+      {Array(numbers).fill(0).map((el, i) => <PaginationItem key={i} pageNumber={`${i + 1}`} />)}
     </div>
   </div>
 

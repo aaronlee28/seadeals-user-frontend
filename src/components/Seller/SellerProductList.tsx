@@ -1,33 +1,35 @@
 import React, { FC } from 'react';
-import ProductListSortBar from './ProductListSortBar';
-import ProductListCatSelect from './ProductListCatSelect';
 import Pagination from '../Pagination/Pagination';
 import MiniPagination from '../Pagination/MiniPagination';
+import ProductListCatSidebar from './ProductListCatSidebar';
+import ProductList from './ProductList';
+import ProductListSortBar from './ProductListSortBar';
 
 const SellerProductList: FC<any> = ({
-  order, option,
+  order, option, products, setParam, activeTab,
 }) => (
   <div className="container">
     <div className="row">
-      <div className="col-md-2 col-12 bg-white p-4 shadow-sm rounder mb-3">
-        <div className="text-start">
-          <h5 className="fw-bold mb-3">Kategori</h5>
-          <ProductListCatSelect active title="Semua Produk" />
-          <ProductListCatSelect title="Keperluan Packing" />
-        </div>
-      </div>
+      <ProductListCatSidebar />
       <div className="col-md-10 col-12 px-sm-0 ps-md-3">
         <div className="d-flex justify-content-between bg-white p-4 py-3 rounder shadow-sm">
           <ProductListSortBar
-            activeOrder={order.sortOrder}
+            setOption={option.setSortOption}
             setOrder={order.setSortOrder}
-            activeOpt={option.sortOption}
-            setOpt={option.setSortOption}
+            setParam={setParam}
+            activeTab={activeTab}
           />
+          {/* <ProductListSortBarV3 */}
+          {/*  activeOrder={order.sortOrder} */}
+          {/*  setOrder={order.setSortOrder} */}
+          {/*  activeOpt={option.sortOption} */}
+          {/*  setOpt={option.setSortOption} */}
+          {/* /> */}
           <div className="d-flex mb-0 align-items-center">
             <MiniPagination />
           </div>
         </div>
+        <ProductList products={products} />
       </div>
     </div>
     <Pagination numbers={5} />
