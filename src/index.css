@@ -39,6 +39,9 @@ code {
 .bg-backdrop{
   background-color: var(--main-gray) !important;
 }
+.text-accent{
+  color: var(--accent-red) !important;
+}
 .text-backdrop{
   color: var(--main-gray) !important;
 }

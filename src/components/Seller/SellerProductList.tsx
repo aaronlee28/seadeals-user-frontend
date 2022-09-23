@@ -6,9 +6,9 @@ import ProductList from './ProductList';
 import ProductListSortBar from './ProductListSortBar';
 
 const SellerProductList: FC<any> = ({
-  order, option, products, setParam, activeTab,
+  order, option, products, setParam, activeTab, innerRef,
 }) => (
-  <div className="container">
+  <div className="container" ref={innerRef}>
     <div className="row">
       <ProductListCatSidebar />
       <div className="col-md-10 col-12 px-sm-0 ps-md-3">
