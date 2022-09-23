@@ -4,21 +4,23 @@ import './CardCategory.scss';
 type CardCategoryProps = {
   data: {
     name: string;
-    imgUrl: string;
-    path: string;
+    // slug: string;
+    icon_url: string;
+    // path: string;
   };
 };
 
 const CardCategory = (props: CardCategoryProps) => {
   const { data } = props;
+  const iconUrl = data.icon_url;
   const {
     name,
-    imgUrl,
-    path,
+    // slug,
+    // path,
   } = data;
 
   const goToPath = () => {
-    console.log(path);
+    console.log(iconUrl);
   };
 
   return (
@@ -31,7 +33,7 @@ const CardCategory = (props: CardCategoryProps) => {
         <div className="top_content">
           <img
             className="image"
-            src={imgUrl}
+            src={iconUrl}
             alt={name}
           />
         </div>
