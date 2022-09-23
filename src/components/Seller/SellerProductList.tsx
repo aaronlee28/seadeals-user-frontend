@@ -6,7 +6,7 @@ import ProductList from './ProductList';
 import ProductListSortBar from './ProductListSortBar';
 
 const SellerProductList: FC<any> = ({
-  order, option, products, setParam, activeTab, innerRef,
+  order, option, products, setParam, sortSelect, innerRef, page, setPage, totalPage,
 }) => (
   <div className="container" ref={innerRef}>
     <div className="row">
@@ -17,22 +17,16 @@ const SellerProductList: FC<any> = ({
             setOption={option.setSortOption}
             setOrder={order.setSortOrder}
             setParam={setParam}
-            activeTab={activeTab}
+            sortSelect={sortSelect}
           />
-          {/* <ProductListSortBarV3 */}
-          {/*  activeOrder={order.sortOrder} */}
-          {/*  setOrder={order.setSortOrder} */}
-          {/*  activeOpt={option.sortOption} */}
-          {/*  setOpt={option.setSortOption} */}
-          {/* /> */}
           <div className="d-flex mb-0 align-items-center">
-            <MiniPagination />
+            <MiniPagination page={page} setPage={setPage} totalPage={totalPage} />
           </div>
         </div>
         <ProductList products={products} />
+        <Pagination page={page} totalPage={totalPage} setPage={setPage} />
       </div>
     </div>
-    <Pagination numbers={5} />
   </div>
 );
 

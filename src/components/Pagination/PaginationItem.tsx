@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-interface PaginationItemProp {
-  pageNumber: string,
-}
-
-const PaginationItem: FC<PaginationItemProp> = ({ pageNumber }) => (
-  <button type="button" className="p-1 px-2 fs-5 pagination__item border">
+const PaginationItem: FC<any> = ({ pageNumber, active, setPage }) => (
+  <button
+    type="button"
+    onClick={setPage}
+    className={`p-2 px-3 fs-5 pagination__item shadow-sm ${active ? 'bg-main text-white' : ''}`}
+  >
     {pageNumber}
   </button>
 );

@@ -8,6 +8,11 @@ const validateSorting = (sortOption:any) => {
   return { option: '', order: '' };
 };
 
+export const validatePageNumber = (pageNumber:any) => {
+  const pageInt = parseInt(pageNumber, 10);
+  return Number.isNaN(pageInt) ? 1 : pageInt;
+};
+
 export const getActiveTabName = (option:string, order:string) => {
   if (option === 'price' && order === 'desc') return SORT_OPTIONS.Priciest;
   if (option === 'price' && order === 'asc') return SORT_OPTIONS.Cheapest;

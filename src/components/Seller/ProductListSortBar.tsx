@@ -1,16 +1,18 @@
 import React, { FC } from 'react';
 import SORT_OPTIONS from '../../constants/ProductListSortOptions';
-import sortValidatorV2 from '../../utils/urlParamValidator';
+import validateSorting from '../../utils/urlParamValidator';
 
 const ProductListSortBar:FC <any> = ({
-  setOption, setOrder, setParam, activeTab,
+  setOption, setOrder, setParam, sortSelect,
 }) => {
+  const { selectedSorting, setSelectedSorting } = sortSelect;
+  const { searchParam, setSearchParam } = setParam;
   const handleChange = (value:any) => {
-    const { option, order } = sortValidatorV2(value);
-    setParam((prevState:any) => {
-      const newState = { ...prevState, sort: order, orderBy: option };
-      return newState;
-    });
+    const { option, order } = validateSorting(value);
+    searchParam.set('sort', order);
+    searchParam.set('orderBy', option);
+    setSearchParam(searchParam);
+    setSelectedSorting(value);
     setOption(option);
     setOrder(order);
   };
@@ -20,7 +22,7 @@ const ProductListSortBar:FC <any> = ({
       <select
         onChange={(e) => handleChange(e.target.value)}
         className="form-select dropdown-select"
-        value={activeTab}
+        value={selectedSorting}
       >
         <option value={SORT_OPTIONS.Top}>Terpopuler</option>
         <option value={SORT_OPTIONS.Cheapest}>Harga Terendah</option>

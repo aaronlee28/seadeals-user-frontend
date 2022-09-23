@@ -1,33 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import './SellerPage.css';
 import axios from '../../api/axios';
-import SellerHeader from '../../components/Seller/SellerHeader';
-import SellerProductList from '../../components/Seller/SellerProductList';
 import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
-import { getActiveTabName } from '../../utils/urlParamValidator';
+import { getActiveTabName, validatePageNumber } from '../../utils/urlParamValidator';
+import SellerProductList from '../../components/Seller/SellerProductList';
+import SellerHeader from '../../components/Seller/SellerHeader';
 import SellerTopProductList from '../../components/Seller/SellerTopProductList';
+import './SellerPage.css';
 
 const SellerPage = () => {
   const allProductRef = useRef<null | HTMLDivElement>(null);
   const { slug } = useParams();
   const [searchParam, setSearchParam] = useSearchParams();
+
+  // fetched data
   const [sellerInfo, setSellerInfo] = useState<any>({});
   const [loadingSellerInfo, setLoadingSellerInfo] = useState<boolean>(true);
-
-  const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
-  const [sortOrder, setSortOrder] = useState(searchParam.get('sort') || '');
-  const [activeTab, setActiveTab] = useState(getActiveTabName(sortOption, sortOrder));
-  // const [filterCat, setFilterCat] = useState('');
-  const [pageNum, setPageNum] = useState(1);
-
   const [sellerTopProducts, setSellerTopProducts] = useState([]);
   const [sellerProducts, setSellerProducts] = useState([]);
 
+  // sort & filter
+  const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
+  const [sortOrder, setSortOrder] = useState(searchParam.get('sort') || '');
+  const [selectedSorting, setSelectedSorting] = useState(getActiveTabName(sortOption, sortOrder));
+  const [pageNum, setPageNum] = useState(validatePageNumber(searchParam.get('page')));
+  const [totalPage, setTotalPage] = useState(1);
+
+  // const [selectedCategory, setSelectedCategory] = useState('');
+
   useEffect(() => { // validate url params on render
     // const category = searchParam.get('categoryID');
-    // const pageNumber =
-    setActiveTab(getActiveTabName(sortOption, sortOrder));
+    // setSelectedSorting(getActiveTabName(sortOption, sortOrder));
   });
 
   useEffect(() => { // get seller info
@@ -105,7 +108,7 @@ const SellerPage = () => {
         const option = validateSortOption(sortOption);
         const order = validateSortOrder(sortOrder);
         const response = await axios.get(
-          `/products?sellerID=${sellerID}&limit=20&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
+          `/products?sellerID=${sellerID}&limit=1&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
           {
             signal: controller.signal,
           },
@@ -113,7 +116,7 @@ const SellerPage = () => {
         const { data } = response.data;
         if (isMounted) {
           setSellerProducts(data.products);
-          setPageNum(1);
+          setTotalPage(data.total_page);
         }
       } catch (err) {
         console.error(err);
@@ -125,7 +128,13 @@ const SellerPage = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [sortOrder, sortOption]);
+  }, [sortOrder, sortOption, pageNum, selectedSorting]);
+
+  const changePage = (num:number) => {
+    searchParam.set('page', `${num}`);
+    setSearchParam(searchParam);
+    setPageNum(num);
+  };
 
   return (
     <div className="p-2 py-5 bg-backdrop">
@@ -134,10 +143,13 @@ const SellerPage = () => {
       <SellerProductList
         option={{ sortOption, setSortOption }}
         order={{ sortOrder, setSortOrder }}
-        products={sellerProducts}
-        setParam={setSearchParam}
-        activeTab={activeTab}
+        sortSelect={{ selectedSorting, setSelectedSorting }}
+        setParam={{ searchParam, setSearchParam }}
+        page={pageNum}
+        setPage={changePage}
+        totalPage={totalPage}
         innerRef={allProductRef}
+        products={sellerProducts}
       />
     </div>
   );
