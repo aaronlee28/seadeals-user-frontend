@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
 import { getActiveTabName, validatePageNumber } from '../../utils/urlParamValidator';
@@ -11,6 +11,7 @@ import './SellerPage.css';
 const SellerPage = () => {
   const allProductRef = useRef<null | HTMLDivElement>(null);
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
 
   // fetched data
@@ -39,7 +40,10 @@ const SellerPage = () => {
 
     const getSellerInfo = async () => {
       try {
-        const response = await axios.get(`sellers?slug=${slug}`, {
+        const sellerID = slug?.split('.')[1];
+        if (!sellerID || Number.isNaN(parseInt(sellerID, 10))) navigate('/404');
+
+        const response = await axios.get(`sellers/${sellerID}`, {
           signal: controller.signal,
         });
         const { data } = response.data;
@@ -75,7 +79,7 @@ const SellerPage = () => {
 
     const getTopProducts = async () => {
       try {
-        const sellerID = 1;
+        const sellerID = slug?.split('.')[1];
         const response = await axios.get(
           `/products?sellerID=${sellerID}&limit=6&sort=&sortBy=`,
           {
@@ -104,11 +108,11 @@ const SellerPage = () => {
 
     const getSellerProducts = async () => {
       try {
-        const sellerID = 1;
+        const sellerID = slug?.split('.')[1];
         const option = validateSortOption(sortOption);
         const order = validateSortOrder(sortOrder);
         const response = await axios.get(
-          `/products?sellerID=${sellerID}&limit=1&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
+          `/products?sellerID=${sellerID}&limit=20&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
           {
             signal: controller.signal,
           },
