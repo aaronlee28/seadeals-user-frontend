@@ -60,3 +60,11 @@ code {
 .main-content{
   padding-top: 6.5rem;
 }
+
+.hover-click{
+  cursor: pointer;
+}
+
+.bg-inherit{
+  background-color: inherit;
+}

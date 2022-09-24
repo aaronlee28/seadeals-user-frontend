@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
-import { getActiveTabName, validatePageNumber } from '../../utils/urlParamValidator';
+import { getActiveTabName, validateCategoryID, validatePageNumber } from '../../utils/urlParamValidator';
 import SellerProductList from '../../components/Seller/SellerProductList';
 import SellerHeader from '../../components/Seller/SellerHeader';
 import SellerTopProductList from '../../components/Seller/SellerTopProductList';
+import CategoryList from '../../components/Seller/CategoryList';
 import './SellerPage.css';
 
 const SellerPage = () => {
@@ -19,6 +20,7 @@ const SellerPage = () => {
   const [loadingSellerInfo, setLoadingSellerInfo] = useState<boolean>(true);
   const [sellerTopProducts, setSellerTopProducts] = useState([]);
   const [sellerProducts, setSellerProducts] = useState([]);
+  const [sellerCategories, setSellerCategories] = useState([]);
 
   // sort & filter
   const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
@@ -26,10 +28,10 @@ const SellerPage = () => {
   const [selectedSorting, setSelectedSorting] = useState(getActiveTabName(sortOption, sortOrder));
   const [pageNum, setPageNum] = useState(validatePageNumber(searchParam.get('page')));
   const [totalPage, setTotalPage] = useState(1);
-
-  // const [selectedCategory, setSelectedCategory] = useState('');
+  const [categoryID, setCategoryID] = useState(validateCategoryID(searchParam.get('categoryID')));
 
   useEffect(() => { // validate url params on render
+    console.log(categoryID);
     // const category = searchParam.get('categoryID');
     // setSelectedSorting(getActiveTabName(sortOption, sortOrder));
   });
@@ -47,7 +49,6 @@ const SellerPage = () => {
           signal: controller.signal,
         });
         const { data } = response.data;
-        // todo: save seller ID to fetch products
         if (isMounted) {
           const info = {
             name: data.name,
@@ -112,7 +113,8 @@ const SellerPage = () => {
         const option = validateSortOption(sortOption);
         const order = validateSortOrder(sortOrder);
         const response = await axios.get(
-          `/products?sellerID=${sellerID}&limit=20&sort=${order}&sortBy=${option}&categoryID=&page=${pageNum}`,
+          `/products?sellerID=${sellerID}&limit=20&sort=${order}
+          &sortBy=${option}&categoryID=${categoryID}&page=${pageNum}`,
           {
             signal: controller.signal,
           },
@@ -132,7 +134,35 @@ const SellerPage = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [sortOrder, sortOption, pageNum, selectedSorting]);
+  }, [sortOrder, sortOption, pageNum, selectedSorting, categoryID]);
+
+  useEffect(() => { // get seller categories
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getCategories = async () => {
+      try {
+        const sellerID = slug?.split('.')[1];
+        if (!sellerID || Number.isNaN(parseInt(sellerID, 10))) navigate('/404');
+
+        const response = await axios.get(`categories?sellerID=${sellerID}`, {
+          signal: controller.signal,
+        });
+        const { data } = response.data;
+        if (isMounted) {
+          setSellerCategories(data.categories);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getCategories();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   const changePage = (num:number) => {
     searchParam.set('page', `${num}`);
@@ -140,10 +170,17 @@ const SellerPage = () => {
     setPageNum(num);
   };
 
+  const changeCategory = (num:number) => {
+    searchParam.set('categoryID', `${num}`);
+    setSearchParam(searchParam);
+    setCategoryID(num);
+  };
+
   return (
     <div className="p-2 py-5 bg-backdrop">
       <SellerHeader loading={loadingSellerInfo} sellerInfo={sellerInfo} />
       <SellerTopProductList products={sellerTopProducts} clickToScroll={() => { allProductRef.current?.scrollIntoView({ behavior: 'smooth' }); }} />
+      <CategoryList categories={sellerCategories} setCategory={changeCategory} />
       <SellerProductList
         option={{ sortOption, setSortOption }}
         order={{ sortOrder, setSortOrder }}
@@ -154,6 +191,8 @@ const SellerPage = () => {
         totalPage={totalPage}
         innerRef={allProductRef}
         products={sellerProducts}
+        categories={sellerCategories}
+        categoryState={{ categoryID, changeCategory }}
       />
     </div>
   );

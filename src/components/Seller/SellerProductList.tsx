@@ -6,11 +6,12 @@ import ProductList from './ProductList';
 import ProductListSortBar from './ProductListSortBar';
 
 const SellerProductList: FC<any> = ({
-  order, option, products, setParam, sortSelect, innerRef, page, setPage, totalPage,
+  order, option, products, setParam, sortSelect, innerRef,
+  page, setPage, totalPage, categories, categoryState,
 }) => (
   <div className="container" ref={innerRef}>
     <div className="row">
-      <ProductListCatSidebar />
+      <ProductListCatSidebar categories={categories} categoryState={categoryState} />
       <div className="col-md-10 col-12 px-sm-0 ps-md-3">
         <div className="d-flex justify-content-between bg-white p-4 py-3 rounder shadow-sm">
           <ProductListSortBar
