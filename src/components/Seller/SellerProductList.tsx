@@ -31,7 +31,7 @@ const SellerProductList: FC<any> = ({
           </div>
         </div>
         <ProductList products={products} />
-        <Pagination page={page} totalPage={totalPage} setPage={setPage} />
+        <Pagination page={page === '' ? 1 : page} totalPage={totalPage} setPage={setPage} innerRef={innerRef} />
       </div>
     </div>
   </div>
