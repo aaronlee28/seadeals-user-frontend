@@ -6,11 +6,14 @@ const ProductListCenter:FC<any> = ({ products }) => (
     <div className="d-flex justify-content-start gap-4">
       {products.map((product: any) => {
         const prod = {
-          imgUrl: product.product.media_url,
-          name: product.product.name,
+          media_url: product.product.media_url,
+          product_name: product.product.name,
+          slug: product.product.slug,
           price: product.product.price,
           rating: Math.floor(product.product.rating),
-          soldCount: product.product.total_sold,
+          bought: product.product.total_sold,
+          min_price: product.min_price,
+          max_price: product.max_price,
         };
         return <div key={product.product.id} className="col-auto mb-3"><Card data={prod} cardType="product-list" /></div>;
       })}

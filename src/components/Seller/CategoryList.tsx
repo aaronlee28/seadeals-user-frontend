@@ -5,7 +5,7 @@ const CategoryList:FC<any> = ({ categories, setCategory }) => (
   <div className="container d-flex gap-3 px-0 py-3">
     {
         categories.map((category:any) => {
-          const data = { name: category.name, imgUrl: category.icon_url };
+          const data = { name: category.name, icon_url: category.icon_url };
           return (
             <button
               key={category.id}
