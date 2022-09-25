@@ -23,7 +23,7 @@ type SellerHeaderProps = {
 };
 
 const SellerHeader: FC<SellerInfo> = ({ loading, sellerInfo }) => (
-  <div className="container">
+  <div className="container bg-white py-4 rounder shadow-sm mb-3">
     <div className="row">
       <div className="col-md-4 col-12">
         {
