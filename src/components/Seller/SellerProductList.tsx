@@ -27,7 +27,7 @@ const SellerProductList: FC<any> = ({
             sortSelect={sortSelect}
           />
           <div className="d-flex mb-0 align-items-center">
-            <MiniPagination page={page} setPage={setPage} totalPage={totalPage} />
+            <MiniPagination page={page === '' ? 1 : page} setPage={setPage} totalPage={totalPage} />
           </div>
         </div>
         <ProductList products={products} />

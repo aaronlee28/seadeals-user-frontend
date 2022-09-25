@@ -38,12 +38,6 @@ const SellerPage = () => {
   const [minPrice, setMinPrice] = useState(validateNumParam(searchParam.get(URL_PARAM.Min)));
   const [maxPrice, setMaxPrice] = useState(validateNumParam(searchParam.get(URL_PARAM.Max)));
 
-  useEffect(() => { // validate url params on render
-    console.log(categoryID);
-    // const category = searchParam.get('categoryID');
-    // setSelectedSorting(getActiveTabName(sortOption, sortOrder));
-  });
-
   useEffect(() => { // get seller info
     let isMounted = true;
     const controller = new AbortController();
