@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import CardCategory from '../Cards/CardCategory/CardCategory';
-// import CardCategory from '../Cards/CardCategory/CardCategory';
 
 const CategoryList:FC<any> = ({ categories, setCategory }) => (
   <div className="container d-flex gap-3 px-0 py-3">
@@ -9,11 +8,12 @@ const CategoryList:FC<any> = ({ categories, setCategory }) => (
           const data = { name: category.name, imgUrl: category.icon_url };
           return (
             <button
+              key={category.id}
               type="button"
               className="hover-click bg-inherit"
               onClick={() => setCategory(category.id)}
             >
-              <CardCategory key={category.id} data={data} />
+              <CardCategory data={data} />
             </button>
           );
         })

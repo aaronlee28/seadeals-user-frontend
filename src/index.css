@@ -39,6 +39,9 @@ code {
 .bg-backdrop{
   background-color: var(--main-gray) !important;
 }
+.bg-lightgray{
+  background-color: #f3f4f5 !important;
+}
 .text-accent{
   color: var(--accent-red) !important;
 }
@@ -47,6 +50,9 @@ code {
 }
 .text-main{
   color: var(--primary-blue) !important;
+}
+.border-main{
+  border-color: var(--primary-blue) !important;
 }
 .normal-link a{
   color: inherit;

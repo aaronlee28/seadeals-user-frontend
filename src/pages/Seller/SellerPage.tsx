@@ -2,12 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
-import { getActiveTabName, validateCategoryID, validatePageNumber } from '../../utils/urlParamValidator';
+import {
+  getActiveTabName,
+  validateNumParam,
+} from '../../utils/urlParamValidator';
 import SellerProductList from '../../components/Seller/SellerProductList';
 import SellerHeader from '../../components/Seller/SellerHeader';
 import SellerTopProductList from '../../components/Seller/SellerTopProductList';
 import CategoryList from '../../components/Seller/CategoryList';
 import './SellerPage.css';
+import URL_PARAM from '../../constants/URLParamOptions';
 
 const SellerPage = () => {
   const allProductRef = useRef<null | HTMLDivElement>(null);
@@ -26,9 +30,13 @@ const SellerPage = () => {
   const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
   const [sortOrder, setSortOrder] = useState(searchParam.get('sort') || '');
   const [selectedSorting, setSelectedSorting] = useState(getActiveTabName(sortOption, sortOrder));
-  const [pageNum, setPageNum] = useState(validatePageNumber(searchParam.get('page')));
+  const [pageNum, setPageNum] = useState(validateNumParam(searchParam.get(URL_PARAM.Page)));
   const [totalPage, setTotalPage] = useState(1);
-  const [categoryID, setCategoryID] = useState(validateCategoryID(searchParam.get('categoryID')));
+  const [categoryID, setCategoryID] = useState(
+    validateNumParam(searchParam.get(URL_PARAM.Category)),
+  );
+  const [minPrice, setMinPrice] = useState(validateNumParam(searchParam.get(URL_PARAM.Min)));
+  const [maxPrice, setMaxPrice] = useState(validateNumParam(searchParam.get(URL_PARAM.Max)));
 
   useEffect(() => { // validate url params on render
     console.log(categoryID);
@@ -113,8 +121,7 @@ const SellerPage = () => {
         const option = validateSortOption(sortOption);
         const order = validateSortOrder(sortOrder);
         const response = await axios.get(
-          `/products?sellerID=${sellerID}&limit=20&sort=${order}
-          &sortBy=${option}&categoryID=${categoryID}&page=${pageNum}`,
+          `/products?sellerID=${sellerID}&limit=20&sort=${order}&sortBy=${option}&categoryID=${categoryID}&minAmount=${minPrice}&maxAmount=${maxPrice}&page=${pageNum}`,
           {
             signal: controller.signal,
           },
@@ -124,8 +131,8 @@ const SellerPage = () => {
           setSellerProducts(data.products);
           setTotalPage(data.total_page);
         }
-      } catch (err) {
-        console.error(err);
+      } catch (err:any) {
+        if (err.response.status === 404) setSellerProducts([]);
       }
     };
     getSellerProducts();
@@ -134,7 +141,7 @@ const SellerPage = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [sortOrder, sortOption, pageNum, selectedSorting, categoryID]);
+  }, [sortOrder, sortOption, pageNum, selectedSorting, categoryID, minPrice, maxPrice]);
 
   useEffect(() => { // get seller categories
     let isMounted = true;
@@ -193,6 +200,8 @@ const SellerPage = () => {
         products={sellerProducts}
         categories={sellerCategories}
         categoryState={{ categoryID, changeCategory }}
+        minPriceState={{ minPrice, setMinPrice }}
+        maxPriceState={{ maxPrice, setMaxPrice }}
       />
     </div>
   );

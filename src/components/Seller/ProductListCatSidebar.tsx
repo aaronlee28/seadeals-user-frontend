@@ -1,7 +1,10 @@
 import React, { FC, useState } from 'react';
 import ProductListCatSelect from './ProductListCatSelect';
+import SidebarPriceFilter from './SidebarPriceFilter';
 
-const ProductListCatSidebar:FC<any> = ({ categories, categoryState }) => {
+const ProductListCatSidebar:FC<any> = ({
+  categories, categoryState, minPriceState, maxPriceState, setParam,
+}) => {
   const [showAll, setShowAll] = useState(false);
 
   return (
@@ -18,6 +21,7 @@ const ProductListCatSidebar:FC<any> = ({ categories, categoryState }) => {
               if (showAll || idx < 4) {
                 return (
                   <ProductListCatSelect
+                    key={category.id}
                     title={category.name}
                     active={categoryState.categoryID === category.id}
                     changeCategory={() => categoryState.changeCategory(category.id)}
@@ -35,6 +39,11 @@ const ProductListCatSidebar:FC<any> = ({ categories, categoryState }) => {
           {showAll ? 'Sembunyikan' : 'Lihat Semua'}
         </button>
       </div>
+      <SidebarPriceFilter
+        setParam={setParam}
+        minPriceState={minPriceState}
+        maxPriceState={maxPriceState}
+      />
     </div>
   );
 };

@@ -8,14 +8,9 @@ const validateSorting = (sortOption:any) => {
   return { option: '', order: '' };
 };
 
-export const validatePageNumber = (pageNumber:any) => {
-  const pageInt = parseInt(pageNumber, 10);
-  return Number.isNaN(pageInt) ? 1 : pageInt;
-};
-
-export const validateCategoryID = (categoryID:any) => {
-  const pageInt = parseInt(categoryID, 10);
-  return Number.isNaN(pageInt) ? '' : pageInt;
+export const validateNumParam = (numberString:any) => {
+  const numberInt = parseInt(numberString, 10);
+  return Number.isNaN(numberInt) ? '' : numberInt;
 };
 
 export const getActiveTabName = (option:string, order:string) => {
