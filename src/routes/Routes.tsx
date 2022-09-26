@@ -12,6 +12,7 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+import ProductDetails from '../pages/Product/ProductDetails';
 
 const AppRoutes = () => (
   <Routes>
@@ -29,6 +30,10 @@ const AppRoutes = () => (
 
           <Route path="/toko/">
             <Route path=":slug/" element={<SellerPage />} />
+          </Route>
+
+          <Route path="/produk/">
+            <Route path=":slug/" element={<ProductDetails />} />
           </Route>
         </Route>
 
