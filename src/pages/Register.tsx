@@ -48,12 +48,21 @@ const Register = () => {
   const [passwordCorrect, setPasswordCorrect] = useState(true);
 
   useEffect(() => {
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword && confirmPassword !== '') {
       setPasswordCorrect(false);
       return;
     }
     setPasswordCorrect(true);
-  }, [confirmPassword]);
+  }, [password, confirmPassword]);
+
+  const [passwordValidity, setPasswordValidity] = useState(true);
+  useEffect(() => {
+    if (password.includes(userName) && password !== '') {
+      setPasswordValidity(false);
+      return;
+    }
+    setPasswordValidity(true);
+  }, [password]);
 
   const user = JSON.stringify({
     email,
@@ -106,7 +115,7 @@ const Register = () => {
           </div>
           <div className="vertical-line d-none d-md-block" />
           <hr className="horizontal-line d-block d-md-none" />
-          <div className="form center col-12 col-md-5 ml-md-5 mt-3 p-2 d-none d-lg-block">
+          <div className="form center col-12 col-md-5 ml-md-5 my-3 p-2 d-none d-lg-block">
             <div>
               <h1 className="header">
                 <b>
@@ -132,7 +141,7 @@ const Register = () => {
                       type={(revealed) ? 'text' : 'password'}
                       name="password"
                       id="password"
-                      className="form-control"
+                      className={passwordValidity ? 'form-control' : 'form-control is-invalid'}
                       placeholder="Kata sandi"
                       autoComplete="new-password"
                       required
@@ -144,6 +153,13 @@ const Register = () => {
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
                       </span>
                     </div>
+                    {
+                      passwordValidity ? '' : (
+                        <div id="invalid-password" className="invalid-feedback">
+                          Password should not include username!
+                        </div>
+                      )
+                    }
                   </div>
                   <div className="input-group mb-2">
                     <input
@@ -164,9 +180,13 @@ const Register = () => {
                         { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
                       </span>
                     </div>
-                    <div id="invalid-password" className="invalid-feedback">
-                      Passwords are not the same!
-                    </div>
+                    {
+                      passwordCorrect ? '' : (
+                        <div id="invalid-password" className="invalid-feedback">
+                          Passwords are not the same!
+                        </div>
+                      )
+                    }
                   </div>
                   <input
                     className="form-control mb-2"
