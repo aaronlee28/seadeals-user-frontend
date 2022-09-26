@@ -76,12 +76,21 @@
       align-items: center;
       gap: 10px;
       .rating {
-        /* LATER */
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
         font-size: 14px;
+        line-height: 16px;
+        .iconRating {
+          width: 16px;
+          height: 16px;
+        }
       }
       .sold_count {
         font-weight: 400;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 15px;
         color: #000000;
       }

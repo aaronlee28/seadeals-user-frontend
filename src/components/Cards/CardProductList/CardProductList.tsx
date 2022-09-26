@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { formatSoldCount, formatPrice } from '../../../utils/product';
+import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 
 import './CardProductList.scss';
 
@@ -65,7 +66,12 @@ const CardProductList = (props: CardProductListProps) => {
           }
         </div>
         <div className="bottom_content">
-          <div className="rating">{ rating }</div>
+          <div className="rating">
+            {
+              React.createElement(IconStar, { className: 'iconRating' })
+            }
+            { rating }
+          </div>
           <p className="sold_count">{ formatSoldCount(totalSold) }</p>
         </div>
         <div className="city">{ city }</div>
