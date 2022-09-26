@@ -13,6 +13,7 @@ import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
 import Wallet from '../pages/Wallet/Wallet';
+import WalletPIN from '../pages/WalletPIN';
 
 const AppRoutes = () => (
   <Routes>
@@ -29,6 +30,7 @@ const AppRoutes = () => (
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />
+              <Route path="settings" element={<WalletPIN />} />
             </Route>
           </Route>
 
