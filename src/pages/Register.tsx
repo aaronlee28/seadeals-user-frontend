@@ -57,12 +57,12 @@ const Register = () => {
 
   const [passwordValidity, setPasswordValidity] = useState(true);
   useEffect(() => {
-    if (password.includes(userName) && password !== '') {
+    if (password.includes(userName) && userName !== '') {
       setPasswordValidity(false);
       return;
     }
     setPasswordValidity(true);
-  }, [password]);
+  }, [userName]);
 
   const user = JSON.stringify({
     email,
