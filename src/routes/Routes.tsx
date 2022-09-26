@@ -14,6 +14,8 @@ import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
 import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/WalletPIN';
+import WalletHistory from '../pages/WalletHistory';
+import WalletTrxDetails from '../pages/WalletTrxDetails';
 
 const AppRoutes = () => (
   <Routes>
@@ -31,6 +33,8 @@ const AppRoutes = () => (
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />
               <Route path="settings" element={<WalletPIN />} />
+              <Route path="history" element={<WalletHistory />} />
+              <Route path="history/:id" element={<WalletTrxDetails />} />
             </Route>
           </Route>
 

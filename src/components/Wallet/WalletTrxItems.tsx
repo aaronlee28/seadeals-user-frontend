@@ -16,11 +16,13 @@ const WalletTrxItems:FC<any> = ({ transactions }) => (
         : (
           <div>
             {transactions.map((trx:any) => <WalletTrxItem key={trx.id} type="debit" />)}
-            <Link to="/wallet/history">
-              <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
-            </Link>
           </div>
         )}
+    </div>
+    <div className="border-top py-1">
+      <Link to="/wallet/history">
+        <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
+      </Link>
     </div>
   </div>
 );
