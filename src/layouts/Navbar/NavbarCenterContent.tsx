@@ -16,7 +16,7 @@ const NavbarCenterContent = () => {
   };
 
   const searchProduct = () => {
-    console.log(searchInput);
+    window.location.href = '/search';
   };
 
   return (

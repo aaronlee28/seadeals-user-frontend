@@ -12,6 +12,7 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+import Search from '../pages/Search/Search';
 
 const AppRoutes = () => (
   <Routes>
@@ -21,7 +22,7 @@ const AppRoutes = () => (
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Login />} />
-
+        <Route path="search" element={<Search />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
