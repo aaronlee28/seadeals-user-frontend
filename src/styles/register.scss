@@ -85,7 +85,7 @@ form {
   background-color: #1E46A2;
 }
 
-button {
+button.button {
   background-color: #F69113;
   color: #FFFFFF;
   border: 3rem;
@@ -93,6 +93,7 @@ button {
   width: 100%;
   height: 35px;
   font-size: 15px;
+  text-align: center !important;
 }
 
 .birth-date {
@@ -118,8 +119,9 @@ button {
   margin: 0px 8px;
 }
 
-.google-button {
+button.google-button {
   height: 45px;
+  width: 100%;
   border: 2px solid #F69113 !important;
   align-content: center;
 }
@@ -129,6 +131,8 @@ div.vertical-line{
   background-color: #1E46A2;
   float: left;
   height: 600px;
+  margin: 0;
+  padding: 0;
 }
 
 div.horizontal-line{

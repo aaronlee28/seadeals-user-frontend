@@ -1,4 +1,4 @@
-import '../styles/Register.scss';
+import '../styles/register.scss';
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import React from 'react';
 import logo from '../assets/images/logo.png';
@@ -32,7 +32,7 @@ const Register = () => {
           </div>
           <div className="vertical-line d-none d-md-block" />
           <hr className="horizontal-line d-block d-md-none" />
-          <div className="form center col-12 col-md-5 ml-lg-5 p-2 d-none d-lg-block">
+          <div className="form center col-12 col-md-5 ml-md-5 p-2 d-none d-lg-block">
             <div>
               <h1 className="header">
                 <b>
@@ -41,19 +41,18 @@ const Register = () => {
               </h1>
               <div className="justify-content-center">
                 <form className="col-12">
-                  <input className="form-control" type="text" id="email" placeholder="Email" />
-                  <input className="form-control" type="password" id="password" data-toggle="password" placeholder="Kata Sandi" />
-                  <input className="form-control" type="password" placeholder="Ulang Kata Sandi" />
-
-                  <input className="form-control" type="text" id="username" placeholder="Username" />
-                  <input className="form-control" type="text" id="fullName" placeholder="Nama lengkap" />
-                  <select className="form-select" aria-label="Jenis kelamin">
+                  <input className="form-control mb-2" type="text" id="email" placeholder="Email" />
+                  <input className="form-control mb-2" type="password" id="password" data-toggle="password" placeholder="Kata Sandi" />
+                  <input className="form-control mb-2" type="password" placeholder="Ulang Kata Sandi" />
+                  <input className="form-control mb-2" type="text" id="username" placeholder="Username" />
+                  <input className="form-control mb-2" type="text" id="fullName" placeholder="Nama lengkap" />
+                  <select className="form-select mb-2" aria-label="Jenis kelamin">
                     <option value="M">Laki-laki</option>
                     <option value="F">Perempuan</option>
                   </select>
-                  <input className="form-control" type="tel" id="phone" placeholder="Nomor ponsel" />
-                  <label className="birth-date my-0 p-0">Tanggal lahir: </label>
-                  <input className="form-control" type="date" id="birthDate" />
+                  <input className="form-control mb-2" type="tel" id="phone" placeholder="Nomor ponsel" />
+                  <label className="birth-date my-0 p-0 mb-2">Tanggal lahir: </label>
+                  <input className="form-control mb-2" type="date" id="birthDate" />
                   <div className="center">
                     <button className="button" type="submit"><b>Daftar</b></button>
                   </div>
@@ -82,7 +81,7 @@ const Register = () => {
               </h3>
               <div className="justify-content-center">
                 <form className="col-12">
-                  <input className="form-control" type="text" id="email" placeholder="Email" />
+                  <input className="form-control mb-2" type="text" id="email" placeholder="Email" />
                   <input className="form-control" type="password" id="password" data-toggle="password" placeholder="Kata Sandi" />
                   <input className="form-control" type="password" placeholder="Ulang Kata Sandi" />
 
