@@ -64,6 +64,10 @@ input {
   background-color: #F2F2F2;
 }
 
+.input-group-prepend {
+  height: 36.5px;
+}
+
 .form-select {
   width: 100%;
   font-size: 15px;
@@ -94,6 +98,7 @@ button.button {
   height: 35px;
   font-size: 15px;
   text-align: center !important;
+  display: inline-block;
 }
 
 .birth-date {
@@ -123,7 +128,8 @@ button.google-button {
   height: 45px;
   width: 100%;
   border: 2px solid #F69113 !important;
-  align-content: center;
+  text-align: center !important;
+  display: inline-block;
 }
 
 div.vertical-line{
@@ -135,11 +141,19 @@ div.vertical-line{
   padding: 0;
 }
 
-div.horizontal-line{
+hr.horizontal-line{
+  width: 89%;
+  position: relative !important;
+  border: 5px solid #1E46A2;
   background-color: #1E46A2;
 }
 
 .form-m {
   max-height: 100%;
   position: relative;
+}
+
+form i {
+  margin-left: -30px;
+  cursor: pointer;
 }
