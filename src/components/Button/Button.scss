@@ -8,8 +8,11 @@
   cursor: pointer;
 
   .text {
+    width: 100%;
     font-weight: 500;
     font-size: 16px;
+    line-height: 20px;
+    text-align: center;
   }
   .icon {
     max-width: 40px;
@@ -29,7 +32,7 @@
         color: #2658CD;
       }
     }
-    &_alt {
+    &.alt {
       background: #FFFFFF;
 
       .text {

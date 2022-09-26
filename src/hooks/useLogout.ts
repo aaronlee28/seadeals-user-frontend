@@ -7,10 +7,7 @@ const useLogout = () => {
 
   return async () => {
     try {
-      await axiosPrivate.post(
-        '/sign_out',
-        JSON.stringify({ user_id: parseInt(auth.user.user_id, 10) }),
-      );
+      await axiosPrivate.post('/sign-out', JSON.stringify({ user_id: parseInt(auth.user.user_id, 10) }));
     } catch (err) {
       console.error(err);
     }

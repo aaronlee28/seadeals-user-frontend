@@ -9,4 +9,12 @@ const formatSoldCount = (count: number) => {
   return `${count} Terjual`;
 };
 
-export default formatSoldCount;
+const formatPrice = (price: number) => {
+  const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
+  return priceSplit.join('.');
+};
+
+export {
+  formatSoldCount,
+  formatPrice,
+};
