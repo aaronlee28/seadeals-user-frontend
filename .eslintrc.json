@@ -22,6 +22,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "jsx-a11y/label-has-associated-control" :  "off",
         "react/function-component-definition" : [
             2,
             {

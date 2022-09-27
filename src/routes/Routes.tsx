@@ -12,15 +12,17 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+import Register from '../pages/Register';
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
 
+      <Route path="register" element={<Register />} />
+
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<Login />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>

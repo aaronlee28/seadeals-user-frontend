@@ -6,7 +6,7 @@ const useRefreshToken = () => {
   const { setAuth } = useAuth();
 
   const refresh = async () => {
-    const response = await axios.get('/refresh/access_token', {
+    const response = await axios.get('/refresh/access-token', {
       withCredentials: true,
     });
     const decode:any = jwt_decode(response.data.data.id_token);
