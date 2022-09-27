@@ -40,10 +40,10 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [fullName, setFullName] = useState('');
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState('male');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
-  const [dataReady, setDataReady] = useState(false);
+  // const [dataReady, setDataReady] = useState(false);
 
   const [passwordCorrect, setPasswordCorrect] = useState(true);
 
@@ -64,13 +64,22 @@ const Register = () => {
     setPasswordValidity(true);
   }, [userName]);
 
+  const [userNameValidity, setUserNameValidity] = useState(true);
+  useEffect(() => {
+    if (userName.includes(' ')) {
+      setUserNameValidity(false);
+      return;
+    }
+    setUserNameValidity(true);
+  }, [userName]);
+
   const user = JSON.stringify({
     email,
     password,
     username: userName,
     full_name: fullName,
     gender,
-    phone,
+    phone: `+62${phone}`,
     birth_date: birthDate,
   });
 
@@ -78,7 +87,7 @@ const Register = () => {
 
   const handleSubmit = () => {
     if (password === confirmPassword) {
-      setSubmitted(true);
+      setSubmitted(!submitted);
     }
   };
 
@@ -86,12 +95,12 @@ const Register = () => {
 
   useEffect(() => {
     if (submitted) {
+      console.log(user);
       axios.post(`${uRL}register`, user).then((response) => {
-        console.log(response);
-        if (response.status === 200) {
+        if (response.status === 201) {
           setSignedUp(true);
         }
-        setSignedUp(true);
+        console.log(response);
       });
     }
   }, [submitted]);
@@ -99,7 +108,8 @@ const Register = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (signedUp) {
-      navigate('/home');
+      navigate('/');
+      console.log(user);
     }
   }, [signedUp]);
 
@@ -188,16 +198,25 @@ const Register = () => {
                       )
                     }
                   </div>
-                  <input
-                    className="form-control mb-2"
-                    value={userName}
-                    onChange={(event) => setUserName(event.target.value)}
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    autoComplete="new-password"
-                    required
-                  />
+                  <div className="input-group mb-2">
+                    <input
+                      className={userNameValidity ? 'form-control mb-2' : 'form-control is-invalid mb-2'}
+                      value={userName}
+                      onChange={(event) => setUserName(event.target.value)}
+                      type="text"
+                      id="username"
+                      placeholder="Username"
+                      autoComplete="new-password"
+                      required
+                    />
+                    {
+                      userNameValidity ? '' : (
+                        <div id="invalid-username" className="invalid-feedback">
+                          Whitespaces aren &apos t allowed in usernames!
+                        </div>
+                      )
+                    }
+                  </div>
                   <input
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
@@ -213,8 +232,8 @@ const Register = () => {
                     className="form-select mb-2"
                     aria-label="Jenis kelamin"
                   >
-                    <option value="M">Laki-laki</option>
-                    <option value="F">Perempuan</option>
+                    <option value="male" selected>Laki-laki</option>
+                    <option value="female">Perempuan</option>
                   </select>
                   <div className="input-group">
                     <div className="input-group-prepend">
@@ -241,7 +260,7 @@ const Register = () => {
                     required
                   />
                   <div className="center">
-                    <button className="button" type="submit" onClick={handleSubmit}><b>Daftar</b></button>
+                    <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
                   </div>
                   <div className="hr-sect"><b>ATAU</b></div>
                   <div>
@@ -268,32 +287,133 @@ const Register = () => {
               </h3>
               <div className="justify-content-center">
                 <form className="col-12">
-                  <input className="form-control mb-2" type="text2" id="email2" placeholder="Email" autoComplete="new-password" required />
-                  <input className="form-control mb-2" type="password" name="password2" id="password2" data-toggle="password" placeholder="Kata sandi" autoComplete="new-password" required />
-                  <input className="form-control mb-2" type="password" placeholder="Ulang kata sandi" autoComplete="new-password" required />
-                  <input className="form-control mb-2" type="text" id="username2" placeholder="Username" autoComplete="new-password" required />
-                  <input className="form-control mb-2" type="text" id="fullName2" placeholder="Nama lengkap" autoComplete="new-password" required />
-                  <select className="form-select mb-2" aria-label="Jenis kelamin">
-                    <option value="M">Laki-laki</option>
-                    <option value="F">Perempuan</option>
+                  <input
+                    className="form-control mb-2"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    type="email"
+                    id="email-m"
+                    placeholder="Email"
+                    autoComplete="new-password"
+                    required
+                  />
+                  <div className="input-group mb-2">
+                    <input
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      type={(revealed) ? 'text' : 'password'}
+                      name="password-m"
+                      id="password-m"
+                      className={passwordValidity ? 'form-control' : 'form-control is-invalid'}
+                      placeholder="Kata sandi"
+                      autoComplete="new-password"
+                      required
+                    />
+                    {/* eslint-disable-next-line max-len */}
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus */}
+                    <div className="input-group-append" role="button" onClick={handleReveal}>
+                      <span className="input-group-text">
+                        { !revealed ? <BsEyeSlash /> : <BsEye /> }
+                      </span>
+                    </div>
+                    {
+                      passwordValidity ? '' : (
+                        <div id="invalid-password" className="invalid-feedback">
+                          Password should not include username!
+                        </div>
+                      )
+                    }
+                  </div>
+                  <div className="input-group mb-2">
+                    <input
+                      value={confirmPassword}
+                      onChange={(event) => setConfirmPassword(event.target.value)}
+                      type={(confirmPasswordVis) ? 'text' : 'password'}
+                      name="confirm-password-m"
+                      id="confirm-password-m"
+                      className={passwordCorrect ? 'form-control' : 'form-control is-invalid'}
+                      placeholder="Ulang kata sandi"
+                      autoComplete="new-password"
+                      required
+                    />
+                    {/* eslint-disable-next-line max-len */}
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus */}
+                    <div className="input-group-append" role="button" onClick={handleCPVis}>
+                      <span className="input-group-text">
+                        { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
+                      </span>
+                    </div>
+                    {
+                      passwordCorrect ? '' : (
+                        <div id="invalid-password" className="invalid-feedback">
+                          Passwords are not the same!
+                        </div>
+                      )
+                    }
+                  </div>
+                  <div className="input-group mb-2">
+                    <input
+                      className={userNameValidity ? 'form-control mb-2' : 'form-control is-invalid mb-2'}
+                      value={userName}
+                      onChange={(event) => setUserName(event.target.value)}
+                      type="text"
+                      id="username-m"
+                      placeholder="Username"
+                      autoComplete="new-password"
+                      required
+                    />
+                    {
+                      userNameValidity ? '' : (
+                        <div id="invalid-username" className="invalid-feedback">
+                          Whitespaces aren &apos t allowed in usernames!
+                        </div>
+                      )
+                    }
+                  </div>
+                  <input
+                    value={fullName}
+                    onChange={(event) => setFullName(event.target.value)}
+                    className="form-control mb-2"
+                    type="text"
+                    id="fullName-m"
+                    placeholder="Nama lengkap"
+                    autoComplete="new-password"
+                    required
+                  />
+                  <select
+                    onChange={(event) => setGender(event.target.value)}
+                    className="form-select mb-2"
+                    aria-label="Jenis kelamin"
+                  >
+                    <option value="male" selected>Laki-laki</option>
+                    <option value="female">Perempuan</option>
                   </select>
                   <div className="input-group">
                     <div className="input-group-prepend">
                       <span className="input-group-text" id="inputGroupPrepend">+62</span>
                     </div>
                     <input
+                      value={phone}
+                      onChange={(event) => setPhone(event.target.value)}
                       type="tel"
                       className="form-control"
-                      id="validationCustomTelephone2"
+                      id="validationCustomTelephone-m"
                       placeholder="Nomor ponsel"
                       aria-describedby="inputGroupPrepend"
                       required
                     />
                   </div>
                   <label className="birth-date my-0 p-0 mb-2">Tanggal lahir: </label>
-                  <input className="form-control mb-2" type="date" id="birthDate2" required />
+                  <input
+                    value={birthDate}
+                    onChange={(event) => setBirthDate(event.target.value)}
+                    className="form-control mb-2"
+                    type="date"
+                    id="birthDate-m"
+                    required
+                  />
                   <div className="center">
-                    <button className="button" type="submit"><b>Daftar</b></button>
+                    <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
                   </div>
                   <div className="hr-sect"><b>ATAU</b></div>
                   <div>

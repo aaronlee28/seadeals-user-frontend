@@ -88,7 +88,7 @@ form {
   background-color: #1E46A2;
 }
 
-button.button {
+.register-button {
   background-color: #F69113;
   color: #FFFFFF;
   border: 3rem;
@@ -157,6 +157,6 @@ form i {
   cursor: pointer;
 }
 
-#invalid-password {
+#invalid-password, #invalid-username {
   font-size: 10px;
 }
