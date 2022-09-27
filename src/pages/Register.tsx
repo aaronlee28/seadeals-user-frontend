@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import logo from '../assets/images/logo.png';
 import logo_xs from '../assets/images/logo_xs.png';
+import useAuth from '../hooks/useAuth';
 
 const Register = () => {
   const clientId = '615670006213-4v02ia4vft53lh5gru72ct2thkbk01mo.apps.googleusercontent.com';
@@ -43,7 +45,6 @@ const Register = () => {
   const [gender, setGender] = useState('male');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
-  // const [dataReady, setDataReady] = useState(false);
 
   const [passwordCorrect, setPasswordCorrect] = useState(true);
 
@@ -73,45 +74,47 @@ const Register = () => {
     setUserNameValidity(true);
   }, [userName]);
 
-  const user = JSON.stringify({
-    email,
-    password,
-    username: userName,
-    full_name: fullName,
-    gender,
-    phone: `+62${phone}`,
-    birth_date: birthDate,
-  });
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
 
-  const [submitted, setSubmitted] = useState(false);
+    try {
+      const response = await axios.post(
+        uRL,
+        JSON.stringify({
+          email,
+          password,
+          username: userName,
+          full_name: fullName,
+          gender,
+          phone: `+62${phone}`,
+          birth_date: birthDate,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        },
+      );
+      const decode:any = jwt_decode(response.data.data.id_token);
+      const accessToken = response?.data?.data.id_token;
+      const { user, scope } = decode;
 
-  const handleSubmit = () => {
-    if (password === confirmPassword) {
-      setSubmitted(!submitted);
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setUserName('');
+      setFullName('');
+      setGender('');
+      setPhone('');
+      setBirthDate('');
+
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error(err);
     }
   };
-
-  const [signedUp, setSignedUp] = useState(false);
-
-  useEffect(() => {
-    if (submitted) {
-      console.log(user);
-      axios.post(`${uRL}register`, user).then((response) => {
-        if (response.status === 201) {
-          setSignedUp(true);
-        }
-        console.log(response);
-      });
-    }
-  }, [submitted]);
-
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (signedUp) {
-      navigate('/');
-      console.log(user);
-    }
-  }, [signedUp]);
 
   return (
     <div className="register-body">
