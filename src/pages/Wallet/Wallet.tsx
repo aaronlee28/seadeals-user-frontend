@@ -9,6 +9,7 @@ import WalletTrxItems from '../../components/Wallet/WalletTrxItems';
 const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
   const [walletInfo, setWalletInfo] = useState<any>(null);
+  const [trxs, setTrxs] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -22,6 +23,7 @@ const Wallet = () => {
         const { data } = response.data;
         if (isMounted) {
           setWalletInfo(data);
+          setTrxs(data.transactions);
         }
       } catch (err) {
         console.error(err);
@@ -46,6 +48,7 @@ const Wallet = () => {
         });
         const { data } = response.data;
         if (isMounted) {
+          // setTrxs(data)
           console.log(data);
         }
       } catch (err) {
@@ -115,7 +118,7 @@ const Wallet = () => {
             </div>
           </div>
         </div>
-        <WalletTrxItems transactions={[]} />
+        <WalletTrxItems transactions={trxs} />
       </div>
     </div>
   );

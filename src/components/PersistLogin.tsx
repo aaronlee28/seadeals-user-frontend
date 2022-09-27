@@ -1,35 +1,33 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
-import useRefreshToken from '../hooks/useRefreshToken';
+import isJWTExpired from '../utils/jwtExpiryChecker';
 import useAuth from '../hooks/useAuth';
+import useRefreshToken from '../hooks/useRefreshToken';
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const refresh = useRefreshToken();
   const { auth, setAuth } = useAuth();
+  const refresh = useRefreshToken();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
 
-    const verifyRefreshToken = async () => {
-      try {
-        await refresh();
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
-    };
-
     const accessToken:any = localStorage.getItem('access_token');
-    if (!accessToken) { // if no access_token found, get one.
-      verifyRefreshToken();
+    if (!accessToken) {
+      navigate('/login');
+      setIsLoading(false);
     }
 
     const createUserFromToken = async () => {
       try {
         const decode:any = jwt_decode(accessToken);
+        if (isJWTExpired(decode)) {
+          await refresh();
+          setIsLoading(false);
+        }
+
         const { user, scope } = decode;
 
         await setAuth({ user, roles: scope.split(' '), accessToken });
@@ -42,8 +40,6 @@ const PersistLogin = () => {
     if (!auth?.accessToken) { // if no user state found, create one from token
       createUserFromToken();
     }
-
-    setIsLoading(false);
 
     return () => { isMounted = false; };
   }, []);
