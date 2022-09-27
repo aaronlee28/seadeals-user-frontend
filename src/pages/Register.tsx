@@ -120,23 +120,21 @@ const Register = () => {
     <div className="register-body">
       <div className="register-card-body center mx-5">
         <div className="cards-body row">
-          <div className="logo d-block d-md-none col-12 col-md-6 py-2">
+          <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
-          <div className="logo d-none d-md-block col-12 col-md-6 my-auto">
-            <img alt="" className="img-fluid" src={logo} />
+          <div className="logo center d-none d-md-block col-12 col-md-6">
+            <img alt="" className="register-logo-l img-fluid" src={logo} />
           </div>
-          <div className="vertical-line d-none d-md-block" />
-          <hr className="horizontal-line d-block d-md-none" />
-          <div className="form center col-12 col-md-5 ml-md-5 my-3 p-2 d-none d-lg-block">
+          <div className="center col-12 col-md-6 mx-auto my-3 p-2 d-none d-lg-block">
             <div>
               <h1 className="header">
                 <b>
                   Daftar
                 </b>
               </h1>
-              <div className="justify-content-center">
-                <form className="col-12">
+              <div className="justify-content-center row">
+                <form className="col-md-10">
                   <input
                     className="form-control mb-2"
                     value={email}
@@ -282,7 +280,7 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <div className="form-m center col-12 col-md-5 mx-md-auto p-2 d-block d-lg-none">
+          <div className="center col-12 col-md-6 mx-md-auto px-2 pb-2 pt-3 d-block d-lg-none">
             <div className="mb-3">
               <h3 className="header-m">
                 <b>

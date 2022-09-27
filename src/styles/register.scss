@@ -10,9 +10,26 @@ body {
   justify-content: center;
 }
 
+.register-logo-l {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 .logo {
   text-align: center;
   position: relative;
+  border-right: 5px solid #1E46A2;
+  height: 100%;
+  align-content: center;
+}
+
+.logo-m {
+  text-align: center;
+  position: relative;
+  border-bottom: 5px solid #1E46A2;
 }
 
 .input {
@@ -39,7 +56,7 @@ body {
   margin: 0;
   padding-top: 5rem;
   padding-bottom: 4.9rem;
-  height: 100%;
+  min-height: 100vh;
   background-color: #1E46A2;
 }
 
@@ -73,15 +90,6 @@ input {
   border: 1px solid #ced4da;
   padding-left: 0.5rem;
   color: #495057;
-}
-
-.form {
-  max-height: 100%;
-  position: relative;
-}
-
-form {
-  width: 400px;
 }
 
 .card-right-side {
@@ -145,11 +153,6 @@ hr.horizontal-line{
   position: relative !important;
   border: 5px solid #1E46A2;
   background-color: #1E46A2;
-}
-
-.form-m {
-  max-height: 100%;
-  position: relative;
 }
 
 form i {
