@@ -13,9 +13,9 @@ import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
 import Wallet from '../pages/Wallet/Wallet';
-import WalletPIN from '../pages/WalletPIN';
-import WalletHistory from '../pages/WalletHistory';
-import WalletTrxDetails from '../pages/WalletTrxDetails';
+import WalletPIN from '../pages/Wallet/WalletPIN';
+import WalletHistory from '../pages/Wallet/WalletHistory';
+import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
 
 const AppRoutes = () => (
   <Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import WalletHistoryRows from '../components/WalletHistoryRows';
+import WalletHistoryRows from '../../components/WalletHistoryRows';
 
 const WalletHistory = () => (
   <div className="">

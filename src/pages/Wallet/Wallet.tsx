@@ -4,19 +4,15 @@ import WalletAccounts from '../../components/Wallet/WalletAccounts';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { formatPrice } from '../../utils/product';
 import isWalletPINSet from '../../utils/isWalletPINSet';
-import useAuth from '../../hooks/useAuth';
 import WalletTrxItems from '../../components/Wallet/WalletTrxItems';
 
 const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
   const [walletInfo, setWalletInfo] = useState<any>(null);
-  const { auth } = useAuth();
 
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
-
-    console.log(auth);
 
     const getWalletInfo = async () => {
       try {
@@ -32,6 +28,31 @@ const Wallet = () => {
       }
     };
     getWalletInfo();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getSLPAccounts = async () => {
+      try {
+        const response = await axiosPrivate.get('user/sea-labs-pay', {
+          signal: controller.signal,
+        });
+        const { data } = response.data;
+        if (isMounted) {
+          console.log(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getSLPAccounts();
 
     return () => {
       isMounted = false;

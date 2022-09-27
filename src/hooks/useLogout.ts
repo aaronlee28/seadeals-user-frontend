@@ -8,6 +8,7 @@ const useLogout = () => {
   return async () => {
     try {
       await axiosPrivate.post('/sign-out', JSON.stringify({ user_id: parseInt(auth.user.user_id, 10) }));
+      localStorage.removeItem('access_token');
     } catch (err) {
       console.error(err);
     }

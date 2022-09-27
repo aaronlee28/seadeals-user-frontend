@@ -10,9 +10,10 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use((config) => {
       if (!config?.headers?.Authorization) {
+        const accessToken = localStorage.getItem('access_token');
         // @ts-ignore
         // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${auth?.accessToken}`;
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
       return config;
     }, (error) => Promise.reject(error));
@@ -21,7 +22,8 @@ const useAxiosPrivate = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
+        if ((error?.response?.status === 403 || error?.response?.status === 401)
+            && !prevRequest?.sent) {
           prevRequest.sent = true;
           const newAccessToken = await refresh();
           prevRequest.headers.Authorization = `Bearer ${newAccessToken}`;
