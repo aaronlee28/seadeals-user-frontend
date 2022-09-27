@@ -3,8 +3,8 @@ import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 're
 import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import axios from '../api/axios';
 import logo from '../assets/images/logo.png';
 import logo_xs from '../assets/images/logo_xs.png';
 import useAuth from '../hooks/useAuth';
@@ -36,7 +36,7 @@ const Register = () => {
     setConfirmPasswordVis(!confirmPasswordVis);
   };
 
-  const uRL = 'http://localhost:8080/';
+  const uRL = '/register';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -92,12 +92,12 @@ const Register = () => {
           birth_date: birthDate,
         }),
         {
-          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         },
       );
-      const decode:any = jwt_decode(response.data.data.id_token);
-      const accessToken = response?.data?.data.id_token;
+      console.log(response);
+      const decode:any = jwt_decode(response.data.data.data.id_token);
+      const accessToken = response?.data?.data.data.id_token;
       const { user, scope } = decode;
 
       setAuth({ user, roles: scope.split(' '), accessToken });
@@ -231,11 +231,12 @@ const Register = () => {
                     required
                   />
                   <select
+                    value={gender}
                     onChange={(event) => setGender(event.target.value)}
                     className="form-select mb-2"
                     aria-label="Jenis kelamin"
                   >
-                    <option value="male" selected>Laki-laki</option>
+                    <option value="male">Laki-laki</option>
                     <option value="female">Perempuan</option>
                   </select>
                   <div className="input-group">
@@ -384,11 +385,12 @@ const Register = () => {
                     required
                   />
                   <select
+                    value={gender}
                     onChange={(event) => setGender(event.target.value)}
                     className="form-select mb-2"
                     aria-label="Jenis kelamin"
                   >
-                    <option value="male" selected>Laki-laki</option>
+                    <option value="male">Laki-laki</option>
                     <option value="female">Perempuan</option>
                   </select>
                   <div className="input-group">
