@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import WalletHistoryItem from './WalletHistoryItem';
 
-const WalletHistoryRows = () => (
+const WalletHistoryRows:FC<any> = ({ trxs }) => (
   <>
     <div className="border-bottom mb-3">
-      <WalletHistoryItem />
-      <WalletHistoryItem />
-      <WalletHistoryItem />
+      {trxs.map((trx:any) => (<WalletHistoryItem key={trx.id} trx={trx} />))}
     </div>
 
     <div className="text-center text-secondary">

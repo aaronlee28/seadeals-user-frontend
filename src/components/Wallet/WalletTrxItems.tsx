@@ -12,7 +12,11 @@ const WalletTrxItems:FC<any> = ({ transactions }) => (
     </div>
     <div className="text-center border-top normal-link">
       {transactions?.length === 0
-        ? <small className="text-secondary">No Transactions Yet!</small>
+        ? (
+          <div className="p-4">
+            <small className="text-secondary">No Transactions Yet!</small>
+          </div>
+        )
         : (
           <>
             {transactions.map((trx:any) => <WalletTrxItem key={trx.id} trxItem={trx} />)}

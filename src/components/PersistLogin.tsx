@@ -40,6 +40,7 @@ const PersistLogin = () => {
     if (!auth?.accessToken) { // if no user state found, create one from token
       createUserFromToken();
     }
+    setIsLoading(false);
 
     return () => { isMounted = false; };
   }, []);

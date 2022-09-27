@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import WalletTrxDetailsRows from '../../components/WalletTrxDetailsRows';
+import WalletTrxDetailsRows from '../../components/Wallet/WalletTrxDetailsRows';
 
 const WalletTrxDetails = () => (
   <div className="">

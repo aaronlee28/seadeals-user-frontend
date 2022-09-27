@@ -5,11 +5,13 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { formatPrice } from '../../utils/product';
 import isWalletPINSet from '../../utils/isWalletPINSet';
 import WalletTrxItems from '../../components/Wallet/WalletTrxItems';
+import nopin from '../../assets/svg/nopin.svg';
 
 const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
   const [walletInfo, setWalletInfo] = useState<any>(null);
   const [trxs, setTrxs] = useState([]);
+  const [SLPAccounts, setSLPAccounts] = useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -48,8 +50,7 @@ const Wallet = () => {
         });
         const { data } = response.data;
         if (isMounted) {
-          // setTrxs(data)
-          console.log(data);
+          setSLPAccounts(data);
         }
       } catch (err) {
         console.error(err);
@@ -75,17 +76,21 @@ const Wallet = () => {
                   <p className="text-secondary mb-2">Welcome back, John Doe</p>
                 </div>
                 <div className="normal-link">
-                  <Link to="/wallet/settings">
-                    <small className="border p-2 rounded border-1">Change PIN</small>
-                  </Link>
+
+                  {isWalletPINSet(walletInfo?.status)
+                    ? (
+                      <Link to="/wallet/settings">
+                        <small className="border p-2 rounded border-1">Change PIN</small>
+                      </Link>
+                    )
+                    : (
+                      <Link to="/wallet/settings">
+                        <small className="p-2 rounded border-1 fw-bolder text-main border border-2 border-main">
+                          Set Up PIN
+                        </small>
+                      </Link>
+                    )}
                 </div>
-                {/* <div className="normal-link"> */}
-                {/*  <Link to="/"> */}
-                {/*    <small className="p-2 rounded border-1 bg-warning"> */}
-                {/*      Set Up PIN */}
-                {/*    </small> */}
-                {/*  </Link> */}
-                {/* </div> */}
               </div>
             </div>
             <div className="px-4 mb-4">
@@ -100,7 +105,7 @@ const Wallet = () => {
                   </div>
                   <div className="normal-link">
                     <Link to={`${isWalletPINSet(walletInfo?.status) ? '/wallet/topup' : '/wallet/settings'}`}>
-                      <div className="border border-2 rounded p-2 px-3">
+                      <div className="border border-2 rounded p-2 px-3 bg-gray-trans">
                         <span className="mb-0 fw-bold">+ &nbsp; Top Up</span>
                       </div>
                     </Link>
@@ -112,13 +117,21 @@ const Wallet = () => {
               <div className="">
                 <div className="text-start">
                   <h6 className="mb-2">SeaLabsPay Accounts</h6>
-                  <WalletAccounts />
+                  <WalletAccounts accounts={SLPAccounts} />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <WalletTrxItems transactions={trxs} />
+        {isWalletPINSet(walletInfo?.status)
+          ? <WalletTrxItems transactions={trxs} />
+          : (
+            <div className="mx-auto my-4 rounded bg-light shadow-sm rounded py-5 border border-2">
+              <img alt="PIN not set" src={nopin} height="64px" />
+              <p className="text-center mb-0 fs-6 my-2">You have not set your wallet PIN!</p>
+              <Link to="/settings"><small className="fw-bold fs-5 text-main">Set PIN</small></Link>
+            </div>
+          )}
       </div>
     </div>
   );

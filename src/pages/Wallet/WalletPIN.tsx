@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import lock from '../../assets/lock.svg';
-import InputPINField from '../../components/InputPINField';
+import lock from '../../assets/svg/lock.svg';
+import InputPINField from '../../components/Wallet/InputPINField';
 
 const WalletPIN = () => (
   <div className="">
