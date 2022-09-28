@@ -47,7 +47,7 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 5px 5px;
             border-radius: 5px;
             .icons {
               display: flex;
@@ -71,7 +71,7 @@
               }
             }
             .number {
-
+              font-size: 14px;
             }
             &.active, &:hover {
               background: #EFEFEF;
