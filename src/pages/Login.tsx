@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 
-const LOGIN_URL = '/sign_in';
+const LOGIN_URL = '/sign-in';
 
 const Login = () => {
   const { setAuth } = useAuth();
@@ -23,7 +23,6 @@ const Login = () => {
         LOGIN_URL,
         JSON.stringify({ email, password }),
         {
-          headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         },
       );

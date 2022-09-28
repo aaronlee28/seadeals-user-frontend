@@ -12,17 +12,27 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+<<<<<<< HEAD
 import Search from '../pages/Search/Search';
+=======
+import Register from '../pages/Register';
+>>>>>>> ac4fa4e6653f605a4118d1e75d9e869605039b3f
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
 
+      <Route path="register" element={<Register />} />
+
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
+<<<<<<< HEAD
         <Route path="register" element={<Login />} />
         <Route path="search" element={<Search />} />
+=======
+
+>>>>>>> ac4fa4e6653f605a4118d1e75d9e869605039b3f
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
