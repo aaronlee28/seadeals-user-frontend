@@ -18,11 +18,10 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
 
-      <Route path="register" element={<Register />} />
-
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
