@@ -4,7 +4,6 @@ body {
   margin: 0 auto;
 }
 
-
 .center {
   display: flex;
   justify-content: center;
@@ -41,7 +40,6 @@ body {
   text-align: center;
   margin-top: 0;
   color: #2658CD;
-  border-right: #2658CD;
 }
 
 .header-m {
@@ -52,7 +50,7 @@ body {
   border-right: #2658CD;
 }
 
-.register-body {
+.register_container {
   margin: 0;
   padding-top: 5rem;
   padding-bottom: 4.9rem;
@@ -60,7 +58,7 @@ body {
   background-color: #1E46A2;
 }
 
-.register-card-body {
+.register_cards_container {
   background-color: #FFFFFF;
   border-radius: 20px;
   position: relative;
@@ -71,7 +69,7 @@ input {
   margin-bottom: 0.5rem;
 }
 
-.cards-body {
+.register_cards {
   width: 100%;
 }
 
@@ -110,25 +108,6 @@ input {
 
 .birth-date {
   font-size: 10px;
-}
-
-.hr-sect {
-  font-size: 10px;
-  display: flex;
-  flex-basis: 100%;
-  align-items: center;
-  color: rgba(0, 0, 0, 0.35);
-  margin: 8px 0px;
-}
-.hr-sect::before,
-.hr-sect::after {
-  content: "";
-  flex-grow: 1;
-  background: rgba(0, 0, 0, 0.35);
-  height: 1px;
-  font-size: 0px;
-  line-height: 0px;
-  margin: 0px 8px;
 }
 
 button.google-button {
