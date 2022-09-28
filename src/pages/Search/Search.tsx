@@ -24,7 +24,7 @@ const Search = () => {
   const [sorting, setSorting] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
-    totalPage: 10,
+    totalPage: 1,
   });
 
   const innerRef = useRef(null);
@@ -36,6 +36,10 @@ const Search = () => {
     await Products.GetAllProducts(tempFilter)
       .then((resp) => {
         setProducts(resp.data.data.products);
+        setPagination((prevState: any) => ({
+          ...prevState,
+          totalPage: resp.data.data.total_page,
+        }));
       })
       .catch(() => setProducts([]));
   };
@@ -138,6 +142,13 @@ const Search = () => {
     getProducts(tempFilter).then();
   };
 
+  const handlePagination = (newPage: number) => {
+    setPagination((prevState) => ({
+      ...prevState,
+      page: newPage,
+    }));
+  };
+
   useEffect(() => {
     getProducts('').then();
     getAllCategories().then();
@@ -193,7 +204,7 @@ const Search = () => {
           <Pagination
             page={pagination.page}
             totalPage={pagination.totalPage}
-            setPage={setPagination}
+            setPage={handlePagination}
             innerRef={innerRef}
           />
         </div>
