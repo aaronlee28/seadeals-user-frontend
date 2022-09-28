@@ -13,18 +13,28 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     box-sizing: border-box;
     gap: 24px;
     .left_content {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: flex-start;
+      align-items: center;
       gap: 24px;
+      h2 {
+        font-size: 36px;
+        color: #1E46A2;
+        background: #FFFFFF;
+        width: 100%;
+        min-height: 85px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      }
     }
     .right_content {
-
+      width: 100%;
     }
   }
 }

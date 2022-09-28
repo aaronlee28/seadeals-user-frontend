@@ -3,6 +3,7 @@ import FilterCategory from './FilterType/FilterCategory';
 
 import './Filter.scss';
 import FilterPrice from './FilterType/FilterPrice';
+import FilterRating from './FilterType/FilterRating';
 
 type FilterProps = {
   filterType: string;
@@ -41,6 +42,16 @@ const Filter = (props: FilterProps) => {
             <FilterPrice
               filterClass={filterClass}
               data={data}
+              values={values}
+              handleInput={handleInput}
+            />
+          )
+        }
+        {
+          filterType === 'rating'
+          && (
+            <FilterRating
+              filterClass={filterClass}
               values={values}
               handleInput={handleInput}
             />
