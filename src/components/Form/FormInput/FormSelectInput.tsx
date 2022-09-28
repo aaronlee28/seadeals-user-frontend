@@ -35,7 +35,7 @@ const FormSelectInput = (props: FormSelectInputProps) => {
               (item) => (
                 <option
                   key={`${item.name}-${item.id}`}
-                  value={item.id}
+                  value={item.name}
                   className={`option ${item.name}`}
                 >
                   {item.name}
