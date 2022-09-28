@@ -43,6 +43,32 @@ const Wallet = () => {
     let isMounted = true;
     const controller = new AbortController();
 
+    const getWalletInfo = async () => {
+      try {
+        const response = await axiosPrivate.get('user/wallet/transactions?limit=3', {
+          signal: controller.signal,
+        });
+        const { data } = response.data;
+        if (isMounted) {
+          console.log(data);
+          setTrxs(data.transactions);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getWalletInfo();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
     const getSLPAccounts = async () => {
       try {
         const response = await axiosPrivate.get('user/sea-labs-pay', {

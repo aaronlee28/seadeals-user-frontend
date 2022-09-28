@@ -1,0 +1,21 @@
+.mini-w-screen{
+  min-width: 480px !important;
+  max-width: 680px !important;
+  .mini-w-content{
+    min-height: 72vh !important;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    .w-content{
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+
+.wallet-bg{
+  background: rgb(36,83,194);
+  background: linear-gradient(90deg, rgba(36,83,194,1) 0%, rgba(21,49,113,1) 100%);
+}

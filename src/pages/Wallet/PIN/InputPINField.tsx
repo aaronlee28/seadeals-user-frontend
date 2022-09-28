@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  FC, useEffect, useRef, useState,
+} from 'react';
 
-const InputPINField = () => {
-  const [PIN, setPIN] = useState<string[]>(new Array(6).fill(''));
+const InputPINField:FC<any> = ({ PIN, setPIN }) => {
   const [activeIdx, setActiveIdx] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +33,7 @@ const InputPINField = () => {
 
   return (
     <div className="d-flex justify-content-center gap-1 pin-input pb-3">
-      {PIN.map((_, idx) => (
+      {PIN.map((_:any, idx:any) => (
         // eslint-disable-next-line react/no-array-index-key
         <React.Fragment key={idx}>
           <input
