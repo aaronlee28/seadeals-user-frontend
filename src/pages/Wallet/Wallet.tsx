@@ -11,6 +11,7 @@ const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
   const [walletInfo, setWalletInfo] = useState<any>(null);
   const [trxs, setTrxs] = useState([]);
+  const [hasPin, setHasPin] = useState(false);
   const [SLPAccounts, setSLPAccounts] = useState([]);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Wallet = () => {
         if (isMounted) {
           setWalletInfo(data);
           setTrxs(data.transactions);
+          setHasPin(isWalletPINSet(data.status));
         }
       } catch (err) {
         console.error(err);
@@ -102,8 +104,7 @@ const Wallet = () => {
                   <p className="text-secondary mb-2">Welcome back, John Doe</p>
                 </div>
                 <div className="normal-link">
-
-                  {isWalletPINSet(walletInfo?.status)
+                  {hasPin
                     ? (
                       <Link to="/wallet/settings">
                         <small className="border p-2 rounded border-1">Change PIN</small>
@@ -130,8 +131,8 @@ const Wallet = () => {
                     </div>
                   </div>
                   <div className="normal-link">
-                    <Link to={`${isWalletPINSet(walletInfo?.status) ? '/wallet/topup' : '/wallet/settings'}`}>
-                      <div className="border border-2 rounded p-2 px-3 bg-gray-trans">
+                    <Link to={`${hasPin ? '/wallet/topup' : '/wallet/settings'}`}>
+                      <div className={`border border-2 rounded p-2 px-3 ${!hasPin && 'bg-gray-trans'}`}>
                         <span className="mb-0 fw-bold">+ &nbsp; Top Up</span>
                       </div>
                     </Link>

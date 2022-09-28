@@ -41,7 +41,7 @@ const InputPINField:FC<any> = ({ PIN, setPIN }) => {
             type="password"
             maxLength={1}
             minLength={1}
-            className="form-control px-0 text-center fs-5 fw-bold"
+            className="form-control px-0 text-center fs-5 fw-bold bg-light"
             onChange={(e) => handleChange(e, idx)}
             onKeyDown={(e) => handleOnKeyDown(e, idx)}
             onFocus={() => setActiveIdx(idx)}
