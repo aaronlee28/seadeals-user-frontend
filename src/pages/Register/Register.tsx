@@ -1,12 +1,12 @@
-import '../styles/register.scss';
+import './Register.scss';
 import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import axios from '../api/axios';
-import logo from '../assets/images/logo.png';
-import logo_xs from '../assets/images/logo_xs.png';
-import useAuth from '../hooks/useAuth';
+import axios from '../../api/axios';
+import logo from '../../assets/images/logo.png';
+import logo_xs from '../../assets/images/logo_xs.png';
+import useAuth from '../../hooks/useAuth';
 
 const Register = () => {
   const [revealed, setRevealed] = useState(false);
@@ -102,17 +102,17 @@ const Register = () => {
 
   return (
     <div className="register_container">
-      <div className="register_cards_container center mx-5">
+      <div className="register_cards_container mx-5">
         <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
-          <div className="logo center d-none d-md-block col-12 col-md-6">
-            <a href="/">
+          <div className="logo d-none d-md-block col-12 col-md-6">
+            <a href="/src/pages">
               <img alt="" className="register-logo-l img-fluid" src={logo} />
             </a>
           </div>
-          <div className="center col-12 col-md-6 mx-auto my-3 p-2 d-none d-lg-block">
+          <div className="col-12 col-md-6 mx-auto my-3 p-2 d-none d-lg-block">
             <div>
               <h1 className="header mb-2">
                 <b>
@@ -247,7 +247,7 @@ const Register = () => {
                     id="birthDate"
                     required
                   />
-                  <div className="center mb-4">
+                  <div className="mb-4">
                     <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
                   </div>
                   <div className="d-flex justify-content-center mb-2">
@@ -261,9 +261,9 @@ const Register = () => {
               </div>
             </div>
           </div>
-          <div className="center col-12 col-md-6 mx-md-auto px-2 pb-2 pt-3 d-block d-lg-none">
+          <div className="col-12 col-md-6 mx-md-auto px-2 pb-2 pt-3 d-block d-lg-none">
             <div className="mb-3">
-              <h3 className="header-m mb-2">
+              <h3 className="register-form-header-m mb-2">
                 <b>
                   Daftar
                 </b>
@@ -396,7 +396,7 @@ const Register = () => {
                     id="birthDate-m"
                     required
                   />
-                  <div className="center">
+                  <div>
                     <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
                   </div>
                 </form>

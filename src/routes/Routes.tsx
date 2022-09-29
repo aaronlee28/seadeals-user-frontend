@@ -2,18 +2,18 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ROLES from '../constants/roles';
 import Layout from '../layouts/Layout';
-import Login from '../pages/Login';
+import Login from '../pages/Login/Login';
 import Home from '../pages/Home/Home';
 import RequireAuth from '../RequireAuth';
 import SellerHome from '../pages/Seller/SellerHome';
-import Logged from '../pages/Logged';
+import Profile from '../pages/Profile/Profile';
 import SellerLayout from '../layouts/SellerLayout';
 import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
 import Search from '../pages/Search/Search';
-import Register from '../pages/Register';
+import Register from '../pages/Register/Register';
 
 const AppRoutes = () => (
   <Routes>
@@ -26,7 +26,7 @@ const AppRoutes = () => (
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/user" element={<Logged />} />
+            <Route path="/user" element={<Profile />} />
           </Route>
           <Route path="/toko/">
             <Route path=":slug/" element={<SellerPage />} />
