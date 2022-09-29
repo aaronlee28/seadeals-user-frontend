@@ -12,7 +12,7 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
-import ProductDetails from '../pages/Product/ProductDetails';
+import ProductPage from '../pages/Product/ProductPage';
 import Search from '../pages/Search/Search';
 import Register from '../pages/Register';
 
@@ -36,7 +36,7 @@ const AppRoutes = () => (
           </Route>
 
           <Route path="/produk/">
-            <Route path=":slug/" element={<ProductDetails />} />
+            <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
 

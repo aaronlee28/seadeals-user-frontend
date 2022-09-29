@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '../../api/axios';
-import ProductShare from './ProductShare';
+import './ProductPage.scss';
+import ProductDescription from './ProductDescription';
+import ProductHeader from './ProductHeader';
 
-const ProductDetails = () => {
+const ProductPage = () => {
   const { slug } = useParams();
-  const [, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<any>(null);
   const [, setLoadingProduct] = useState(true);
 
   // const [variantsLv1, setVariantsLv1] = useState([]);
@@ -14,7 +16,6 @@ const ProductDetails = () => {
   // const [selectedVar2, setSelectedVar2] = useState(null);
 
   useEffect(() => {
-    console.log(slug);
     let isMounted = true;
     const controller = new AbortController();
 
@@ -43,10 +44,11 @@ const ProductDetails = () => {
   }, []);
 
   return (
-    <div>
-      <ProductShare />
+    <div className="container py-5">
+      <ProductHeader product={product} />
+      <ProductDescription description={product?.product_detail} />
     </div>
   );
 };
 
-export default ProductDetails;
+export default ProductPage;
