@@ -18,12 +18,12 @@ import Register from '../pages/Register';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
-      <Route path="register" element={<Register />} />
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
+
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
