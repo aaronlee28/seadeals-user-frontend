@@ -13,6 +13,8 @@ import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
 import ProductDetails from '../pages/Product/ProductDetails';
+import Search from '../pages/Search/Search';
+import Register from '../pages/Register';
 
 const AppRoutes = () => (
   <Routes>
@@ -21,7 +23,8 @@ const AppRoutes = () => (
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="search" element={<Search />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
