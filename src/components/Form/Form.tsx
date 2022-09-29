@@ -38,11 +38,10 @@ const Form = (props: FormProps) => {
     readOnly,
   } = props;
 
-  const handleButton = (name: any) => {
+  const handleButton = () => {
     if (handleSubmitButton) {
       handleSubmitButton();
     }
-    console.log(name);
   };
 
   return (
@@ -55,13 +54,14 @@ const Form = (props: FormProps) => {
           (item) => (
             <FormItem
               key={`${formType}-${item.name}`}
+              formType={formType}
               inputType={item.inputType}
               value={values[item.name]}
               label={item.label}
               name={item.name}
               options={item.options}
               handleInput={handleInput}
-              handleButton={() => handleButton(item.name)}
+              handleButton={() => handleButton}
               readOnly={readOnly}
             />
           ),
