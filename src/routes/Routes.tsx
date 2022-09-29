@@ -12,27 +12,48 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+import ProductPage from '../pages/Product/ProductPage';
 import Search from '../pages/Search/Search';
 import Register from '../pages/Register/Register';
+import Cart from '../pages/Cart/Cart';
+import Wallet from '../pages/Wallet/Wallet';
+import WalletPIN from '../pages/Wallet/WalletPIN';
+import WalletHistory from '../pages/Wallet/WalletHistory';
+import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
+
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
-
+        <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Profile />} />
+
+            <Route path="/wallet">
+              <Route path="" element={<Wallet />} />
+              <Route path="settings" element={<WalletPIN />} />
+              <Route path="history" element={<WalletHistory />} />
+              <Route path="history/:id" element={<WalletTrxDetails />} />
+            </Route>
           </Route>
+
           <Route path="/toko/">
             <Route path=":slug/" element={<SellerPage />} />
           </Route>
+
+          <Route path="/produk/">
+            <Route path=":slug/" element={<ProductPage />} />
+          </Route>
         </Route>
+
       </Route>
+
       <Route element={<PersistLogin />}>
         <Route path="/seller/" element={<SellerLayout />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
@@ -41,6 +62,7 @@ const AppRoutes = () => (
           <Route path="register" element={<SellerRegister />} />
         </Route>
       </Route>
+
     </Route>
   </Routes>
 );

@@ -38,30 +38,37 @@ const Form = (props: FormProps) => {
     readOnly,
   } = props;
 
-  const handleButton = (name: any) => {
+  const handleButton = () => {
     if (handleSubmitButton) {
       handleSubmitButton();
     }
-    console.log(name);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (handleSubmitButton) {
+      handleSubmitButton();
+    }
   };
 
   return (
     <form
       className={`form ${formType}`}
-      onSubmit={handleSubmitButton}
+      onSubmit={handleSubmit}
     >
       {
         items.map(
           (item) => (
             <FormItem
               key={`${formType}-${item.name}`}
+              formType={formType}
               inputType={item.inputType}
               value={values[item.name]}
               label={item.label}
               name={item.name}
               options={item.options}
               handleInput={handleInput}
-              handleButton={() => handleButton(item.name)}
+              handleButton={() => handleButton}
               readOnly={readOnly}
             />
           ),
