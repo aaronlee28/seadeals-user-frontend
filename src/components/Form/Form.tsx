@@ -44,10 +44,17 @@ const Form = (props: FormProps) => {
     }
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (handleSubmitButton) {
+      handleSubmitButton();
+    }
+  };
+
   return (
     <form
       className={`form ${formType}`}
-      onSubmit={handleSubmitButton}
+      onSubmit={handleSubmit}
     >
       {
         items.map(
