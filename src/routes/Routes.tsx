@@ -16,6 +16,10 @@ import ProductPage from '../pages/Product/ProductPage';
 import Search from '../pages/Search/Search';
 import Register from '../pages/Register';
 import Cart from '../pages/Cart/Cart';
+import Wallet from '../pages/Wallet/Wallet';
+import WalletPIN from '../pages/Wallet/WalletPIN';
+import WalletHistory from '../pages/Wallet/WalletHistory';
+import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
 
 const AppRoutes = () => (
   <Routes>
@@ -30,6 +34,13 @@ const AppRoutes = () => (
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
+
+            <Route path="/wallet">
+              <Route path="" element={<Wallet />} />
+              <Route path="settings" element={<WalletPIN />} />
+              <Route path="history" element={<WalletHistory />} />
+              <Route path="history/:id" element={<WalletTrxDetails />} />
+            </Route>
           </Route>
 
           <Route path="/toko/">

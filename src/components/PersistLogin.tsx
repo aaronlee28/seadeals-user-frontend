@@ -1,26 +1,46 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import useRefreshToken from '../hooks/useRefreshToken';
+import jwt_decode from 'jwt-decode';
+import isJWTExpired from '../utils/jwtExpiryChecker';
 import useAuth from '../hooks/useAuth';
+import useRefreshToken from '../hooks/useRefreshToken';
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const { auth, setAuth } = useAuth();
   const refresh = useRefreshToken();
-  const { auth } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
-    const verifyRefreshToken = async () => {
+
+    const accessToken:any = localStorage.getItem('access_token');
+    if (!accessToken) {
+      navigate('/login');
+      setIsLoading(false);
+    }
+
+    const createUserFromToken = async () => {
       try {
-        await refresh();
+        const decode:any = jwt_decode(accessToken);
+        if (isJWTExpired(decode)) {
+          await refresh();
+          setIsLoading(false);
+        }
+
+        const { user, scope } = decode;
+
+        await setAuth({ user, roles: scope.split(' '), accessToken });
       } catch (err) {
         console.error(err);
       } finally {
         if (isMounted) setIsLoading(false);
       }
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+    if (!auth?.accessToken) { // if no user state found, create one from token
+      createUserFromToken();
+    }
+    setIsLoading(false);
 
     return () => { isMounted = false; };
   }, []);
