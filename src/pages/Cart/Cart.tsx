@@ -55,6 +55,10 @@ const Cart = () => {
       },
     ],
   );
+  const [total, setTotal] = useState({
+    totalPrice: 0,
+    totalProduct: 0,
+  });
 
   const [isAllProductsChecked, setIsAllProductsChecked] = useState(false);
 
@@ -76,6 +80,24 @@ const Cart = () => {
     return true;
   };
 
+  const setTotalCheck = (store: any) => {
+    let tempTotalProduct = 0;
+    let tempTotalPrice = 0;
+    for (let i = 0; i < store.length; i += 1) {
+      const items = store[i].storeItems;
+      for (let j = 0; j < items.length; j += 1) {
+        if (items[j].isChecked) {
+          tempTotalProduct += items[j].amount;
+          tempTotalPrice += items[j].price * items[j].amount;
+        }
+      }
+    }
+    setTotal({
+      totalPrice: tempTotalPrice,
+      totalProduct: tempTotalProduct,
+    });
+  };
+
   const handleCheckedAllProducts = () => {
     const checkedStore = dummy.map(
       (storeData: any) => {
@@ -94,6 +116,7 @@ const Cart = () => {
 
     setDummy(checkedStore);
     setIsAllProductsChecked(isAllChecked);
+    setTotalCheck(checkedStore);
   };
 
   const handleCheckedStore = (storeId: number) => {
@@ -117,6 +140,7 @@ const Cart = () => {
 
     setDummy(checkedStore);
     setIsAllProductsChecked(isAllChecked);
+    setTotalCheck(checkedStore);
   };
 
   const handleCheckedItem = (storeId: number, id: number) => {
@@ -143,6 +167,7 @@ const Cart = () => {
 
     setDummy(checkedItem);
     setIsAllProductsChecked(isAllChecked);
+    setTotalCheck(checkedItem);
   };
 
   const handleDeleteItem = (storeId: number, id: number) => {
@@ -167,6 +192,7 @@ const Cart = () => {
     );
 
     setDummy(deletedItem);
+    setTotalCheck(deletedItem);
   };
 
   const handleAmount = (storeId: number, id: number, amount: any) => {
@@ -195,12 +221,15 @@ const Cart = () => {
     );
 
     setDummy(updatedStore);
+    setTotalCheck(updatedStore);
   };
 
   return (
     <div className="cart_container">
       <div className="cart_content">
         <CardCartAll
+          totalProduct={total.totalProduct}
+          totalPrice={total.totalPrice}
           isAllProductsChecked={isAllProductsChecked}
           handleCheckedAllProducts={handleCheckedAllProducts}
         />

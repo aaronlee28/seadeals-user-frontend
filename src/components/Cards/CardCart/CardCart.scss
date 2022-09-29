@@ -172,4 +172,54 @@
       }
     }
   }
+  &.all {
+    position: fixed;
+    bottom: 0;
+    max-width: 1320px;
+    border: solid #2658CD;
+    border-width: 1px 1px 0 1px;
+    .header .header_name .name {
+      font-weight: 600;
+    }
+    .header {
+      justify-content: space-between;
+      align-items: center;
+      .left_content {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 40px;
+      }
+      .right_content {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 60px;
+        .total_product, .total_price {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 20px;
+          .title, .amount {
+            width: 100%;
+            font-size: 20px;
+          }
+          .title {
+            max-width: 200px;
+            font-weight: 600;
+          }
+          .amount {
+            max-width: 400px;
+          }
+        }
+      }
+    }
+  }
 }
