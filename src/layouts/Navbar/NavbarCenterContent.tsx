@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { ReactComponent as IconCart } from '../../assets/svg/icon_cart.svg';
 import Button from '../../components/Button/Button';
 import Form from '../../components/Form/Form';
@@ -6,17 +8,20 @@ import SEARCH_INPUT from '../../constants/form';
 
 const NavbarCenterContent = () => {
   const [searchInput, setSearchInput] = useState('');
+  const navigate = useNavigate();
 
   const goToCart = () => {
     console.log('GOTOCART');
   };
 
   const handleInput = (event: any) => {
+    event.preventDefault();
     setSearchInput(event.target.value);
   };
 
-  const searchProduct = () => {
-    window.location.href = '/search';
+  const searchProduct = (e: any) => {
+    e.preventDefault();
+    navigate('search');
   };
 
   return (

@@ -49,6 +49,20 @@
   &.secondary {
 
   }
+  &.circle {
+    background: #FFFFFF;
+    border: solid 2px #2658CD;
+    padding: 5px;
+    border-radius: 100px;
+    .text {
+      width: 20px;
+      color: #1E46A2;
+      font-weight: 800;
+    }
+    &:hover {
+      background: #EFEFEF;
+    }
+  }
   &.plain {
     .text {
 

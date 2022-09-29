@@ -14,7 +14,14 @@ const formatPrice = (price: number) => {
   return priceSplit.join('.');
 };
 
+const formatPriceWithCurrency = (price: number) => {
+  const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
+  const priceJoin = priceSplit.join('.');
+  return `Rp. ${priceJoin},00`;
+};
+
 export {
   formatSoldCount,
   formatPrice,
+  formatPriceWithCurrency,
 };

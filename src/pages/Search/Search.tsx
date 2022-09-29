@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import './Search.scss';
+import { useSearchParams } from 'react-router-dom';
 import ProductList from './ProductList/ProductList';
 import Products from '../../api/products';
 import Filter from '../../components/Filter/Filter';
@@ -24,18 +25,25 @@ const Search = () => {
   const [sorting, setSorting] = useState('');
   const [pagination, setPagination] = useState({
     page: 1,
-    totalPage: 10,
+    totalPage: 1,
   });
 
   const innerRef = useRef(null);
+
+  const [searchParams] = useSearchParams();
 
   const sortOptions = SORT_SEARCH;
   const priceItems = FILTER_PRICE;
 
   const getProducts = async (tempFilter: string) => {
+    console.log(tempFilter);
     await Products.GetAllProducts(tempFilter)
       .then((resp) => {
         setProducts(resp.data.data.products);
+        setPagination((prevState: any) => ({
+          ...prevState,
+          totalPage: resp.data.data.total_page,
+        }));
       })
       .catch(() => setProducts([]));
   };
@@ -138,8 +146,17 @@ const Search = () => {
     getProducts(tempFilter).then();
   };
 
+  const handlePagination = (newPage: number) => {
+    setPagination((prevState) => ({
+      ...prevState,
+      page: newPage,
+    }));
+  };
+
   useEffect(() => {
-    getProducts('').then();
+    const getSearchParams = searchParams.get('searchInput');
+    setFilter(`?limit=30&page=1&s=${getSearchParams}`);
+    getProducts(`?limit=30&page=1&s=${getSearchParams}`).then();
     getAllCategories().then();
   }, []);
 
@@ -193,7 +210,7 @@ const Search = () => {
           <Pagination
             page={pagination.page}
             totalPage={pagination.totalPage}
-            setPage={setPagination}
+            setPage={handlePagination}
             innerRef={innerRef}
           />
         </div>
