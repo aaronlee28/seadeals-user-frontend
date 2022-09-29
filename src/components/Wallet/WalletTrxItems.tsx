@@ -13,7 +13,7 @@ const WalletTrxItems:FC<any> = ({ transactions }) => (
     <div className="text-center border-top normal-link">
       {transactions?.length === 0
         ? (
-          <div className="p-4">
+          <div className="p-4 fs-5">
             <small className="text-secondary">No Transactions Yet!</small>
           </div>
         )
@@ -23,7 +23,7 @@ const WalletTrxItems:FC<any> = ({ transactions }) => (
           </>
         )}
     </div>
-    <div className="border-top py-1">
+    <div className="border-top py-1 text-center fs-6">
       <Link to="/wallet/history">
         <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
       </Link>

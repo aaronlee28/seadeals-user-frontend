@@ -1,33 +1,41 @@
 import React from 'react';
 
 import { formatSoldCount, formatPrice } from '../../../utils/product';
+import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 
 import './CardProductList.scss';
 
 type CardProductListProps = {
   data: {
-    media_url: string;
-    product_name: string;
-    slug: string;
-    price: string;
-    rating: number;
-    bought: number;
-    min_price: number;
-    max_price: number;
-  }
+    min_price: number,
+    max_price: number,
+    product: {
+      id: number,
+      price: number,
+      name: string,
+      slug: string,
+      media_url: string,
+      city: string,
+      rating: number,
+      total_reviewer: number,
+      total_sold: number,
+    }
+  },
 };
 
 const CardProductList = (props: CardProductListProps) => {
   const { data } = props;
-  const name = data.product_name;
-  const mediaUrl = data.media_url;
+  const { product } = data;
   const minPrice = data.min_price;
   const maxPrice = data.max_price;
   const {
+    name,
     slug,
+    city,
     rating,
-    bought,
-  } = data;
+  } = product;
+  const mediaUrl = product.media_url;
+  const totalSold = product.total_sold;
 
   return (
     <div className="card_product_list_container">
@@ -58,9 +66,15 @@ const CardProductList = (props: CardProductListProps) => {
           }
         </div>
         <div className="bottom_content">
-          <div className="rating">{ rating }</div>
-          <p className="sold_count">{ formatSoldCount(bought) }</p>
+          <div className="rating">
+            {
+              React.createElement(IconStar, { className: 'iconRating' })
+            }
+            { rating }
+          </div>
+          <p className="sold_count">{ formatSoldCount(totalSold) }</p>
         </div>
+        <div className="city">{ city }</div>
       </div>
     </div>
   );

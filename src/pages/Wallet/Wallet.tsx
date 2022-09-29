@@ -5,6 +5,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { formatPrice } from '../../utils/product';
 import isWalletPINSet from '../../utils/isWalletPINSet';
 import WalletTrxItems from '../../components/Wallet/WalletTrxItems';
+import './Wallet.scss';
 import nopin from '../../assets/svg/nopin.svg';
 
 const Wallet = () => {
@@ -100,19 +101,19 @@ const Wallet = () => {
             <div className="px-4 mb-4">
               <div className="d-flex justify-content-between">
                 <div className="text-start">
-                  <h3 className="fw-bold">SeaDeals Wallet</h3>
-                  <p className="text-secondary mb-2">Welcome back, John Doe</p>
+                  <h3 className="fw-bold fs-4">SeaDeals Wallet</h3>
+                  <p className="text-secondary mb-2 fs-5">Welcome back, John Doe</p>
                 </div>
                 <div className="normal-link">
                   {hasPin
                     ? (
                       <Link to="/wallet/settings">
-                        <small className="border p-2 rounded border-1">Change PIN</small>
+                        <small className="border p-2 rounded border-1 fs-6">Change PIN</small>
                       </Link>
                     )
                     : (
                       <Link to="/wallet/settings">
-                        <small className="p-2 rounded border-1 fw-bolder text-main border border-2 border-main">
+                        <small className="p-2 rounded border-1 fw-bolder text-main border border-2 border-main fs-6">
                           Set Up PIN
                         </small>
                       </Link>
@@ -133,7 +134,7 @@ const Wallet = () => {
                   <div className="normal-link">
                     <Link to={`${hasPin ? '/wallet/topup' : '/wallet/settings'}`}>
                       <div className={`border border-2 rounded p-2 px-3 ${!hasPin && 'bg-gray-trans'}`}>
-                        <span className="mb-0 fw-bold">+ &nbsp; Top Up</span>
+                        <span className="mb-0 fw-bold fs-6">+ &nbsp; Top Up</span>
                       </div>
                     </Link>
                   </div>

@@ -66,11 +66,11 @@ const AuthValidation:FC<any> = ({ setAuthPass }) => {
     <>
       <div className="px-4 py-3 w-content">
         <div className="text-center mb-5">
-          <h5 className="mb-3 px-1">Wallet PIN</h5>
+          <h5 className="mb-2 px-1">Wallet PIN</h5>
           {method
             ? (
               <div>
-                <p className="text-secondary mb-2">{hint}</p>
+                <p className="text-secondary mb-2 fs-6">{hint}</p>
                 <input
                   className="form-control p-2 w-50 mx-auto"
                   placeholder=""
@@ -80,7 +80,7 @@ const AuthValidation:FC<any> = ({ setAuthPass }) => {
                 />
               </div>
             )
-            : <p className="text-secondary mb-2">Pilih opsi atur ulang PIN wallet</p>}
+            : <p className="text-secondary mb-2 fs-6">Pilih opsi atur ulang PIN wallet</p>}
           <div className="py-3">
             {method
               ? (
@@ -113,7 +113,7 @@ const AuthValidation:FC<any> = ({ setAuthPass }) => {
       </div>
       {method
       && (
-      <div className="pb-3">
+      <div className="pb-3 text-center">
         <button
           type="button"
           className="btn border rounded px-4"

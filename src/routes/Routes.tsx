@@ -12,6 +12,10 @@ import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
 import PersistLogin from '../components/PersistLogin';
 import SellerPage from '../pages/Seller/SellerPage';
+import ProductPage from '../pages/Product/ProductPage';
+import Search from '../pages/Search/Search';
+import Register from '../pages/Register';
+import Cart from '../pages/Cart/Cart';
 import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/WalletHistory';
@@ -24,8 +28,9 @@ const AppRoutes = () => (
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="register" element={<Login />} />
-
+        <Route path="register" element={<Register />} />
+        <Route path="search" element={<Search />} />
+        <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/user" element={<Logged />} />
@@ -40,6 +45,10 @@ const AppRoutes = () => (
 
           <Route path="/toko/">
             <Route path=":slug/" element={<SellerPage />} />
+          </Route>
+
+          <Route path="/produk/">
+            <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
 

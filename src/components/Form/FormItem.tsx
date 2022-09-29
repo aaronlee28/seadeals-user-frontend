@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import FormTextInput from './FormInput/FormTextInput';
 import FormSelectInput from './FormInput/FormSelectInput';
+import FormCheckboxInput from './FormInput/FormCheckboxInput';
+import FormNumberInput from './FormInput/FormNumberInput';
 
 type FormItemProps = {
+  formType: string,
   inputType: string;
   value: any,
   label: string;
@@ -15,6 +18,7 @@ type FormItemProps = {
 
 const FormItem = (props: FormItemProps) => {
   const {
+    formType,
     inputType,
     value,
     label,
@@ -53,6 +57,18 @@ const FormItem = (props: FormItemProps) => {
         )
       }
       {
+        inputType === 'number'
+        && (
+          <FormNumberInput
+            formType={formType}
+            value={value}
+            label={label}
+            name={name}
+            handleInput={handleInput}
+          />
+        )
+      }
+      {
         inputType === 'select'
         && (
           <FormSelectInput
@@ -64,7 +80,24 @@ const FormItem = (props: FormItemProps) => {
           />
         )
       }
-      {/* ADD ANOTHER INPUT  */}
+      {
+        inputType === 'checkbox'
+        && (
+          <FormCheckboxInput
+            // value={value}
+            // label={label}
+            name={name}
+            options={options}
+            handleInput={handleInput}
+          />
+        )
+      }
+      {
+        name === 'minPrice'
+        && (
+          <hr />
+        )
+      }
     </div>
   );
 };
