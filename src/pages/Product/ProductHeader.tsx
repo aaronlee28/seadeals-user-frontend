@@ -7,7 +7,7 @@ const ProductHeader:FC<any> = ({ product }) => (
   <div className="bg-white p-3 rounded shadow-sm mb-3">
     <div className="row">
       <div className="col-12 col-lg-5 mb-4">
-        <ProductMedia />
+        <ProductMedia photos={product?.product_photos} />
       </div>
       <div className="col-12 col-lg-7">
         <HeaderInfo product={product} />
