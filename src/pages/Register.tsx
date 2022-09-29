@@ -1,5 +1,4 @@
 import '../styles/register.scss';
-import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
@@ -10,21 +9,6 @@ import logo_xs from '../assets/images/logo_xs.png';
 import useAuth from '../hooks/useAuth';
 
 const Register = () => {
-  const clientId = '615670006213-4v02ia4vft53lh5gru72ct2thkbk01mo.apps.googleusercontent.com';
-
-  const onSuccess = async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    let result;
-    let token;
-    if ('profileObj' in res) { result = res.profileObj; }
-    if ('tokenId' in res) { token = res.tokenId; }
-    console.log(result);
-    console.log(token);
-  };
-
-  const onFailure = (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    console.log('SIGN UP FAILED! res: ', res);
-  };
-
   const [revealed, setRevealed] = useState(false);
   const [confirmPasswordVis, setConfirmPasswordVis] = useState(false);
 
@@ -117,18 +101,20 @@ const Register = () => {
   };
 
   return (
-    <div className="register-body">
-      <div className="register-card-body center mx-5">
-        <div className="cards-body row">
+    <div className="register_container">
+      <div className="register_cards_container center mx-5">
+        <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
           <div className="logo center d-none d-md-block col-12 col-md-6">
-            <img alt="" className="register-logo-l img-fluid" src={logo} />
+            <a href="/">
+              <img alt="" className="register-logo-l img-fluid" src={logo} />
+            </a>
           </div>
           <div className="center col-12 col-md-6 mx-auto my-3 p-2 d-none d-lg-block">
             <div>
-              <h1 className="header">
+              <h1 className="header mb-2">
                 <b>
                   Daftar
                 </b>
@@ -201,7 +187,7 @@ const Register = () => {
                   </div>
                   <div className="input-group mb-2">
                     <input
-                      className={userNameValidity ? 'form-control mb-2' : 'form-control is-invalid mb-2'}
+                      className={userNameValidity ? 'form-control' : 'form-control is-invalid'}
                       value={userName}
                       onChange={(event) => setUserName(event.target.value)}
                       type="text"
@@ -213,7 +199,7 @@ const Register = () => {
                     {
                       userNameValidity ? '' : (
                         <div id="invalid-username" className="invalid-feedback">
-                          Whitespaces aren &apos t allowed in usernames!
+                          Whitespaces aren&apos;t allowed in usernames!
                         </div>
                       )
                     }
@@ -261,20 +247,15 @@ const Register = () => {
                     id="birthDate"
                     required
                   />
-                  <div className="center">
+                  <div className="center mb-4">
                     <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
                   </div>
-                  <div className="hr-sect"><b>ATAU</b></div>
-                  <div>
-                    <GoogleLogin
-                      className="google-button"
-                      clientId={clientId}
-                      buttonText="Daftar dengan Google"
-                      onSuccess={onSuccess}
-                      onFailure={onFailure}
-                      cookiePolicy="single_host_origin"
-                      isSignedIn
-                    />
+                  <div className="d-flex justify-content-center mb-2">
+                    <p id="daftar-text">
+                      Sudah punya akun SeaDeals?
+                      {' '}
+                      <a href="/login" id="daftar-link"><b>Masuk</b></a>
+                    </p>
                   </div>
                 </form>
               </div>
@@ -282,7 +263,7 @@ const Register = () => {
           </div>
           <div className="center col-12 col-md-6 mx-md-auto px-2 pb-2 pt-3 d-block d-lg-none">
             <div className="mb-3">
-              <h3 className="header-m">
+              <h3 className="header-m mb-2">
                 <b>
                   Daftar
                 </b>
@@ -367,7 +348,7 @@ const Register = () => {
                     {
                       userNameValidity ? '' : (
                         <div id="invalid-username" className="invalid-feedback">
-                          Whitespaces aren &apos t allowed in usernames!
+                          Whitespaces aren&apos;t allowed in usernames!
                         </div>
                       )
                     }
@@ -417,18 +398,6 @@ const Register = () => {
                   />
                   <div className="center">
                     <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
-                  </div>
-                  <div className="hr-sect"><b>ATAU</b></div>
-                  <div>
-                    <GoogleLogin
-                      className="google-button"
-                      clientId={clientId}
-                      buttonText="Daftar dengan Google"
-                      onSuccess={onSuccess}
-                      onFailure={onFailure}
-                      cookiePolicy="single_host_origin"
-                      isSignedIn
-                    />
                   </div>
                 </form>
               </div>
