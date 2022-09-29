@@ -5,6 +5,7 @@ import FormCheckboxInput from './FormInput/FormCheckboxInput';
 import FormNumberInput from './FormInput/FormNumberInput';
 
 type FormItemProps = {
+  formType: string,
   inputType: string;
   value: any,
   label: string;
@@ -17,6 +18,7 @@ type FormItemProps = {
 
 const FormItem = (props: FormItemProps) => {
   const {
+    formType,
     inputType,
     value,
     label,
@@ -58,6 +60,7 @@ const FormItem = (props: FormItemProps) => {
         inputType === 'number'
         && (
           <FormNumberInput
+            formType={formType}
             value={value}
             label={label}
             name={name}
