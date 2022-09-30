@@ -33,7 +33,7 @@ const AppRoutes = () => (
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/user" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />

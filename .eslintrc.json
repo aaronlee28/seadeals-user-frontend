@@ -23,6 +23,7 @@
     ],
     "rules": {
         "jsx-a11y/label-has-associated-control" :  "off",
+        "import/no-named-as-default" :  "off",
         "react/function-component-definition" : [
             2,
             {
