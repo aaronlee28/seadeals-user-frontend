@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import useAuth from '../hooks/useAuth';
-import axios from '../api/axios';
-import logo_xs from '../assets/images/logo_xs.png';
-import logo from '../assets/images/logo.png';
-import '../styles/login.scss';
+import useAuth from '../../hooks/useAuth';
+import axios from '../../api/axios';
+import logo_xs from '../../assets/images/logo_xs.png';
+import logo from '../../assets/images/logo.png';
+import './Login.scss';
 
 const LOGIN_URL = '/sign-in';
 
@@ -62,6 +62,7 @@ const Login = () => {
       const { user, scope } = decode;
 
       setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
 
       navigate(from, { replace: true });
     } catch (err) {
@@ -139,7 +140,7 @@ const Login = () => {
                     </div>
                   </div>
                   <div className="center">
-                    <button className="register-button" type="button" onClick={handleSubmit}><b>Masuk</b></button>
+                    <button className="login-button" type="button" onClick={handleSubmit}><b>Masuk</b></button>
                   </div>
                   <div className="hr-sect my-4"><b>ATAU</b></div>
                   <div className="d-flex justify-content-center">
