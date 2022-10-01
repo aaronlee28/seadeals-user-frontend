@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import SORT_OPTIONS from '../../constants/ProductListSortOptions';
-import validateSorting from '../../utils/urlParamValidator';
+import SORT_OPTIONS from '../../../constants/ProductListSortOptions';
+import validateSorting from '../../../utils/urlParamValidator';
 
 const ProductListSortBar:FC <any> = ({
   setOption, setOrder, setParam, sortSelect,

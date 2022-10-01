@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
-import CardCategory from '../Cards/CardCategory/CardCategory';
+import CardCategory from '../../components/Cards/CardCategory/CardCategory';
+import CardCategoryLazy from '../../components/Cards/CardCategory/CardCategoryLazy';
 
-const CategoryList:FC<any> = ({ categories, setCategory }) => (
+const CategoryList:FC<any> = ({ loading, categories, setCategory }) => (
   <div className="container d-flex gap-3 px-0 py-3">
     {
-        categories.map((category:any) => {
+      loading ? <CardCategoryLazy />
+        : categories.map((category:any) => {
           const data = { name: category.name, icon_url: category.icon_url };
           return (
             <button
