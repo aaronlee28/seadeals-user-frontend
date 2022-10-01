@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import PriceFilterBox from './PriceFilterBox';
-import URL_PARAM from '../../constants/URLParamOptions';
-import { validateNumParam } from '../../utils/urlParamValidator';
+import URL_PARAM from '../../../constants/URLParamOptions';
+import { validateNumParam } from '../../../utils/urlParamValidator';
 
 const SidebarPriceFilter:FC<any> = ({ setParam, minPriceState, maxPriceState }) => {
   const setPriceFilter = (minOrMax:string) => (value:string) => {

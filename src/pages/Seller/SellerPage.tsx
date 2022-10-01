@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import axios from '../../api/axios';
 import { validateSortOption, validateSortOrder } from '../../utils/sortValidator';
 import {
   getActiveTabName,
   validateNumParam,
 } from '../../utils/urlParamValidator';
-import SellerProductList from '../../components/Seller/SellerProductList';
-import SellerHeader from '../../components/Seller/SellerHeader';
-import SellerTopProductList from '../../components/Seller/SellerTopProductList';
-import CategoryList from '../../components/Seller/CategoryList';
+import SellerProductList from './ProductList/SellerProductList';
+import SellerHeader from './SellerHeader';
+import SellerTopProductList from './TopProducts/SellerTopProductList';
+import CategoryList from './CategoryList';
 import './SellerPage.css';
 import URL_PARAM from '../../constants/URLParamOptions';
 
 const SellerPage = () => {
   const allProductRef = useRef<null | HTMLDivElement>(null);
-  const { slug } = useParams();
+  const { sellerID } = useParams();
   const navigate = useNavigate();
   const [searchParam, setSearchParam] = useSearchParams();
 
@@ -23,8 +24,11 @@ const SellerPage = () => {
   const [sellerInfo, setSellerInfo] = useState<any>({});
   const [loadingSellerInfo, setLoadingSellerInfo] = useState<boolean>(true);
   const [sellerTopProducts, setSellerTopProducts] = useState([]);
+  const [loadingTop, setLoadingTop] = useState<boolean>(true);
   const [sellerProducts, setSellerProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(true);
   const [sellerCategories, setSellerCategories] = useState([]);
+  const [loadingCates, setLoadingCates] = useState<boolean>(true);
 
   // sort & filter
   const [sortOption, setSortOption] = useState(searchParam.get('orderBy') || '');
@@ -44,7 +48,6 @@ const SellerPage = () => {
 
     const getSellerInfo = async () => {
       try {
-        const sellerID = slug?.split('.')[1];
         if (!sellerID || Number.isNaN(parseInt(sellerID, 10))) navigate('/404');
 
         const response = await axios.get(`sellers/${sellerID}`, {
@@ -65,7 +68,7 @@ const SellerPage = () => {
           setLoadingSellerInfo(false);
         }
       } catch (err) {
-        console.error(err);
+        toast.error('failed to fetch seller data');
       }
     };
     getSellerInfo();
@@ -82,7 +85,6 @@ const SellerPage = () => {
 
     const getTopProducts = async () => {
       try {
-        const sellerID = slug?.split('.')[1];
         const response = await axios.get(
           `/products?sellerID=${sellerID}&limit=6&sort=&sortBy=`,
           {
@@ -92,9 +94,10 @@ const SellerPage = () => {
         const { data } = response.data;
         if (isMounted) {
           setSellerTopProducts(data.products);
+          setLoadingTop(false);
         }
       } catch (err) {
-        console.error(err);
+        toast.error('failed to fetch top products');
       }
     };
     getTopProducts();
@@ -106,12 +109,12 @@ const SellerPage = () => {
   }, []);
 
   useEffect(() => { // get sort-able filter-able products
+    setLoadingProducts(true);
     let isMounted = true;
     const controller = new AbortController();
 
     const getSellerProducts = async () => {
       try {
-        const sellerID = slug?.split('.')[1];
         const option = validateSortOption(sortOption);
         const order = validateSortOrder(sortOrder);
         const response = await axios.get(
@@ -124,9 +127,10 @@ const SellerPage = () => {
         if (isMounted) {
           setSellerProducts(data.products);
           setTotalPage(data.total_page);
+          setLoadingProducts(false);
         }
       } catch (err:any) {
-        if (err.response.status === 404) setSellerProducts([]);
+        toast.error('failed to fetch products');
       }
     };
     getSellerProducts();
@@ -143,7 +147,6 @@ const SellerPage = () => {
 
     const getCategories = async () => {
       try {
-        const sellerID = slug?.split('.')[1];
         if (!sellerID || Number.isNaN(parseInt(sellerID, 10))) navigate('/404');
 
         const response = await axios.get(`categories?sellerID=${sellerID}`, {
@@ -152,9 +155,10 @@ const SellerPage = () => {
         const { data } = response.data;
         if (isMounted) {
           setSellerCategories(data.categories);
+          setLoadingCates(false);
         }
       } catch (err) {
-        console.error(err);
+        toast.error('failed to categories');
       }
     };
     getCategories();
@@ -180,9 +184,19 @@ const SellerPage = () => {
   return (
     <div className="p-2 py-5 bg-backdrop">
       <SellerHeader loading={loadingSellerInfo} sellerInfo={sellerInfo} />
-      <SellerTopProductList products={sellerTopProducts} clickToScroll={() => { allProductRef.current?.scrollIntoView({ behavior: 'smooth' }); }} />
-      <CategoryList categories={sellerCategories} setCategory={changeCategory} />
+      <SellerTopProductList
+        loading={loadingTop}
+        products={sellerTopProducts}
+        clickToScroll={() => { allProductRef.current?.scrollIntoView({ behavior: 'smooth' }); }}
+      />
+      <CategoryList
+        loading={loadingCates}
+        categories={sellerCategories}
+        setCategory={changeCategory}
+      />
       <SellerProductList
+        loading={loadingProducts}
+        loadingCates={loadingCates}
         option={{ sortOption, setSortOption }}
         order={{ sortOrder, setSortOrder }}
         sortSelect={{ selectedSorting, setSelectedSorting }}
