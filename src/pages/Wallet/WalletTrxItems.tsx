@@ -10,20 +10,20 @@ const WalletTrxItems:FC<any> = ({ transactions }) => (
         <small className="">Last 3 Transactions</small>
       </div>
     </div>
-    <div className="text-center border-top normal-link">
-      {transactions?.length === 0
+    <div className="text-center normal-link">
+      {transactions?.length > 0
         ? (
-          <div className="p-4 fs-5">
-            <small className="text-secondary">No Transactions Yet!</small>
-          </div>
-        )
-        : (
           <>
             {transactions.map((trx:any) => <WalletTrxItem key={trx.id} trxItem={trx} />)}
           </>
+        )
+        : (
+          <div className="p-4 fs-5 border-top">
+            <small className="text-secondary">No Transactions Yet!</small>
+          </div>
         )}
     </div>
-    <div className="border-top py-1 text-center fs-6">
+    <div className="border-top py-2 text-center fs-6">
       <Link to="/wallet/history">
         <small className="text-secondary">Transaksi Lainnya &nbsp; &#8250;</small>
       </Link>

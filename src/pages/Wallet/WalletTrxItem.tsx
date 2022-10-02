@@ -8,12 +8,8 @@ const WalletTrxItem: FC<any> = ({ trxItem }) => (
     <div className="d-flex justify-content-between align-items-center px-4 py-3">
       <div>
         <p className="mb-0">{formatTitle(trxItem?.payment_method)}</p>
-        <div>
-          <small>{trxItem.transaction_id ? 'Belanja' : 'Top Up'}</small>
-        </div>
-        <div>
-          <small className="text-secondary">{formatDate(trxItem.created_at)}</small>
-        </div>
+        <small className="d-block">{trxItem.transaction_id ? 'Belanja' : 'Top Up'}</small>
+        <small className="text-secondary d-block">{formatDate(trxItem?.created_at)}</small>
       </div>
       <div>
         <p className={`mb-0 ${trxItem?.payment_type === 'CREDIT' ? 'text-success' : ''}`}>
@@ -21,7 +17,7 @@ const WalletTrxItem: FC<any> = ({ trxItem }) => (
           Rp
           <b>
             {' '}
-            {formatPrice(trxItem?.amount)}
+            {formatPrice(trxItem?.amount || 0)}
           </b>
         </p>
       </div>

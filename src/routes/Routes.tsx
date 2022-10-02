@@ -18,8 +18,8 @@ import Register from '../pages/Register/Register';
 import Cart from '../pages/Cart/Cart';
 import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/Wallet/WalletPIN';
-import WalletHistory from '../pages/Wallet/WalletHistory';
-import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
+import WalletHistory from '../pages/Wallet/History/WalletHistory';
+import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 
 const AppRoutes = () => (
   <Routes>
