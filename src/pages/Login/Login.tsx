@@ -19,6 +19,10 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
+  if (setAuth !== null) {
+    navigate('/', { replace: true });
+  }
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
