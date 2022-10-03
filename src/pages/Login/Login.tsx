@@ -64,6 +64,10 @@ const Login = () => {
       setAuth({ user, roles: scope.split(' '), accessToken });
       localStorage.setItem('access_token', accessToken);
 
+      if (from === '/register') {
+        navigate('/', { replace: true });
+      }
+
       navigate(from, { replace: true });
     } catch (err) {
       navigate('/register', { replace: true });
