@@ -101,9 +101,9 @@ const Register = () => {
   };
 
   return (
-    <div className="register_container">
-      <div className="register_cards_container mx-5">
-        <div className="register_cards row">
+    <div className="register__container">
+      <div className="register__cards__container mx-5">
+        <div className="register__cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
