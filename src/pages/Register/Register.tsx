@@ -60,6 +60,14 @@ const Register = () => {
 
   const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const token = useState(localStorage.getItem('access_token'));
+
+  useEffect(() => {
+    if (token.length > 0) {
+      navigate('/', { replace: true });
+    }
+  }, [token]);
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
@@ -85,6 +93,8 @@ const Register = () => {
       const { user, scope } = decode;
 
       setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
+
       setEmail('');
       setPassword('');
       setConfirmPassword('');
