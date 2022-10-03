@@ -68,7 +68,7 @@ const Form = (props: FormProps) => {
               name={item.name}
               options={item.options}
               handleInput={handleInput}
-              handleButton={() => handleButton}
+              handleButton={handleButton}
               readOnly={readOnly}
             />
           ),

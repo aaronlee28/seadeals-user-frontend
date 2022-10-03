@@ -47,7 +47,33 @@
     }
   }
   &.secondary {
+    background: #FB3C00;
+    border: solid 1px #FB3C00;
+    padding: 10px 20px;
 
+    .text {
+      color: #FFFFFF;
+    }
+    &:hover {
+      background: #FFFFFF;
+
+      .text {
+        color: #FB3C00;
+      }
+    }
+    &.alt {
+      background: #FFFFFF;
+
+      .text {
+        color: #FB3C00;
+      }
+      &:hover {
+        background: #FB3C00;
+        .text {
+          color: #FFFFFF;
+        }
+      }
+    }
   }
   &.circle {
     background: #FFFFFF;

@@ -1,10 +1,12 @@
 import React from 'react';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
+import Button from '../../Button/Button';
 
 type FilterRatingProps = {
   filterClass: string,
   values: any,
   handleInput: (rating: number) => void;
+  handleDelete: () => void;
 };
 
 const FilterRating = (props: FilterRatingProps) => {
@@ -12,6 +14,7 @@ const FilterRating = (props: FilterRatingProps) => {
     filterClass,
     values,
     handleInput,
+    handleDelete,
   } = props;
 
   return (
@@ -49,6 +52,11 @@ const FilterRating = (props: FilterRatingProps) => {
             )
           }
         </div>
+        <Button
+          buttonType="secondary"
+          text="Hapus"
+          handleClickedButton={handleDelete}
+        />
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 const FILTER_PRICE = [
   {
     inputType: 'number',
-    label: 'Rp MIN',
+    label: 'Minimal',
     name: 'minPrice',
   },
   {
     inputType: 'number',
-    label: 'Rp MAX',
+    label: 'Maksimal',
     name: 'maxPrice',
   },
 ];

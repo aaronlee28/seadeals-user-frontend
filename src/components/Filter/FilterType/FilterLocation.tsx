@@ -1,46 +1,67 @@
-import React, { useState } from 'react';
-import Form from '../../Form/Form';
+import React from 'react';
+import Button from '../../Button/Button';
+import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
 
-type FilterCategoryProps = {
-  filterClass: string,
-  data: any[],
+type FilterLocationProps = {
+  filterClass: string;
+  data: any[];
+  handleInput: (cityId: number) => void;
+  handleDelete: () => void;
+  // handleChecked: (cityId: number) => void;
 };
 
-const FilterCategory = (props: FilterCategoryProps) => {
+const FilterLocation = (props: FilterLocationProps) => {
   const {
     filterClass,
     data,
+    handleInput,
+    handleDelete,
+    // handleChecked,
   } = props;
 
-  const [categoryValues, setCategoryValues] = useState<any>([]);
-
-  const handleInput = (event: any) => {
-    const isExist = categoryValues?.includes(event.target.value);
-    if (isExist) {
-      const deleteValue = categoryValues.filter((el: any) => el !== event.target.value);
-      setCategoryValues(deleteValue);
-    }
-    if (!isExist) {
-      categoryValues.push(event.target.value);
-      setCategoryValues(categoryValues);
-    }
-  };
+  const dataSlice = data.slice(0, 8);
 
   return (
-    <div className="filter_category_container">
-      <div className="filter_category_content">
-        <h3 className="title">Kategori</h3>
+    <div className="filter_location_container">
+      <div className="filter_location_content">
+        <h3 className="title">Lokasi</h3>
         <div className={`items_content ${filterClass}`}>
-          <Form
-            formType="checkbox"
-            items={data}
-            values={categoryValues}
-            handleInput={handleInput}
-          />
+          {
+            dataSlice.map(
+              (item: any) => (
+                <div
+                  key={`${item.city_id}-${item.city_name}`}
+                  className="location_item"
+                >
+                  <div
+                    className={`checkbox ${item.isChecked ? 'checked' : ''}`}
+                    onClick={() => handleInput(item.city_id)}
+                    role="presentation"
+                  >
+                    {
+                      React.createElement(IconCheck, { className: 'icon_checked' })
+                    }
+                  </div>
+                  <p
+                    className="name"
+                    onClick={() => handleInput(item.city_id)}
+                    role="presentation"
+                  >
+                    { item.city_name }
+                  </p>
+                </div>
+              ),
+            )
+          }
         </div>
+        <Button
+          buttonType="secondary"
+          text="Hapus"
+          handleClickedButton={handleDelete}
+        />
       </div>
     </div>
   );
 };
 
-export default FilterCategory;
+export default FilterLocation;

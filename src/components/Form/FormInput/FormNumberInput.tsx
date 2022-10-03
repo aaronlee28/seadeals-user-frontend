@@ -39,7 +39,7 @@ const FormNumberInput = (props: FormNumberInputProps) => {
   };
 
   return (
-    <label htmlFor={name}>
+    <label htmlFor={name} className={formType}>
       {
         formType === 'amount-item-cart'
         && (
@@ -50,11 +50,19 @@ const FormNumberInput = (props: FormNumberInputProps) => {
           />
         )
       }
+      {
+        formType === 'number currency'
+        && (
+          <div className="currency">
+            Rp
+          </div>
+        )
+      }
       <div className={`input_content number ${name}`}>
         <input
           type="number"
           placeholder={label}
-          value={Number(value).toString()}
+          value={value}
           onChange={handleInput}
           name={name}
           id={name}
