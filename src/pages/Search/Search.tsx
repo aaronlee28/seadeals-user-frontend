@@ -6,14 +6,18 @@ import ProductList from './ProductList/ProductList';
 import Products from '../../api/products';
 import Filter from '../../components/Filter/Filter';
 import ProductCategories from '../../api/product_categories';
-import FILTER_PRICE from '../../constants/filter';
+import { FILTER_PRICE } from '../../constants/filter';
 import Sort from '../../components/Sort/Sort';
 import SORT_SEARCH from '../../constants/sort';
 // import MiniPagination from '../../components/Pagination/MiniPagination';
 import Pagination from '../../components/Pagination/Pagination';
+import Cities from '../../api/cities';
+import FilterDelete from '../../components/Filter/FilterDelete';
 
 const Search = () => {
   const [products, setProducts] = useState([]);
+  const [cities, setCities] = useState<any>([]);
+  const [cityValues, setCityValues] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [categoryValues, setCategoryValues] = useState<any>('');
   const [priceValues, setPriceValues] = useState<any>({
@@ -49,6 +53,25 @@ const Search = () => {
       .catch(() => setProducts([]));
   };
 
+  const getAllCities = async () => {
+    await Cities.GetAllCities()
+      .then((resp) => {
+        const res = resp.data;
+        let values: any[] = [];
+        for (let i = 0; i < res.length; i += 1) {
+          const city = {
+            city_id: res[i].city_id,
+            city_name: res[i].city_name,
+            type: res[i].type,
+            isChecked: false,
+          };
+          values = [...values, city];
+        }
+        setCities(values);
+      })
+      .catch((err) => err);
+  };
+
   const getAllCategories = async () => {
     await ProductCategories.GetAllCategories()
       .then((resp) => {
@@ -74,7 +97,47 @@ const Search = () => {
     if (ratingValues > 0) {
       tempFilter += `&rating=${ratingValues}`;
     }
+    if (cityValues.length > 0) {
+      tempFilter += '&city=';
+      for (let i = 0; i < cityValues.length; i += 1) {
+        if (i > 0) {
+          tempFilter += ',';
+        }
+        tempFilter += cityValues[i];
+      }
+    }
+    console.log(tempFilter);
     return tempFilter;
+  };
+
+  const addCityValues = (cityName: string) => {
+    const addedValues = [...cityValues, cityName];
+    setCityValues(addedValues);
+  };
+
+  const deleteCityValues = (cityName: string) => {
+    const deletedValues = cityValues.filter((el: string) => el === cityName);
+    setCityValues(deletedValues);
+  };
+
+  const handleInputLocation = (values: string) => {
+    const checkedCities = cities.map(
+      (city: any) => {
+        if (city.city_name === values) {
+          if (city.isChecked) {
+            deleteCityValues(city.city_name);
+          }
+          if (!city.isChecked) {
+            addCityValues(city.city_name);
+          }
+          const editedCity = city;
+          editedCity.isChecked = !city.isChecked;
+          return editedCity;
+        }
+        return city;
+      },
+    );
+    setCities(checkedCities);
   };
 
   const handleInputCategory = (values: number) => {
@@ -149,22 +212,45 @@ const Search = () => {
     setRatingValues('');
   };
 
+  const handleDeleteLocationFilter = () => {
+    setCityValues([]);
+    const deleteAllCitiesChecked = cities.map(
+      (item: any) => {
+        const tempItem = item;
+        tempItem.isChecked = false;
+        return tempItem;
+      },
+    );
+
+    setCities(deleteAllCitiesChecked);
+  };
+
+  const handleDeleteAllFilter = () => {
+    handleDeleteLocationFilter();
+    handleDeleteCategoryFilter();
+    handleDeleteRatingFilter();
+    handleDeletePriceFilter();
+    setFilter('');
+  };
+
   useEffect(() => {
     setFilter(`?limit=30&page=1&s=${getSearchParams}`);
     getProducts(`?limit=30&page=1&s=${getSearchParams}`).then();
     getAllCategories().then();
+    getAllCities().then();
   }, []);
 
   useEffect(() => {
     const tempFilter = fillFilter();
-    console.log(tempFilter);
     setFilter(tempFilter);
     getProducts(tempFilter).then();
   }, [
     categoryValues,
     priceValues,
     ratingValues,
+    cityValues,
     getSearchParams,
+    pagination,
   ]);
 
   return (
@@ -172,6 +258,14 @@ const Search = () => {
       <div className="search_content">
         <div className="left_content">
           <h2>Filter</h2>
+          <Filter
+            filterType="location"
+            filterClass="filter_search"
+            data={cities}
+            values={cityValues}
+            handleInput={handleInputLocation}
+            handleDelete={handleDeleteLocationFilter}
+          />
           <Filter
             filterType="category"
             filterClass="filter_search"
@@ -195,6 +289,9 @@ const Search = () => {
             values={ratingValues}
             handleInput={handleInputRating}
             handleDelete={handleDeleteRatingFilter}
+          />
+          <FilterDelete
+            handleDeleteAll={handleDeleteAllFilter}
           />
         </div>
         <div className="right_content" ref={innerRef}>
