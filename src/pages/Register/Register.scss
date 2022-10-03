@@ -1,15 +1,15 @@
-.register_container {
+.register__container {
   margin: 0;
   padding-top: 3rem;
   padding-bottom: 3rem;
   background-color: #1E46A2;
 
-  .register_cards_container {
+  .register__cards__container {
     background-color: #FFFFFF;
     border-radius: 20px;
     position: relative;
 
-    .register_cards {
+    .register__cards {
       width: 100%;
 
       .logo {
