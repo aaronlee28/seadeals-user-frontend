@@ -18,10 +18,13 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const token = useState(localStorage.getItem('access_token'));
 
-  if (setAuth !== null) {
-    navigate('/', { replace: true });
-  }
+  useEffect(() => {
+    if (token.length > 0) {
+      navigate('/', { replace: true });
+    }
+  }, [token]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
