@@ -4,7 +4,7 @@ import InputPINField from './InputPINField';
 import WalletPINButton from './WalletPINButton';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
-const ChangePIN = () => {
+const InputPINPage = () => {
   const [PIN, setPIN] = useState<string[]>(new Array(6).fill(''));
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -28,16 +28,11 @@ const ChangePIN = () => {
 
   return (
     <>
-      <div className="px-4 py-3 w-content">
-        <div className="text-center mb-4">
-          <h5 className="mb-3 px-1">Wallet PIN</h5>
-          <p className="text-secondary mb-2">Atur PIN baru untuk mengamankan wallet Anda.</p>
-          <div className="set-pin-box py-3">
-            <InputPINField PIN={PIN} setPIN={setPIN} />
-          </div>
-        </div>
+      <p className="text-secondary mb-2">Atur PIN baru untuk mengamankan wallet Anda.</p>
+      <div className="set-pin-box py-3">
+        <InputPINField PIN={PIN} setPIN={setPIN} />
       </div>
-      <div className="pb-3">
+      <div className="pb-3 mx-auto">
         <WalletPINButton
           title="Set PIN"
           handleClick={() => handleSubmit()}
@@ -48,4 +43,4 @@ const ChangePIN = () => {
   );
 };
 
-export default ChangePIN;
+export default InputPINPage;

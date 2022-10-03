@@ -13,7 +13,6 @@ const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
   const [walletInfo, setWalletInfo] = useState<any>(null);
   const [hasPin, setHasPin] = useState(false);
-  const [trxs, setTrxs] = useState([]);
   const [SLPAccounts, setSLPAccounts] = useState([]);
   const [mainSLP, setMainSLP] = useState<any>({});
 
@@ -36,32 +35,6 @@ const Wallet = () => {
       }
     };
     getWalletInfo();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getTrxs = async () => {
-      try {
-        const response = await axiosPrivate.get('user/wallet/transactions?limit=3', {
-          signal: controller.signal,
-        });
-        const { data } = response.data;
-        console.log(data);
-        if (isMounted) {
-          setTrxs(data.transactions);
-        }
-      } catch (err) {
-        toast.error('Failed to Fetch Wallet Transactions');
-      }
-    };
-    getTrxs();
 
     return () => {
       isMounted = false;
@@ -109,7 +82,7 @@ const Wallet = () => {
           <div className="normal-link">
             <Link to="/wallet/settings">
               <small className={`border p-2 rounded fs-6 ${hasPin ? 'border-1' : 'border-2 fw-bolder text-main border-main'}`}>
-                {hasPin ? 'Change PIN' : 'Set PIN'}
+                {hasPin ? 'Ubah PIN' : 'Atur PIN'}
               </small>
             </Link>
           </div>
@@ -118,17 +91,21 @@ const Wallet = () => {
           <AccountInfo balance={walletInfo?.balance || 0} hasPin={hasPin} mainSLPNum={mainSLP?.account_number || ''} />
         </div>
         <div className="px-4 pt-1 text-start">
-          <h6 className="mb-2">SeaLabsPay Accounts</h6>
+          <h6 className="mb-2">Akun SeaLabsPay</h6>
           <WalletAccounts accounts={SLPAccounts} />
         </div>
       </div>
       {isWalletPINSet(walletInfo?.status)
-        ? <WalletTrxItems transactions={trxs} />
+        ? <WalletTrxItems />
         : (
-          <div className="mx-auto my-4 rounded bg-light shadow-sm rounded py-5 border border-2">
+          <div className="text-center mx-auto my-4 py-5 border border-2 rounded bg-light shadow-sm">
             <img alt="PIN not set" src={nopin} height="64px" />
-            <p className="text-center mb-0 fs-6 my-2">You have not set your wallet PIN!</p>
-            <Link to="/settings"><small className="fw-bold fs-5 text-main">Set PIN</small></Link>
+            <p className="mb-0 fs-6 mt-1 mb-4">Amankan Wallet dengan mengatur PIN!</p>
+            <div className="normal-link">
+              <Link to="/settings">
+                <small className="fw-bold fs-6 px-3 py-2 border bg-main text-backdrop rounded shadow-sm">Atur PIN</small>
+              </Link>
+            </div>
           </div>
         )}
     </div>
