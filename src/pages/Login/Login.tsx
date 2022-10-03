@@ -21,8 +21,10 @@ const Login = () => {
   const token = useState(localStorage.getItem('access_token'));
 
   useEffect(() => {
-    if (token.length > 0) {
-      navigate('/', { replace: true });
+    if (token[0] !== null) {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
     }
   }, [token]);
 

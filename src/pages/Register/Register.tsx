@@ -1,7 +1,7 @@
 import './Register.scss';
 import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from '../../api/axios';
 import logo from '../../assets/images/logo.png';
@@ -61,10 +61,14 @@ const Register = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const token = useState(localStorage.getItem('access_token'));
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
-    if (token.length > 0) {
-      navigate('/', { replace: true });
+    if (token[0] !== null) {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
     }
   }, [token]);
 
