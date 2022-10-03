@@ -14,8 +14,8 @@ import Pagination from '../../components/Pagination/Pagination';
 
 const Search = () => {
   const [products, setProducts] = useState([]);
-  const [filterCategories, setFilterCategories] = useState<any>([]);
-  const [categoryValues, setCategoryValues] = useState<any>([]);
+  const [categories, setCategories] = useState<any>([]);
+  const [categoryValues, setCategoryValues] = useState<any>('');
   const [priceValues, setPriceValues] = useState<any>({
     minPrice: '',
     maxPrice: '',
@@ -31,6 +31,7 @@ const Search = () => {
   const innerRef = useRef(null);
 
   const [searchParams] = useSearchParams();
+  const getSearchParams = searchParams.get('searchInput');
 
   const sortOptions = SORT_SEARCH;
   const priceItems = FILTER_PRICE;
@@ -51,30 +52,18 @@ const Search = () => {
   const getAllCategories = async () => {
     await ProductCategories.GetAllCategories()
       .then((resp) => {
-        // setCategories(resp.data.data.categories);
-        const items = [
-          {
-            inputType: 'checkbox',
-            name: 'filterCategories',
-            options: resp.data.data.categories,
-            label: 'Filter Category',
-          },
-        ];
-        setFilterCategories(items);
+        setCategories(resp.data.data.categories);
       })
       .catch((err) => err);
   };
 
   const fillFilter = () => {
     let tempFilter = `?limit=30&page=${pagination.page}`;
-    if (categoryValues.length > 0) {
-      tempFilter += '&categoryID=';
-      for (let i = 0; i < categoryValues.length; i += 1) {
-        const cat = filterCategories[0].options.findIndex(
-          (el: any) => el.name === categoryValues[i],
-        );
-        tempFilter += `${filterCategories[0].options[cat].id}`;
-      }
+    if (getSearchParams) {
+      tempFilter += `&s=${getSearchParams}`;
+    }
+    if (categoryValues > 0) {
+      tempFilter += `&categoryID=${categoryValues}`;
     }
     if (priceValues.minPrice > 0) {
       tempFilter += `&minAmount=${priceValues.minPrice}`;
@@ -88,16 +77,8 @@ const Search = () => {
     return tempFilter;
   };
 
-  const handleInputCategory = (event: any) => {
-    const isExist = categoryValues?.includes(event.target.value);
-    if (isExist) {
-      const deleteValue = categoryValues.filter((el: any) => el !== event.target.value);
-      setCategoryValues(deleteValue);
-    }
-    if (!isExist) {
-      const tempValues = [...categoryValues, event.target.value];
-      setCategoryValues(tempValues);
-    }
+  const handleInputCategory = (values: number) => {
+    setCategoryValues(values);
   };
 
   const handleInputPrice = (event: any) => {
@@ -153,8 +134,22 @@ const Search = () => {
     }));
   };
 
+  const handleDeleteCategoryFilter = () => {
+    setCategoryValues('');
+  };
+
+  const handleDeletePriceFilter = () => {
+    setPriceValues({
+      minPrice: '',
+      maxPrice: '',
+    });
+  };
+
+  const handleDeleteRatingFilter = () => {
+    setRatingValues('');
+  };
+
   useEffect(() => {
-    const getSearchParams = searchParams.get('searchInput');
     setFilter(`?limit=30&page=1&s=${getSearchParams}`);
     getProducts(`?limit=30&page=1&s=${getSearchParams}`).then();
     getAllCategories().then();
@@ -162,12 +157,14 @@ const Search = () => {
 
   useEffect(() => {
     const tempFilter = fillFilter();
+    console.log(tempFilter);
     setFilter(tempFilter);
     getProducts(tempFilter).then();
   }, [
     categoryValues,
     priceValues,
     ratingValues,
+    getSearchParams,
   ]);
 
   return (
@@ -178,9 +175,10 @@ const Search = () => {
           <Filter
             filterType="category"
             filterClass="filter_search"
-            data={filterCategories}
+            data={categories}
             values={categoryValues}
             handleInput={handleInputCategory}
+            handleDelete={handleDeleteCategoryFilter}
           />
           <Filter
             filterType="price"
@@ -188,6 +186,7 @@ const Search = () => {
             data={priceItems}
             values={priceValues}
             handleInput={handleInputPrice}
+            handleDelete={handleDeletePriceFilter}
           />
           <Filter
             filterType="rating"
@@ -195,6 +194,7 @@ const Search = () => {
             data={[]}
             values={ratingValues}
             handleInput={handleInputRating}
+            handleDelete={handleDeleteRatingFilter}
           />
         </div>
         <div className="right_content" ref={innerRef}>

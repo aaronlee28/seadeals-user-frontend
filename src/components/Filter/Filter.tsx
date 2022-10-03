@@ -4,6 +4,7 @@ import FilterCategory from './FilterType/FilterCategory';
 import './Filter.scss';
 import FilterPrice from './FilterType/FilterPrice';
 import FilterRating from './FilterType/FilterRating';
+import FilterLocation from './FilterType/FilterLocation';
 
 type FilterProps = {
   filterType: string;
@@ -11,6 +12,7 @@ type FilterProps = {
   data: any[];
   values: any;
   handleInput: (event: any) => void;
+  handleDelete: () => void;
 };
 
 const Filter = (props: FilterProps) => {
@@ -20,6 +22,7 @@ const Filter = (props: FilterProps) => {
     data,
     values,
     handleInput,
+    handleDelete,
   } = props;
 
   return (
@@ -33,6 +36,7 @@ const Filter = (props: FilterProps) => {
               data={data}
               values={values}
               handleInput={handleInput}
+              handleDelete={handleDelete}
             />
           )
         }
@@ -44,6 +48,7 @@ const Filter = (props: FilterProps) => {
               data={data}
               values={values}
               handleInput={handleInput}
+              handleDelete={handleDelete}
             />
           )
         }
@@ -54,6 +59,18 @@ const Filter = (props: FilterProps) => {
               filterClass={filterClass}
               values={values}
               handleInput={handleInput}
+              handleDelete={handleDelete}
+            />
+          )
+        }
+        {
+          filterType === 'location'
+          && (
+            <FilterLocation
+              filterClass={filterClass}
+              data={data}
+              handleInput={handleInput}
+              handleDelete={handleDelete}
             />
           )
         }

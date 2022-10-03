@@ -1,11 +1,12 @@
 import React from 'react';
-import Form from '../../Form/Form';
+import Button from '../../Button/Button';
 
 type FilterCategoryProps = {
   filterClass: string;
   data: any[];
   values: any;
   handleInput: (event: any) => void;
+  handleDelete: () => void;
 };
 
 const FilterCategory = (props: FilterCategoryProps) => {
@@ -14,6 +15,7 @@ const FilterCategory = (props: FilterCategoryProps) => {
     data,
     values,
     handleInput,
+    handleDelete,
   } = props;
 
   return (
@@ -21,13 +23,25 @@ const FilterCategory = (props: FilterCategoryProps) => {
       <div className="filter_category_content">
         <h3 className="title">Kategori</h3>
         <div className={`items_content ${filterClass}`}>
-          <Form
-            formType="checkbox"
-            items={data}
-            values={values}
-            handleInput={handleInput}
-          />
+          {
+            data.map(
+              (item: any) => (
+                <div
+                  className={`category ${values === item.id ? 'active' : ''}`}
+                  onClick={() => handleInput(item.id)}
+                  role="presentation"
+                >
+                  {item.name}
+                </div>
+              ),
+            )
+          }
         </div>
+        <Button
+          buttonType="secondary"
+          text="Hapus"
+          handleClickedButton={handleDelete}
+        />
       </div>
     </div>
   );
