@@ -40,7 +40,7 @@
           justify-content: flex-start;
           align-items: flex-start;
           gap: 10px;
-          .rating {
+          .rating, .category {
             width: 100%;
             display: flex;
             flex-direction: row;
@@ -89,6 +89,10 @@
               align-items: center;
             }
           }
+        }
+        .secondary {
+          width: 100%;
+          margin-top: 10px;
         }
       }
     }

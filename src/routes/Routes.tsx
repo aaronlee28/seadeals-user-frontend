@@ -44,7 +44,7 @@ const AppRoutes = () => (
           </Route>
 
           <Route path="/toko/">
-            <Route path=":slug/" element={<SellerPage />} />
+            <Route path=":sellerID/" element={<SellerPage />} />
           </Route>
 
           <Route path="/produk/">

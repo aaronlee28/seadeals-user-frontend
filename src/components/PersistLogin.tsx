@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import isJWTExpired from '../utils/jwtExpiryChecker';
@@ -9,14 +9,14 @@ const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { auth, setAuth } = useAuth();
   const refresh = useRefreshToken();
-  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
 
     const accessToken:any = localStorage.getItem('access_token');
     if (!accessToken) {
-      navigate('/login');
+      // navigate('/login');
+      setAuth({});
       setIsLoading(false);
     }
 

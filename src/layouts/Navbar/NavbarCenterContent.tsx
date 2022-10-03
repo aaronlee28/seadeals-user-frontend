@@ -16,12 +16,14 @@ const NavbarCenterContent = () => {
 
   const handleInput = (event: any) => {
     event.preventDefault();
+    console.log(event.target.value);
     setSearchInput(event.target.value);
   };
 
-  const searchProduct = (e: any) => {
-    e.preventDefault();
-    navigate('search');
+  const searchProduct = () => {
+    console.log(searchInput);
+    // event.preventDefault();
+    navigate(`search?searchInput=${searchInput}`);
   };
 
   return (
@@ -31,7 +33,7 @@ const NavbarCenterContent = () => {
         items={SEARCH_INPUT}
         values={searchInput}
         handleInput={handleInput}
-        handleSubmitButton={() => searchProduct}
+        handleSubmitButton={searchProduct}
       />
       <Button
         buttonType="plain"
