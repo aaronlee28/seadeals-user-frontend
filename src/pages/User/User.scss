@@ -1,0 +1,70 @@
+.user_container {
+  padding: 50px;
+
+  @media (min-width: 0px) {
+    font-size: 5px;
+  }
+  @media (min-width: 300px) {
+    font-size: 10px;
+  }
+  @media (min-width: 1000px) {
+    font-size: 15px;
+  }
+
+  .whole_container {
+
+    .side-bar_container {
+      p {
+        cursor: pointer;
+      }
+    }
+
+    .profile_container {
+      background-color: #FFFFFF !important;
+      height: 500px;
+    }
+
+    .address_container {
+      justify-content: space-between;
+
+      div.col-lg-3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button.button.primary {
+          display: inline-flex;
+          @media (min-width: 0px) {
+            padding: 1px;
+            margin: 0;
+          }
+          @media (min-width: 500px) {
+            padding: 5px 10px;
+          }
+          @media (min-width: 1000px) {
+            padding: 10px 20px;
+          }
+          @media (min-width: 1200px) {
+            padding: 10px 20px;
+          }
+
+          .text {
+            @media (min-width: 0) {
+              font-size: 5px;
+              gap: 0 !important;
+              line-height: 1;
+            }
+            @media (min-width: 300px) {
+              font-size: 10px;
+              gap: 0 !important;
+              line-height: 1;
+            }
+            @media (min-width: 1200px) {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
