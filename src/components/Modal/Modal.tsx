@@ -1,18 +1,18 @@
 import React from 'react';
+import './Modal.scss';
 
 type ModalProps = {
-  modalType: string;
-  data: any;
-  accept: () => void;
+  // modalType: string;
+  // data: any;
+  // accept: () => void;
   cancel: () => void;
+  children: any;
 };
 
 const Modal = (props: ModalProps) => {
   const {
-    modalType,
-    data,
-    accept,
     cancel,
+    children,
   } = props;
 
   return (
@@ -27,18 +27,8 @@ const Modal = (props: ModalProps) => {
         role="presentation"
       >
         {
-          modalType === 'membership'
-          && (
-            <div
-              onClick={accept}
-              role="presentation"
-            >
-              SINI
-              {data}
-            </div>
-          )
+          children
         }
-        {/*  ADD HERE */}
       </div>
     </div>
   );

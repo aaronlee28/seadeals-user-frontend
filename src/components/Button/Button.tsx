@@ -39,7 +39,7 @@ const Button = (props: ButtonProps) => {
       onClick={handleClickedButton}
     >
       {
-        iconUrl
+        iconUrl && !buttonType.includes('right')
         && (
           React.createElement(iconUrl, { className: iconName })
         )
@@ -48,6 +48,12 @@ const Button = (props: ButtonProps) => {
         text !== ''
         && (
           <p className="text">{text}</p>
+        )
+      }
+      {
+        iconUrl && buttonType.includes('right')
+        && (
+          React.createElement(iconUrl, { className: iconName })
         )
       }
     </button>

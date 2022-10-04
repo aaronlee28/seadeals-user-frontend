@@ -1,7 +1,7 @@
 import './Register.scss';
 import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from '../../api/axios';
 import logo from '../../assets/images/logo.png';
@@ -60,6 +60,18 @@ const Register = () => {
 
   const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const token = useState(localStorage.getItem('access_token'));
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    if (token[0] !== null) {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [token]);
+
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
@@ -85,6 +97,8 @@ const Register = () => {
       const { user, scope } = decode;
 
       setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
+
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -101,9 +115,9 @@ const Register = () => {
   };
 
   return (
-    <div className="register_container">
-      <div className="register_cards_container mx-5">
-        <div className="register_cards row">
+    <div className="register__container">
+      <div className="register__cards__container mx-5">
+        <div className="register__cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>

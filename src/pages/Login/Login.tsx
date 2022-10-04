@@ -18,6 +18,15 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const token = useState(localStorage.getItem('access_token'));
+
+  useEffect(() => {
+    if (token[0] !== null) {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [token]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -64,6 +73,10 @@ const Login = () => {
       setAuth({ user, roles: scope.split(' '), accessToken });
       localStorage.setItem('access_token', accessToken);
 
+      if (from === '/register' || from === '/login') {
+        navigate('/', { replace: true });
+      }
+
       navigate(from, { replace: true });
     } catch (err) {
       navigate('/register', { replace: true });
@@ -91,9 +104,9 @@ const Login = () => {
   };
 
   return (
-    <div className="login_container">
-      <div className="login_cards_container mx-5">
-        <div className="register_cards row">
+    <div className="login__container">
+      <div className="login__cards__container mx-5">
+        <div className="register__cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>

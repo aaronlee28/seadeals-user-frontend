@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import Form from '../Form/Form';
 
 import './Sort.scss';
@@ -17,6 +19,9 @@ const Sort = (props: SortProps) => {
     values,
     handleInput,
   } = props;
+
+  const [searchParams] = useSearchParams();
+  const getSearchParams = searchParams.get('searchInput');
 
   const items = [
     {
@@ -37,6 +42,16 @@ const Sort = (props: SortProps) => {
           values={values}
           handleInput={handleInput}
         />
+        {
+          getSearchParams
+          && (
+            <div className="search_values">
+              Hasil pencarian untuk &apos;
+              <p className="values">{ getSearchParams }</p>
+              &apos;
+            </div>
+          )
+        }
       </div>
     </div>
   );

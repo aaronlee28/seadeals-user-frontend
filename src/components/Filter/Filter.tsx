@@ -6,13 +6,25 @@ import FilterPrice from './FilterType/FilterPrice';
 import FilterRating from './FilterType/FilterRating';
 import FilterLocation from './FilterType/FilterLocation';
 
-type FilterProps = {
+type FilterRequiredProps = {
   filterType: string;
   filterClass: string;
   data: any[];
   values: any;
   handleInput: (event: any) => void;
   handleDelete: () => void;
+};
+
+type FilterOptionalProps = {
+  setInput?: any;
+};
+
+interface FilterProps
+  extends FilterRequiredProps,
+  FilterOptionalProps {}
+
+const defaultProps: FilterOptionalProps = {
+  setInput: '',
 };
 
 const Filter = (props: FilterProps) => {
@@ -23,6 +35,7 @@ const Filter = (props: FilterProps) => {
     values,
     handleInput,
     handleDelete,
+    setInput,
   } = props;
 
   return (
@@ -49,6 +62,7 @@ const Filter = (props: FilterProps) => {
               values={values}
               handleInput={handleInput}
               handleDelete={handleDelete}
+              setInput={setInput}
             />
           )
         }
@@ -78,5 +92,7 @@ const Filter = (props: FilterProps) => {
     </div>
   );
 };
+
+Filter.defaultProps = defaultProps;
 
 export default Filter;

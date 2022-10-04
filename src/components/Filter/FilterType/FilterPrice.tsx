@@ -8,6 +8,7 @@ type FilterPriceProps = {
   values: any,
   handleInput: (event: any) => void;
   handleDelete: () => void;
+  setInput: () => void;
 };
 
 const FilterPrice = (props: FilterPriceProps) => {
@@ -17,6 +18,7 @@ const FilterPrice = (props: FilterPriceProps) => {
     values,
     handleInput,
     handleDelete,
+    setInput,
   } = props;
 
   return (
@@ -29,6 +31,7 @@ const FilterPrice = (props: FilterPriceProps) => {
             items={data}
             values={values}
             handleInput={handleInput}
+            setInput={setInput}
           />
         </div>
         <Button
