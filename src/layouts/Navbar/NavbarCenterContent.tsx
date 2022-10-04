@@ -16,14 +16,11 @@ const NavbarCenterContent = () => {
 
   const handleInput = (event: any) => {
     event.preventDefault();
-    console.log(event.target.value);
     setSearchInput(event.target.value);
   };
 
   const searchProduct = () => {
-    console.log(searchInput);
-    // event.preventDefault();
-    navigate(`search?searchInput=${searchInput}`);
+    navigate(`search?${searchInput.length > 0 ? `searchInput=${searchInput}` : ''}`);
   };
 
   return (

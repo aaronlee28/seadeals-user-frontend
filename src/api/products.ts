@@ -18,7 +18,7 @@ class Products {
   }
 
   static GetRecommendedProducts() {
-    return axios.get('/search-recommend-product/');
+    return axios.get('/search-recommend-product');
   }
 
   static GetPromotionPrice(ProductID: number) {
