@@ -10,8 +10,6 @@ type ProductListProps = {
 const ProductList = (props: ProductListProps) => {
   const { data } = props;
 
-  console.log(data);
-
   return (
     <div className="product_list_container">
       <div className="product_list_content">

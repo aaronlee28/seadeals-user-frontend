@@ -26,12 +26,12 @@
   .content {
     width: 100%;
     display: flex;
-    max-height: 600px;
+    max-height: 500px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 20px;
-    overflow-x: scroll;
+    overflow-y: scroll;
     white-space: nowrap;
 
     .letter_content {

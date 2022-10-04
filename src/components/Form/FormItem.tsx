@@ -14,6 +14,7 @@ type FormItemProps = {
   handleInput: (event: any) => void;
   readOnly: boolean | undefined;
   handleButton: () => void;
+  setInput: () => void;
 };
 
 const FormItem = (props: FormItemProps) => {
@@ -26,6 +27,7 @@ const FormItem = (props: FormItemProps) => {
     options,
     handleInput,
     handleButton,
+    setInput,
     readOnly,
   } = props;
 
@@ -65,6 +67,7 @@ const FormItem = (props: FormItemProps) => {
             label={label}
             name={name}
             handleInput={handleInput}
+            setInput={setInput}
           />
         )
       }
