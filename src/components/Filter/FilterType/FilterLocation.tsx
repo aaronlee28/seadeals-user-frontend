@@ -19,6 +19,7 @@ const FilterLocation = (props: FilterLocationProps) => {
     handleInput,
     handleDelete,
     // handleChecked,
+
   } = props;
 
   const [isModalFilterLocationOpen, setIsModalFilterLocationOpen] = useState(false);
