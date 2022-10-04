@@ -36,8 +36,9 @@ const Search = () => {
 
   const innerRef = useRef(null);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const getSearchParams = searchParams.get('searchInput');
+  const getCategoryParams = searchParams.get('categoryName');
 
   const sortOptions = SORT_SEARCH;
   const priceItems = FILTER_PRICE;
@@ -51,7 +52,7 @@ const Search = () => {
           totalPage: resp.data.data.total_page,
         }));
       })
-      .catch(() => setProducts([]));
+      .catch((err) => err);
   };
 
   const getAllCities = async () => {
@@ -77,8 +78,19 @@ const Search = () => {
     await ProductCategories.GetAllCategories()
       .then((resp) => {
         setCategories(resp.data.data.categories);
+        if (getCategoryParams) {
+          const categoryIndex = resp.data.data.categories.findIndex(
+            (el: any) => el.name.includes(getCategoryParams),
+          );
+          setCategoryValues(resp.data.data.categories[categoryIndex].id);
+        }
       })
       .catch((err) => err);
+  };
+
+  const getCategoryID = (name: string) => {
+    const category = categories.find((el: any) => el.name === name);
+    return category.id;
   };
 
   const validatePriceFilter = () => {
@@ -137,14 +149,36 @@ const Search = () => {
     return tempFilter;
   };
 
+  const locationParams = (data: string[]) => {
+    let params = '';
+    for (let i = 0; i < data.length; i += 1) {
+      if (i > 0) {
+        params += ',';
+      }
+      params += data[i];
+    }
+
+    if (data.length > 0) {
+      searchParams.set('location', params);
+    }
+    if (data.length === 0) {
+      searchParams.delete('location');
+    }
+    setSearchParams(searchParams);
+  };
+
   const addCityValues = (cityName: string) => {
     const addedValues = [...cityValues, cityName];
     setCityValues(addedValues);
+
+    locationParams(addedValues);
   };
 
   const deleteCityValues = (cityName: string) => {
     const deletedValues = cityValues.filter((el: string) => el !== cityName);
     setCityValues(deletedValues);
+
+    locationParams(deletedValues);
   };
 
   const handleInputLocation = (values: string) => {
@@ -170,10 +204,16 @@ const Search = () => {
   const handleInputCategory = (values: number) => {
     if (values === categoryValues) {
       setCategoryValues('');
+
+      searchParams.delete('categoryName');
     }
     if (values !== categoryValues) {
       setCategoryValues(values);
+
+      const category = categories.find((el: any) => el.id === values);
+      searchParams.set('categoryName', category.name);
     }
+    setSearchParams(searchParams);
   };
 
   const handleInputPrice = (event: any) => {
@@ -182,15 +222,26 @@ const Search = () => {
       ...prevState,
       [name]: value,
     }));
+
+    if (value > 0) {
+      searchParams.set(name, value);
+    }
+    if (value === '') {
+      searchParams.delete(name);
+    }
+    setSearchParams(searchParams);
   };
 
   const handleInputRating = (number: number) => {
     if (number === ratingValues) {
       setRatingValues('');
+      searchParams.delete('rating');
     }
     if (number !== ratingValues) {
       setRatingValues(number);
+      searchParams.set('rating', String(number));
     }
+    setSearchParams(searchParams);
   };
 
   const handleSort = (event: any) => {
@@ -219,7 +270,11 @@ const Search = () => {
       if (splitValue[1] === 'Tertinggi') {
         sort = 'desc';
       }
+      searchParams.set('sort', splitValue[1]);
     }
+
+    searchParams.set('sortBy', splitValue[0]);
+    setSearchParams(searchParams);
 
     let tempFilter = filter;
     tempFilter += `&sortBy=${sortBy}`;
@@ -232,10 +287,14 @@ const Search = () => {
       ...prevState,
       page: newPage,
     }));
+    searchParams.set('page', String(newPage));
+    setSearchParams(searchParams);
   };
 
   const handleDeleteCategoryFilter = () => {
     setCategoryValues('');
+    searchParams.delete('categoryName');
+    setSearchParams(searchParams);
   };
 
   const handleDeletePriceFilter = () => {
@@ -244,10 +303,15 @@ const Search = () => {
       maxPrice: '',
     });
     setPriceChange({});
+    searchParams.delete('minPrice');
+    searchParams.delete('maxPrice');
+    setSearchParams(searchParams);
   };
 
   const handleDeleteRatingFilter = () => {
     setRatingValues('');
+    searchParams.delete('rating');
+    setSearchParams(searchParams);
   };
 
   const handleDeleteLocationFilter = () => {
@@ -261,6 +325,8 @@ const Search = () => {
     );
 
     setCities(deleteAllCitiesChecked);
+    searchParams.delete('location');
+    setSearchParams(searchParams);
   };
 
   const handleDeleteAllFilter = () => {
@@ -276,10 +342,10 @@ const Search = () => {
   };
 
   useEffect(() => {
-    setFilter(`?limit=30&page=1&s=${getSearchParams}`);
-    getProducts(`?limit=30&page=1&s=${getSearchParams}`).then();
     getAllCategories().then();
     getAllCities().then();
+    setFilter(`?limit=30&page=1&s=${getSearchParams}&categoryID=${categoryValues}`);
+    getProducts(`?limit=30&page=1&s=${getSearchParams}&categoryID=${categoryValues}`).then();
   }, []);
 
   useEffect(() => {
@@ -292,6 +358,7 @@ const Search = () => {
     ratingValues,
     cityValues,
     getSearchParams,
+    getCategoryParams,
     pagination.page,
   ]);
 

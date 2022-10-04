@@ -26,7 +26,7 @@ const Recommendation = (props: RecommendationProps) => {
             data.map(
               (item) => (
                 <Card
-                  key={`${item.name}`}
+                  key={`${item.product.name}-${item.product.id}`}
                   data={item}
                   cardType="product-list"
                 />

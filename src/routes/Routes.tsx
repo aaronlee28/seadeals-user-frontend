@@ -20,6 +20,7 @@ import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/WalletHistory';
 import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
+import CategoryPage from '../pages/Category/CategoryPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -30,6 +31,7 @@ const AppRoutes = () => (
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
+        <Route path="category" element={<CategoryPage />} />
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
