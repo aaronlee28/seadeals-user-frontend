@@ -73,8 +73,8 @@ const WalletTopup = () => {
         JSON.stringify({ amount, account_number: selected.account_number }),
       );
       setSLPUrl(response.data?.data?.redirect_url);
-    } catch (err) {
-      toast.error('Error Requesting Top Up');
+    } catch (err:any) {
+      toast.error(err.response.data.message || 'error requesting top up');
     } finally {
       setLoading(false);
     }
