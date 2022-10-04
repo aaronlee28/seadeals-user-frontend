@@ -3,8 +3,9 @@ const months = [
 ];
 
 const formatTime = (dateStr:string) => {
+  if (!dateStr) return '';
   const date = new Date(dateStr);
-  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}, ${date.getUTCHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+  return `${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 };
 
 export default formatTime;

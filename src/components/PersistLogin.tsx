@@ -13,6 +13,8 @@ const PersistLogin = () => {
   useEffect(() => {
     let isMounted = true;
 
+    //  harusnya: bukan pas access_tokennya yg null,
+    //  tapi pas access null && refresh_tokennya expire/non exist
     const accessToken:any = localStorage.getItem('access_token');
     if (!accessToken) {
       // navigate('/login');
@@ -32,7 +34,7 @@ const PersistLogin = () => {
 
         await setAuth({ user, roles: scope.split(' '), accessToken });
       } catch (err) {
-        console.error(err);
+        console.log(err);
       } finally {
         if (isMounted) setIsLoading(false);
       }
