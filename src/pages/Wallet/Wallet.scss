@@ -13,9 +13,25 @@
       justify-content: center;
     }
   }
+  .wallet__history{
+    min-height: 56vh !important;
+  }
 }
 
 .wallet-bg{
   background: rgb(36,83,194);
   background: linear-gradient(90deg, rgba(36,83,194,1) 0%, rgba(21,49,113,1) 100%);
 }
+
+.wallet__menu__items{
+     aspect-ratio: 1/1;
+     width: 4.5rem;
+     text-align: center;
+ }
+
+ .wallet__menu__items img{
+     height: 1.75rem;
+     margin-bottom: 0.325rem;
+     border: 2px solid #1E46A2 !important;
+     border-radius: 25%;
+ }

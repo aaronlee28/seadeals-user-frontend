@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import formatTitle from '../../utils/titleFormatter';
-import formatDate from '../../utils/dateFormatter';
-import { formatPrice } from '../../utils/product';
+import formatTitle from '../../../utils/titleFormatter';
+import formatDate from '../../../utils/dateFormatter';
+import { formatPrice } from '../../../utils/product';
 
 const WalletHistoryItem:FC<any> = ({ trx, innerRef }) => (
   <div ref={innerRef} className="border-top text-start py-3">
