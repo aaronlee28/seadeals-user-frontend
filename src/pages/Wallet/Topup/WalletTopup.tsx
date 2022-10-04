@@ -8,6 +8,7 @@ import WalletHeader from '../WalletHeader';
 import formatCardNumber from '../../../utils/walletFormatter';
 import { formatPrice } from '../../../utils/product';
 import LoadingPlain from '../../../components/Loading/LoadingPlain';
+import SLPIframe from '../Iframe/SLPIframe';
 
 const WalletTopup = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -109,7 +110,7 @@ const WalletTopup = () => {
                     </p>
                   </div>
                 </div>
-                <iframe title="SeaLabs Pay" src={SLPUrl} className="slp-window" />
+                <SLPIframe url={SLPUrl} />
               </div>
             )
             : (
@@ -122,6 +123,7 @@ const WalletTopup = () => {
                         <div className={`mb-2 slp-transition ${collapse ? 'slp-list-close' : 'slp-list-open'}`}>
                           {SLPAccounts.map((account:any) => (
                             <button
+                              key={account.id}
                               type="button"
                               className="p-2 border rounded mb-2 w-100 text-start bg-white"
                               onClick={() => changeSelected(account.id)}

@@ -21,6 +21,7 @@ import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/History/WalletHistory';
 import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
+import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
 
 const AppRoutes = () => (
   <Routes>
@@ -53,8 +54,9 @@ const AppRoutes = () => (
             <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
-
       </Route>
+
+      <Route path="/wallet/post-topup/" element={<PostTopupSLP />} />
 
       <Route element={<PersistLogin />}>
         <Route path="/seller/" element={<SellerLayout />}>
