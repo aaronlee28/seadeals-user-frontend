@@ -66,6 +66,11 @@ const WalletTopup = () => {
   }, []);
 
   const requestTopup = async () => {
+    if (!selected) {
+      toast.error('register a sealabs pay account to top up');
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axiosPrivate.post(
@@ -157,7 +162,8 @@ const WalletTopup = () => {
                   />
                   <button
                     type="button"
-                    className="bg-main p-2 text-white w-100 rounded mb-3"
+                    className={`bg-main p-2 text-white w-100 rounded mb-3 ${!selected && 'bg-darkgray'}`}
+                    disabled={!selected}
                     onClick={() => requestTopup()}
                   >
                     Selanjutnya

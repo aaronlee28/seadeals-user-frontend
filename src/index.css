@@ -48,6 +48,9 @@ code {
 .bg-gray{
   background-color: #ececec !important;
 }
+.bg-darkgray{
+  background-color: #bdbdbd !important;
+}
 .bg-gray-trans{
   background-color: rgba(255, 255, 255, 0.3) !important;
 }
