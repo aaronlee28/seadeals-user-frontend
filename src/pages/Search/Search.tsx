@@ -88,10 +88,10 @@ const Search = () => {
       .catch((err) => err);
   };
 
-  const getCategoryID = (name: string) => {
-    const category = categories.find((el: any) => el.name === name);
-    return category.id;
-  };
+  // const getCategoryID = (name: string) => {
+  //   const category = categories.find((el: any) => el.name === name);
+  //   return category.id;
+  // };
 
   const validatePriceFilter = () => {
     if (
@@ -251,8 +251,7 @@ const Search = () => {
     let sortBy = '';
     let sort = '';
     if (splitValue[0] === 'Rekomendasi') {
-      sortBy = 'views_count';
-      sort = 'desc';
+      sortBy = 'favorite';
     }
     if (splitValue[0] === 'Terbaru') {
       sortBy = 'date';
