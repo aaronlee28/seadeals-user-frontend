@@ -49,12 +49,10 @@ const FilterLocation = (props: FilterLocationProps) => {
   const dataSlice = data.slice(0, 8);
 
   const openModalLocationFilter = () => {
-    console.log('OPEN');
     setIsModalFilterLocationOpen(true);
   };
 
   const closeModalLocationFilter = () => {
-    console.log('CLOSE');
     setIsModalFilterLocationOpen(false);
   };
 

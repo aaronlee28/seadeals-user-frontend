@@ -43,7 +43,6 @@ const Search = () => {
   const priceItems = FILTER_PRICE;
 
   const getProducts = async (tempFilter: string) => {
-    console.log(tempFilter);
     await Products.GetAllProducts(tempFilter)
       .then((resp) => {
         setProducts(resp.data.data.products);
