@@ -74,7 +74,6 @@ const WalletTopup = () => {
       );
       setSLPUrl(response.data?.data?.redirect_url);
     } catch (err) {
-      console.log(err);
       toast.error('Error Requesting Top Up');
     } finally {
       setLoading(false);
