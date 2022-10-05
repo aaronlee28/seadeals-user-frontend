@@ -19,7 +19,7 @@ const PostTopupSLP = () => {
         setIcon(failIcon);
         setSubMsg('Top Up with SeaLabs Pay Failed');
         return;
-      case 'TXN_SUCCESS':
+      case 'TXN_PAID':
         setIcon(successIcon);
         setSubMsg('Top Up Successfully Paid with SeaLabs Pay');
         return;

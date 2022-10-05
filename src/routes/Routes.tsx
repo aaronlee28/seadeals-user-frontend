@@ -22,6 +22,8 @@ import WalletHistory from '../pages/Wallet/History/WalletHistory';
 import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
 import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
+import CheckoutPayment from '../pages/Checkout/CheckoutPayment';
+import Checkout from '../pages/Checkout/Checkout';
 
 const AppRoutes = () => (
   <Routes>
@@ -44,6 +46,8 @@ const AppRoutes = () => (
               <Route path="history/:id" element={<WalletTrxDetails />} />
               <Route path="topup" element={<WalletTopup />} />
             </Route>
+
+            <Route path="/checkout" element={<Checkout />} />
           </Route>
 
           <Route path="/toko/">
@@ -57,6 +61,7 @@ const AppRoutes = () => (
       </Route>
 
       <Route path="/wallet/post-topup/" element={<PostTopupSLP />} />
+      <Route path="/wallet/test/" element={<CheckoutPayment />} />
 
       <Route element={<PersistLogin />}>
         <Route path="/seller/" element={<SellerLayout />}>
