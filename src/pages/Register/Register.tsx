@@ -60,17 +60,8 @@ const Register = () => {
 
   const { setAuth } = useAuth();
   const navigate = useNavigate();
-  const token = useState(localStorage.getItem('access_token'));
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-
-  useEffect(() => {
-    if (token[0] !== null) {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [token]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -113,6 +104,35 @@ const Register = () => {
       console.error(err);
     }
   };
+
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    const token:any = localStorage.getItem('access_token');
+    console.log(token);
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      console.log(jwt_decode(token).exp * 1000);
+      console.log(dateNow.getTime());
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
+  }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
 
   return (
     <div className="register_container">

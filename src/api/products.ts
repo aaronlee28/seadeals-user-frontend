@@ -17,8 +17,8 @@ class Products {
     return axios.get(`/categories/${CategoryID}/products${filter}`);
   }
 
-  static GetRecommendedProducts() {
-    return axios.get('/search-recommend-product/');
+  static GetRecommendedProducts(filter: string = '') {
+    return axios.get(`/search-recommend-product${filter}`);
   }
 
   static GetPromotionPrice(ProductID: number) {

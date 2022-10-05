@@ -18,8 +18,12 @@ import Register from '../pages/Register/Register';
 import Cart from '../pages/Cart/Cart';
 import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/Wallet/WalletPIN';
-import WalletHistory from '../pages/Wallet/WalletHistory';
-import WalletTrxDetails from '../pages/Wallet/WalletTrxDetails';
+import WalletHistory from '../pages/Wallet/History/WalletHistory';
+import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
+import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
+import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
+import CategoryPage from '../pages/Category/CategoryPage';
+import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -31,6 +35,8 @@ const AppRoutes = () => (
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
+        <Route path="category" element={<CategoryPage />} />
+        <Route path="recommendation" element={<RecommendationPage />} />
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
@@ -40,6 +46,7 @@ const AppRoutes = () => (
               <Route path="settings" element={<WalletPIN />} />
               <Route path="history" element={<WalletHistory />} />
               <Route path="history/:id" element={<WalletTrxDetails />} />
+              <Route path="topup" element={<WalletTopup />} />
             </Route>
           </Route>
 
@@ -51,8 +58,9 @@ const AppRoutes = () => (
             <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
-
       </Route>
+
+      <Route path="/wallet/post-topup/" element={<PostTopupSLP />} />
 
       <Route element={<PersistLogin />}>
         <Route path="/seller/" element={<SellerLayout />}>

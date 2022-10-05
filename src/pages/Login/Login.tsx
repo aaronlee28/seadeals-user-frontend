@@ -18,28 +18,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-  const token = useState(localStorage.getItem('access_token'));
-  const [expired, setExpired] = useState(false);
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    if (token !== null) {
-      const dateNow = new Date();
-      // @ts-ignore
-      if (jwt_decode(token[0]).exp < dateNow.getTime()) {
-        setExpired(true);
-      }
-    }
-    setChecked(true);
-  }, []);
-
-  useEffect(() => {
-    if (!expired && checked) {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [expired, checked]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -109,6 +87,35 @@ const Login = () => {
       { theme: 'outline', size: 'large', width: '400' },
     );
   }, []);
+
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    const token:any = localStorage.getItem('access_token');
+    console.log(token);
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      console.log(jwt_decode(token).exp * 1000);
+      console.log(dateNow.getTime());
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
+  }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
 
   const [revealed, setRevealed] = useState(false);
 

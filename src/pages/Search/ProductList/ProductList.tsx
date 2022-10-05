@@ -10,8 +10,6 @@ type ProductListProps = {
 const ProductList = (props: ProductListProps) => {
   const { data } = props;
 
-  console.log(data);
-
   return (
     <div className="product_list_container">
       <div className="product_list_content">
@@ -20,7 +18,7 @@ const ProductList = (props: ProductListProps) => {
             data.map(
               (item) => (
                 <Card
-                  key={`${item.product.slug}`}
+                  key={`${item.product.slug}-${item.product.id}`}
                   data={item}
                   cardType="product-list"
                 />

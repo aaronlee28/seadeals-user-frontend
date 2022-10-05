@@ -7,6 +7,7 @@ type FormNumberInputProps = {
   label: string;
   name: string;
   handleInput: (event: any) => void;
+  setInput: () => void;
 };
 
 const FormNumberInput = (props: FormNumberInputProps) => {
@@ -16,6 +17,7 @@ const FormNumberInput = (props: FormNumberInputProps) => {
     label,
     name,
     handleInput,
+    setInput,
   } = props;
 
   const handlePlus = () => {
@@ -64,6 +66,8 @@ const FormNumberInput = (props: FormNumberInputProps) => {
           placeholder={label}
           value={value}
           onChange={handleInput}
+          onBlur={setInput}
+          onFocus={setInput}
           name={name}
           id={name}
           min="0"

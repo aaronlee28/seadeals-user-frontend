@@ -46,7 +46,6 @@ const CardCartItem = (props: CardCartItemProps) => {
   ];
 
   const handleInput = (event: any) => {
-    console.log(event);
     handleAmount(storeId, id, event.target.value);
   };
 

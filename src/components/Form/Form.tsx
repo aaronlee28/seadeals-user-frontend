@@ -14,6 +14,7 @@ type FormRequiredProps = {
 type FormOptionalProps = {
   // eslint-disable-next-line react/require-default-props
   handleSubmitButton?: () => void;
+  setInput?: any;
   haveSubmitButton?: boolean;
   readOnly?: boolean;
 };
@@ -23,6 +24,7 @@ interface FormProps
   FormOptionalProps {}
 
 const defaultProps: FormOptionalProps = {
+  setInput: '',
   haveSubmitButton: false,
   readOnly: false,
 };
@@ -35,6 +37,7 @@ const Form = (props: FormProps) => {
     handleInput,
     handleSubmitButton,
     haveSubmitButton,
+    setInput,
     readOnly,
   } = props;
 
@@ -69,6 +72,7 @@ const Form = (props: FormProps) => {
               options={item.options}
               handleInput={handleInput}
               handleButton={handleButton}
+              setInput={setInput}
               readOnly={readOnly}
             />
           ),

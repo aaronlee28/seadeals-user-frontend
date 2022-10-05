@@ -9,6 +9,7 @@ type CategoryProps = {
 
 const Category = (props: CategoryProps) => {
   const { data } = props;
+
   return (
     <div className="category_container">
       <div className="category_content">

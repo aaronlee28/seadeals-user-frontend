@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../Button/Button';
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
+import { ReactComponent as IconChevronRight } from '../../../assets/svg/icon_chevron_right.svg';
+import ModalFilterLocation from '../../Modal/ModalFilterLocation/ModalFilterLocation';
 
 type FilterLocationProps = {
   filterClass: string;
   data: any[];
-  handleInput: (cityId: number) => void;
+  handleInput: (cityName: string) => void;
   handleDelete: () => void;
   // handleChecked: (cityId: number) => void;
 };
@@ -17,9 +19,46 @@ const FilterLocation = (props: FilterLocationProps) => {
     handleInput,
     handleDelete,
     // handleChecked,
+
   } = props;
 
+  const [isModalFilterLocationOpen, setIsModalFilterLocationOpen] = useState(false);
+  const [citiesByLetter, setCitiesByLetter] = useState<any>([]);
+
+  const groupingCities = () => {
+    let grouping: any[] = [];
+    for (let i = 0; i < data.length; i += 1) {
+      const isLetterExist = grouping.findIndex((el) => el.letter === data[i].city_name.charAt(0));
+      if (isLetterExist >= 0) {
+        grouping[isLetterExist].items = [
+          ...grouping[isLetterExist].items,
+          data[i],
+        ];
+      }
+      if (isLetterExist < 0) {
+        const newGrouping = {
+          letter: data[i].city_name.charAt(0),
+          items: [data[i]],
+        };
+        grouping = [...grouping, newGrouping];
+      }
+    }
+    setCitiesByLetter(grouping);
+  };
+
   const dataSlice = data.slice(0, 8);
+
+  const openModalLocationFilter = () => {
+    setIsModalFilterLocationOpen(true);
+  };
+
+  const closeModalLocationFilter = () => {
+    setIsModalFilterLocationOpen(false);
+  };
+
+  useEffect(() => {
+    groupingCities();
+  }, [data]);
 
   return (
     <div className="filter_location_container">
@@ -34,8 +73,8 @@ const FilterLocation = (props: FilterLocationProps) => {
                   className="location_item"
                 >
                   <div
-                    className={`checkbox ${item.isChecked ? 'checked' : ''}`}
-                    onClick={() => handleInput(item.city_id)}
+                    className={`checkbox filter ${item.isChecked ? 'checked' : ''}`}
+                    onClick={() => handleInput(item.city_name)}
                     role="presentation"
                   >
                     {
@@ -44,7 +83,7 @@ const FilterLocation = (props: FilterLocationProps) => {
                   </div>
                   <p
                     className="name"
-                    onClick={() => handleInput(item.city_id)}
+                    onClick={() => handleInput(item.city_name)}
                     role="presentation"
                   >
                     { item.city_name }
@@ -55,11 +94,29 @@ const FilterLocation = (props: FilterLocationProps) => {
           }
         </div>
         <Button
+          buttonType="plain right"
+          text="Lihat Semua"
+          iconUrl={IconChevronRight}
+          iconName="all"
+          handleClickedButton={openModalLocationFilter}
+        />
+        <Button
           buttonType="secondary"
           text="Hapus"
           handleClickedButton={handleDelete}
         />
       </div>
+      {
+        isModalFilterLocationOpen
+        && (
+          <ModalFilterLocation
+            data={citiesByLetter}
+            handleInput={handleInput}
+            handleDelete={handleDelete}
+            handleCloseModal={closeModalLocationFilter}
+          />
+        )
+      }
     </div>
   );
 };

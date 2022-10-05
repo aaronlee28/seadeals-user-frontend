@@ -26,6 +26,7 @@ const FilterRating = (props: FilterRatingProps) => {
             Array(5).fill(0).map(
               (item, index) => (
                 <div
+                  key={`rating-${5 - index}`}
                   className={`rating ${values === 5 - index ? 'active' : ''}`}
                   onClick={() => handleInput(5 - index)}
                   role="presentation"
@@ -33,15 +34,21 @@ const FilterRating = (props: FilterRatingProps) => {
                   <div className="icons">
                     {
                       Array(5 - index).fill(0).map(
-                        () => (
-                          React.createElement(IconStar, { className: 'star' })
+                        (el, idx) => (
+                          React.createElement(IconStar, {
+                            className: 'star',
+                            key: `star-${5 - index}-${el}-${5 - idx}`,
+                          })
                         ),
                       )
                     }
                     {
                       Array(index).fill(0).map(
-                        () => (
-                          React.createElement(IconStar, { className: 'star white' })
+                        (el, idx) => (
+                          React.createElement(IconStar, {
+                            className: 'star white',
+                            key: `star-white-${5 - index}-${el}-${5 - idx}`,
+                          })
                         ),
                       )
                     }
