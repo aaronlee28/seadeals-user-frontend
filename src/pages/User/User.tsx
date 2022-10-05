@@ -23,18 +23,18 @@ const User = () => {
   };
 
   return (
-    <div className="user__container">
-      <div className="whole__container row">
-        <div className="side-bar__container col-4 col-md-2">
+    <div className="user_container">
+      <div className="whole_container row">
+        <div className="side-bar_container col-4 col-md-2">
           <p className="mb-2" onClick={handleProfile}>Profil</p>
           <p className="mb-2" onClick={handleAddress}>Alamat</p>
           <p onClick={handleAccount}>Akun Pembayaran</p>
         </div>
-        <div className="profile__container col-8 col-md-8">
+        <div className="profile_container col-8 col-md-8">
           {
               focus === 'profile'
                 ? (
-                  <div className="address__container row p-2 border-bottom">
+                  <div className="address_container row p-2 border-bottom">
                     <div className="col-6 col-md-4 col-lg-3">
                       Profil
                     </div>
@@ -45,7 +45,7 @@ const User = () => {
           {
             focus === 'address'
               ? (
-                <div className="address__container row p-2 border-bottom">
+                <div className="address_container row p-2 border-bottom">
                   <div className="col-6 col-md-4 col-lg-3">
                     Alamat Saya
                   </div>
@@ -59,7 +59,7 @@ const User = () => {
           {
               focus === 'payment-account'
                 ? (
-                  <div className="address__container row p-2 border-bottom">
+                  <div className="address_container row p-2 border-bottom">
                     <div className="col-6 col-md-4 col-lg-3">
                       Akun Pembayaran
                     </div>
