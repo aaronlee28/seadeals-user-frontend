@@ -14,9 +14,10 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
     setEmailSent(true);
     try {
       const response = await axiosPrivate.post('/wallet/pin-by-email/');
+      const { data } = response;
       if (response.status === 200) {
         toast.dismiss();
-        setEmailKey(response.data.key);
+        setEmailKey(data.data.key);
       }
     } catch (err) {
       toast.error('error requesting email');
@@ -27,7 +28,7 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
     e.preventDefault();
     try {
       const response = await axiosPrivate.post(
-        '/wallet/pin-by-email/code',
+        '/wallet/validator/pin-by-email/code',
         JSON.stringify({ key: emailKey, code: token }),
       );
 
