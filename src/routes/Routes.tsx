@@ -23,6 +23,7 @@ import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
 import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
 import CategoryPage from '../pages/Category/CategoryPage';
+import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -34,6 +35,7 @@ const AppRoutes = () => (
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
         <Route path="category" element={<CategoryPage />} />
+        <Route path="recommendation" element={<RecommendationPage />} />
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>

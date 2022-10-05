@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Recommendation.scss';
+import { useNavigate } from 'react-router-dom';
 import Card from '../../../components/Cards/Card';
 import Button from '../../../components/Button/Button';
 
@@ -10,9 +11,10 @@ type RecommendationProps = {
 
 const Recommendation = (props: RecommendationProps) => {
   const { data } = props;
+  const navigate = useNavigate();
 
-  const goToSearchPage = () => {
-    console.log('SEARCH');
+  const goToRecommendationPage = () => {
+    navigate('recommendation');
   };
 
   return (
@@ -37,7 +39,7 @@ const Recommendation = (props: RecommendationProps) => {
         <Button
           buttonType="primary alt show_all"
           text="Lihat Semua"
-          handleClickedButton={goToSearchPage}
+          handleClickedButton={goToRecommendationPage}
         />
       </div>
     </div>
