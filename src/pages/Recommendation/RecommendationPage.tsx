@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './RecommendationPage.scss';
 import { useSearchParams } from 'react-router-dom';
 import Products from '../../api/products';
 import Card from '../../components/Cards/Card';
 import Pagination from '../../components/Pagination/Pagination';
+
+import './RecommendationPage.scss';
 
 const RecommendationPage = () => {
   const [products, setProducts] = useState([]);
