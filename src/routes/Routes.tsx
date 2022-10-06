@@ -6,7 +6,7 @@ import Login from '../pages/Login/Login';
 import Home from '../pages/Home/Home';
 import RequireAuth from '../RequireAuth';
 import SellerHome from '../pages/Seller/SellerHome';
-import Profile from '../pages/Profile/Profile';
+import User from '../pages/User/User';
 import SellerLayout from '../layouts/SellerLayout';
 import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
@@ -28,6 +28,7 @@ import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
+      <Route path="/user" element={<User />} />
 
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
@@ -39,7 +40,6 @@ const AppRoutes = () => (
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/profile" element={<Profile />} />
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />

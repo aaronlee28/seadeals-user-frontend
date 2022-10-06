@@ -18,15 +18,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-  const token = useState(localStorage.getItem('access_token'));
-
-  useEffect(() => {
-    if (token[0] !== null) {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [token]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -97,6 +88,35 @@ const Login = () => {
     );
   }, []);
 
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    const token:any = localStorage.getItem('access_token');
+    console.log(token);
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      console.log(jwt_decode(token).exp * 1000);
+      console.log(dateNow.getTime());
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
+  }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
+
   const [revealed, setRevealed] = useState(false);
 
   const handleReveal = () => {
@@ -104,9 +124,9 @@ const Login = () => {
   };
 
   return (
-    <div className="login__container">
-      <div className="login__cards__container mx-5">
-        <div className="register__cards row">
+    <div className="login_container">
+      <div className="login_cards_container mx-5">
+        <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
