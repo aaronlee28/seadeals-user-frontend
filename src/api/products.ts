@@ -5,8 +5,9 @@ class Products {
     return axios.get(`/products${filter}`);
   }
 
-  static GetProductBySlug(slug: string) {
-    return axios.get(`/products/detail/${slug}`);
+  static GetProductByID(ID: number) {
+    console.log(ID);
+    return axios.get(`/products/detail/${ID}`);
   }
 
   static GetProductsBySellerID(SellerID: number, filter: string) {

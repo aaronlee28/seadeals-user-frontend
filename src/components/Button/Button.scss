@@ -25,11 +25,27 @@
     .text {
       color: #FFFFFF;
     }
+    svg {
+      path {
+        fill: #FFFFFF;
+      }
+      rect {
+        fill: #2658CD;
+      }
+    }
     &:hover {
       background: #FFFFFF;
 
       .text {
         color: #2658CD;
+      }
+      svg {
+        path {
+          fill: #2658CD;
+        }
+        rect {
+          fill: #FFFFFF;
+        }
       }
     }
     &.alt {
@@ -38,10 +54,26 @@
       .text {
         color: #2658CD;
       }
+      svg {
+        path {
+          fill: #2658CD;
+        }
+        rect {
+          fill: #FFFFFF;
+        }
+      }
       &:hover {
         background: #2658CD;
         .text {
           color: #FFFFFF;
+        }
+        svg {
+          path {
+            fill: #FFFFFF;
+          }
+          rect {
+            fill: #2658CD;
+          }
         }
       }
     }
@@ -54,11 +86,27 @@
     .text {
       color: #FFFFFF;
     }
+    svg {
+      path {
+        fill: #FFFFFF;
+      }
+      rect {
+        fill: #FB3C00;
+      }
+    }
     &:hover {
       background: #FFFFFF;
 
       .text {
         color: #FB3C00;
+      }
+      svg {
+        path {
+          fill: #FB3C00;
+        }
+        rect {
+          fill: #FFFFFF;
+        }
       }
     }
     &.alt {
@@ -67,10 +115,26 @@
       .text {
         color: #FB3C00;
       }
+      svg {
+        path {
+          fill: #FB3C00;
+        }
+        rect {
+          fill: #FFFFFF;
+        }
+      }
       &:hover {
         background: #FB3C00;
         .text {
           color: #FFFFFF;
+        }
+        svg {
+          path {
+            fill: #FFFFFF;
+          }
+          rect {
+            fill: #FB3C00;
+          }
         }
       }
     }

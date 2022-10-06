@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../../api/axios';
 import './ProductPage.scss';
 import ProductDescription from './ProductDescription';
 import ProductHeader from './ProductHeader';
+import Products from '../../api/products';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -15,38 +15,43 @@ const ProductPage = () => {
   // const [selectedVar1, setSelectedVar1] = useState(null);
   // const [selectedVar2, setSelectedVar2] = useState(null);
 
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
+  // const [params, setParams] = useSearchParams();
 
-    const getProductData = async () => {
-      try {
-        const response = await axios.get(`products/detail/${slug}`, {
-          signal: controller.signal,
-        });
-        const { data } = response.data;
-        if (isMounted) {
-          console.log(data);
-          setProduct(data);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
+  const getID = () => {
+    console.log(slug);
+    const splitSlug = slug?.split('.');
+    return splitSlug ? splitSlug[splitSlug.length - 1] : '';
+  };
+
+  const getProduct = async () => {
+    console.log(parseInt(getID(), 10));
+
+    await Products.GetProductByID(parseInt(getID(), 10))
+      .then((resp) => {
+        setProduct(resp.data.data);
+        console.log('ini', resp.data.data);
+      })
+      .catch((err) => err)
+      .finally(() => {
         setLoadingProduct(false);
-      }
-    };
-    getProductData();
+      });
+  };
 
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
+  useEffect(() => {
+    getProduct().then();
   }, []);
 
   return (
-    <div className="container py-5">
-      <ProductHeader product={product} />
-      <ProductDescription description={product?.product_detail} />
+    <div className="product_page_container">
+      {
+        product
+        && (
+          <div className="product_page_content">
+            <ProductHeader product={product} />
+            <ProductDescription description={product?.product_detail} />
+          </div>
+        )
+      }
     </div>
   );
 };

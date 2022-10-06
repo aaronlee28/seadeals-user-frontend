@@ -4,16 +4,16 @@ import ProductShare from './Share/ProductShare';
 import HeaderInfo from './Header/HeaderInfo';
 
 const ProductHeader:FC<any> = ({ product }) => (
-  <div className="bg-white p-3 rounded shadow-sm mb-3">
-    <div className="row">
-      <div className="col-12 col-lg-5 mb-4">
-        <ProductMedia photos={product?.product_photos} />
+  <div className="product_header_container">
+    <div className="product_header_content">
+      <div className="left_content">
+        <ProductMedia photos={product?.product.product_photos} />
+        <ProductShare url={window.location.href} />
       </div>
-      <div className="col-12 col-lg-7">
-        <HeaderInfo product={product} />
+      <div className="right_content">
+        <HeaderInfo data={product} />
       </div>
     </div>
-    <ProductShare url={window.location.href} />
   </div>
 );
 

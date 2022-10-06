@@ -37,6 +37,9 @@ const AppRoutes = () => (
         <Route path="category" element={<CategoryPage />} />
         <Route path="recommendation" element={<RecommendationPage />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="produk/">
+          <Route path=":slug" element={<ProductPage />} />
+        </Route>
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/profile" element={<Profile />} />
@@ -52,10 +55,6 @@ const AppRoutes = () => (
 
           <Route path="/toko/">
             <Route path=":sellerID/" element={<SellerPage />} />
-          </Route>
-
-          <Route path="/produk/">
-            <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
       </Route>

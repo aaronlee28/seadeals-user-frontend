@@ -15,6 +15,7 @@ const formatPrice = (price: number) => {
 };
 
 const formatPriceWithCurrency = (price: number) => {
+  console.log(price);
   const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
   const priceJoin = priceSplit.join('.');
   return `Rp. ${priceJoin},00`;
