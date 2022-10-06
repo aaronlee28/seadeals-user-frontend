@@ -307,7 +307,8 @@ const Register = () => {
                   <input
                     className="form-control mb-2"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: { target: { value: React.SetStateAction<string>; };
+                    }) => setEmail(event.target.value)}
                     type="email"
                     id="email-m"
                     placeholder="Email"

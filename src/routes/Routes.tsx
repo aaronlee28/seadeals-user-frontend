@@ -28,7 +28,7 @@ import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
-      <Route path="/user" element={<User />} />
+      <Route path="user" element={<User />} />
 
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
