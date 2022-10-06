@@ -6,7 +6,7 @@ type CardCheckoutItemProps = {
   data: {
     id: number;
     product_name: string;
-    imgUrl: string;
+    image_url: string;
     price_per_item: number;
     quantity: number;
     subtotal: number;
@@ -20,7 +20,7 @@ const CardCartItem = (props: CardCheckoutItemProps) => {
 
   const {
     product_name: name,
-    imgUrl,
+    image_url: imgUrl,
     price_per_item: price,
     quantity: amount,
     subtotal,

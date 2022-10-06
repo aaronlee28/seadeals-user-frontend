@@ -1,5 +1,6 @@
 import React from 'react';
 import './CardCheckout.scss';
+import { Link } from 'react-router-dom';
 import CardCheckoutItem from './CardCheckoutItem';
 
 type CardCheckoutProps = {
@@ -26,8 +27,11 @@ const CardCheckout = (props: CardCheckoutProps) => {
       <div className="card_cart_content">
         <div className="header">
           <div className="header_name">
-            {/* <p className="name">{ storeName }</p> */}
-            <p className="name">{ `toko dengan id: ${storeID} (storename gaada di dtonya) ${storeName}` }</p>
+            <div className="normal-link">
+              <Link to={`/toko/${storeID}`}>
+                <p className="name">{ storeName }</p>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="items_content">

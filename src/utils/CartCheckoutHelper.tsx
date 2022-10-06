@@ -13,4 +13,9 @@ const groupBySeller = (cartItems:any) => {
   return sellerProducts;
 };
 
-export default groupBySeller;
+const calculateSubtotal = (cartItems:any) => cartItems.reduce((
+  sum:any,
+  a:any,
+) => sum + a.subtotal, 0);
+
+export { groupBySeller, calculateSubtotal };
