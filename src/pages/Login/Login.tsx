@@ -19,7 +19,7 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async () => {
     const response = await axios.post(
       LOGIN_URL,
       JSON.stringify({ email, password }),
