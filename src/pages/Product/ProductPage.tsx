@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductPage.scss';
-import ProductDescription from './ProductDescription';
+import ProductDetail from './ProductDetail';
 import ProductHeader from './ProductHeader';
 import Products from '../../api/products';
+import PRODUCT_SPECIFICATION from '../../constants/product';
 
 const ProductPage = () => {
   const { slug } = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<any>({});
+  const [productDetail, setProductDetail] = useState<any>({
+    description: '',
+    specification: [],
+  });
   const [, setLoadingProduct] = useState(true);
 
   // const [variantsLv1, setVariantsLv1] = useState([]);
@@ -18,18 +23,40 @@ const ProductPage = () => {
   // const [params, setParams] = useSearchParams();
 
   const getID = () => {
-    console.log(slug);
     const splitSlug = slug?.split('.');
     return splitSlug ? splitSlug[splitSlug.length - 1] : '';
   };
 
-  const getProduct = async () => {
-    console.log(parseInt(getID(), 10));
+  const setSpecificationItems = (prod: any) => {
+    const spec = [...PRODUCT_SPECIFICATION];
 
+    spec[0].value = prod.product.category.name;
+    spec[1].value = prod.product.product_detail.condition_status;
+    spec[2].value = prod.product.product_detail.length;
+    spec[3].value = prod.product.product_detail.width;
+    spec[4].value = prod.product.product_detail.height;
+    spec[5].value = prod.product.product_detail.weight;
+    spec[6].value = prod.total_stock;
+    spec[7].value = 'DARIMANA YA';
+
+    // prod.product.seller.address
+
+    return spec;
+  };
+
+  const getProduct = async () => {
+    console.log('AYO');
     await Products.GetProductByID(parseInt(getID(), 10))
       .then((resp) => {
-        setProduct(resp.data.data);
-        console.log('ini', resp.data.data);
+        const newProduct = resp.data.data;
+        setProduct(newProduct);
+        console.log(newProduct, 'SINI');
+        const getDesc = newProduct.product.product_detail.description;
+        const getSpec = setSpecificationItems(newProduct);
+        setProductDetail({
+          description: getDesc,
+          specification: getSpec,
+        });
       })
       .catch((err) => err)
       .finally(() => {
@@ -44,11 +71,14 @@ const ProductPage = () => {
   return (
     <div className="product_page_container">
       {
-        product
+        Object.keys(product).length > 0
         && (
           <div className="product_page_content">
             <ProductHeader product={product} />
-            <ProductDescription description={product?.product_detail} />
+            <ProductDetail
+              description={productDetail.description}
+              specification={productDetail.specification}
+            />
           </div>
         )
       }

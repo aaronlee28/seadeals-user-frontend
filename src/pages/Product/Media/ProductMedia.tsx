@@ -9,7 +9,8 @@ const ProductMedia:FC<any> = ({ photos }) => {
       <MainMedia imgUrl="https://loremflickr.com/472/472" />
       <div className="d-flex product__media__carousel gap-3">
         {
-          photos?.map((photo:any) => (
+          photos.length > 0
+          && photos.map((photo:any) => (
             <div key={photo.id} className="carousel__thumb">
               <img src={photo?.photo_url} alt="product" />
             </div>
