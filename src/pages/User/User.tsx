@@ -119,22 +119,9 @@ const User = () => {
   }, [cities]);
 
   const handleSubmit = () => {
-    try {
-      const response = axiosPrivate.post(
-        uRL,
-        JSON.stringify({
-          province_id: provinceId,
-          province,
-          city_id: cityId,
-          type,
-          city,
-          postal_code: postalCode,
-          sub_district: subDistrict,
-          address,
-        }),
-      );
-      console.log(response);
-      console.log(JSON.stringify({
+    axiosPrivate.post(
+      uRL,
+      JSON.stringify({
         province_id: provinceId,
         province,
         city_id: cityId,
@@ -143,11 +130,9 @@ const User = () => {
         postal_code: postalCode,
         sub_district: subDistrict,
         address,
-      }));
-      setShow(false);
-    } catch (err) {
-      console.error(err);
-    }
+      }),
+    );
+    setShow(false);
   };
 
   const handleProfile = () => {
