@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './User.scss';
 import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import Cities from '../../api/cities';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -118,21 +119,26 @@ const User = () => {
     }
   }, [cities]);
 
+  const navigate = useNavigate();
   const handleSubmit = () => {
-    axiosPrivate.post(
-      uRL,
-      JSON.stringify({
-        province_id: provinceId,
-        province,
-        city_id: cityId,
-        type,
-        city,
-        postal_code: postalCode,
-        sub_district: subDistrict,
-        address,
-      }),
-    );
-    setShow(false);
+    try {
+      axiosPrivate.post(
+        uRL,
+        JSON.stringify({
+          province_id: provinceId,
+          province,
+          city_id: cityId,
+          type,
+          city,
+          postal_code: postalCode,
+          sub_district: subDistrict,
+          address,
+        }),
+      );
+      setShow(false);
+    } catch (err) {
+      navigate('/user', { replace: true });
+    }
   };
 
   const handleProfile = () => {
