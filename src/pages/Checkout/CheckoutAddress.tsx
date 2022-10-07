@@ -49,7 +49,7 @@ const CheckoutAddress:FC<any> = ({ selectedAddr, setSelectedAddr }) => {
   };
 
   return (
-    <div className="p-4 bg-white mb-3 address_container">
+    <div className="p-4 bg-white mb-3 address_container shadow-sm">
       <div className="d-flex gap-2 mb-2 px-2">
         <img src={locationIcon} alt="location" />
         <p className="fs-5 d-inline fw-bold">Alamat Pengiriman</p>

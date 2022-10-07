@@ -7,12 +7,14 @@ import CheckoutAddress from './CheckoutAddress';
 import CheckoutVoucher from './CheckoutVoucher';
 import './Checkout.scss';
 import CheckoutSummary from './CheckoutSummary';
+import ModalPayment from '../../components/Modal/ModalPayment/ModalPayment';
 
 const Checkout = () => {
   const axiosPrivate = useAxiosPrivate();
   const [sellerProducts, setSellerProducts] = useState([]);
   const [selectedAddr, setSelectedAddr] = useState<any>({});
   const [subtotal, setSubtotal] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -44,16 +46,19 @@ const Checkout = () => {
   }, []);
 
   return (
-    <div className="w-75 mx-auto">
-      <div className="px-4 mx-auto mt-3">
-        <CheckoutAddress selectedAddr={selectedAddr} setSelectedAddr={setSelectedAddr} />
-        {sellerProducts.map((sellerProduct:any) => (
-          <CardCheckout key={sellerProduct.storeID} data={sellerProduct} />
-        ))}
-        <CheckoutVoucher />
-        <CheckoutSummary subtotal={subtotal} deliveryTotal={0} />
+    <>
+      {isModalOpen && <ModalPayment handleCloseModal={() => setIsModalOpen(false)} />}
+      <div className="w-75 mx-auto">
+        <div className="px-4 mx-auto mt-3">
+          <CheckoutAddress selectedAddr={selectedAddr} setSelectedAddr={setSelectedAddr} />
+          {sellerProducts.map((sellerProduct:any) => (
+            <CardCheckout key={sellerProduct.storeID} data={sellerProduct} />
+          ))}
+          <CheckoutVoucher />
+          <CheckoutSummary subtotal={subtotal} deliveryTotal={0} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
