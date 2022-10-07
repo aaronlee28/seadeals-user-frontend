@@ -40,7 +40,7 @@ const CardProductList = (props: CardProductListProps) => {
   const navigate = useNavigate();
 
   const goToProductPage = () => {
-    navigate(`product/${slug}`);
+    navigate(`/product/${slug}`);
   };
 
   return (

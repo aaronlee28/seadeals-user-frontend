@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
-import { formatPriceWithCurrency, formatSoldCount } from '../../../utils/product';
+import { formatSoldCount, validatePrice } from '../../../utils/product';
 import Form from '../../../components/Form/Form';
 import Button from '../../../components/Button/Button';
 import { ReactComponent as IconAddToCart } from '../../../assets/svg/icon_add_to_cart.svg';
@@ -15,9 +15,11 @@ type HeaderInfoProps = {
 const HeaderInfo = (props: HeaderInfoProps) => {
   const { data } = props;
   const { product } = data;
+  const minPrice = data.min_price;
+  const maxPrice = data.max_price;
 
   const [amount, setAmount] = useState(1);
-  const [variantDetail, setVariantDetail] = useState<any>([]);
+  // const [variantDetail, setVariantDetail] = useState<any>([]);
 
   const amountItems = [
     {
@@ -39,9 +41,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     console.log('BUY NOW');
   };
 
-  useEffect(() => {
-    setVariantDetail(product.product_variant_detail);
-  }, [data]);
+  // useEffect(() => {
+  //   setVariantDetail(product.product_variant_detail);
+  // }, [data]);
 
   return (
     <div className="header_info_container">
@@ -66,10 +68,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             <div className="info third_content">
               <h2 className="price">
                 {
-                  variantDetail.length > 0
-                  && variantDetail[0].price
-                    ? formatPriceWithCurrency(variantDetail[0].price)
-                    : ''
+                  validatePrice(minPrice, maxPrice)
                 }
               </h2>
             </div>

@@ -45,12 +45,10 @@ const ProductPage = () => {
   };
 
   const getProduct = async () => {
-    console.log('AYO');
     await Products.GetProductByID(parseInt(getID(), 10))
       .then((resp) => {
-        const newProduct = resp.data.data;
+        const newProduct = resp.data.data.product_detail;
         setProduct(newProduct);
-        console.log(newProduct, 'SINI');
         const getDesc = newProduct.product.product_detail.description;
         const getSpec = setSpecificationItems(newProduct);
         setProductDetail({

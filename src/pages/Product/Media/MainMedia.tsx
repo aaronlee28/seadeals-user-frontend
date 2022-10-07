@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
 
-const MainMedia:FC<any> = ({ imgUrl }) => (
+const MainMedia:FC<any> = ({ img }) => (
   <div className="border rounded product__media__main">
-    <img src={imgUrl} alt="product" />
+    <img
+      src={img.photo_url}
+      alt={img.name}
+    />
   </div>
 );
 
