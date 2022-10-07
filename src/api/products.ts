@@ -6,7 +6,6 @@ class Products {
   }
 
   static GetProductByID(ID: number) {
-    console.log(ID);
     return axios.get(`/products/detail/${ID}`);
   }
 

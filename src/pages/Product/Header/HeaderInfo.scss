@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 10px;
+    gap: 20px;
     .info {
       width: 100%;
       display: flex;
@@ -79,9 +79,21 @@
         max-width: 150px;
         font-size: 16px;
       }
-      .variant {
+      .variants {
         width: 100%;
-        max-width: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        .item {
+          padding: 10px;
+          border: 1px solid #2658CD;
+          .value {
+            font-size: 16px;
+          }
+        }
       }
       .amount {
         width: 100%;
