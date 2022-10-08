@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import InputPINField from '../PIN/InputPINField';
-import Button from '../../../components/Button/Button';
+import InputPINField from '../../PIN/InputPINField';
+import Button from '../../../../components/Button/Button';
 
 const WalletIframe = () => {
   const [PIN, setPIN] = useState<string[]>(new Array(6).fill(''));

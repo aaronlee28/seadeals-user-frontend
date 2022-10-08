@@ -1,50 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Modal from '../Modal';
-import PaymentMethodCard from './PaymentMethodCard';
-import slpIcon from '../../../assets/svg/slp.svg';
-import seadealsIcon from '../../../assets/png/seadeals.png';
+import React, { useState } from 'react';
 import PAYMENT_TYPE from '../../../constants/payment';
-import SLPIframeFull from '../../../pages/Wallet/Iframe/SLPIframeFull';
-import WalletIframe from '../../../pages/Wallet/Iframe/WalletIframe';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-// import isWalletPINSet from '../../../utils/isWalletPINSet';
-// import WalletIframe from '../../../pages/Wallet/Iframe/WalletIframe';
+import { formatPrice } from '../../../utils/product';
+import Modal from '../Modal';
+import WalletIframe from '../../../pages/Wallet/Iframe/checkout/WalletIframe';
+import PayWithSLP from './PayWithSLP';
+import './ModalPayment.scss';
+import PaymentCards from './PaymentCards';
 
 type ModalPaymentProps = {
-  handleCloseModal: () => void;
+  handleCloseModal: () => void,
+  total: number
 };
 
 const ModalPayment = (props: ModalPaymentProps) => {
-  const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    let isMounted = true;
-    const controller = new AbortController();
-
-    const getWalletInfo = async () => {
-      try {
-        const response = await axiosPrivate.get('user/wallet/status', {
-          signal: controller.signal,
-        });
-        const { data } = response.data;
-        if (isMounted) {
-          console.log(data);
-        }
-      } catch (err) {
-        toast.error('Failed to Fetch User Wallet Info');
-      }
-    };
-    getWalletInfo();
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, []);
-
   const {
     handleCloseModal,
+    total,
   } = props;
 
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -52,7 +23,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
   const renderPaymentMethod = () => {
     switch (selectedMethod) {
       case PAYMENT_TYPE.SLP:
-        return <SLPIframeFull />;
+        return <PayWithSLP />;
       case PAYMENT_TYPE.WALLET:
         return <WalletIframe />;
       default:
@@ -68,25 +39,17 @@ const ModalPayment = (props: ModalPaymentProps) => {
     <div className="w-100 p-4">
       <div className="d-flex justify-content-between p-3 px-4 border-bottom-dashed">
         <p className="fw-bold fs-5">Total Pembayaran</p>
-        <p className="text-accent fw-bold fs-5">Rp21.000</p>
+        <p className="text-accent fw-bold fs-5">
+          Rp
+          {formatPrice(total)}
+        </p>
       </div>
       <p className="p-3 px-4">Pilih Metode Pembayaran</p>
-      <div className="p-3 pt-0 px-4 d-flex gap-3 align-items-center">
-        <PaymentMethodCard
-          isActive={selectedMethod === PAYMENT_TYPE.WALLET}
-          icon={seadealsIcon}
-          title="SeaDeals Wallet"
-          desc="Rp 123.456.789"
-          handleClick={() => setSelectedMethod(PAYMENT_TYPE.WALLET)}
-        />
-        <PaymentMethodCard
-          isActive={selectedMethod === PAYMENT_TYPE.SLP}
-          icon={slpIcon}
-          title="SeaLabs Pay"
-          desc="1234 5678 9810 1112"
-          handleClick={() => setSelectedMethod(PAYMENT_TYPE.SLP)}
-        />
-      </div>
+      <PaymentCards
+        total={total}
+        selectedMethod={selectedMethod}
+        setSelectedMethod={setSelectedMethod}
+      />
       <div className="px-4">
         <div className="border rounded payment_iframe_window">
           {renderPaymentMethod()}

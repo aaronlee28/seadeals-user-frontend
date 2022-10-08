@@ -56,7 +56,7 @@ const CheckoutAddress:FC<any> = ({ selectedAddr, setSelectedAddr }) => {
       </div>
       <div className="p-1 px-2 container row">
         <div className="col-2">
-          <p className="py-2 px-1">Alamat Utama</p>
+          <p className="py-2 px-1">Kirim Ke Alamat</p>
         </div>
         <div className="ms-auto col-8 px-0 address_selector">
           <p

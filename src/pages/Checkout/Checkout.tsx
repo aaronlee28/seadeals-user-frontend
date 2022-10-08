@@ -11,10 +11,13 @@ import ModalPayment from '../../components/Modal/ModalPayment/ModalPayment';
 
 const Checkout = () => {
   const axiosPrivate = useAxiosPrivate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [sellerProducts, setSellerProducts] = useState([]);
   const [selectedAddr, setSelectedAddr] = useState<any>({});
+
   const [subtotal, setSubtotal] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [deliveryTotal] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -47,7 +50,13 @@ const Checkout = () => {
 
   return (
     <>
-      {isModalOpen && <ModalPayment handleCloseModal={() => setIsModalOpen(false)} />}
+      {isModalOpen
+          && (
+          <ModalPayment
+            handleCloseModal={() => setIsModalOpen(false)}
+            total={subtotal + deliveryTotal}
+          />
+          )}
       <div className="w-75 mx-auto">
         <div className="px-4 mx-auto mt-3">
           <CheckoutAddress selectedAddr={selectedAddr} setSelectedAddr={setSelectedAddr} />
@@ -55,7 +64,11 @@ const Checkout = () => {
             <CardCheckout key={sellerProduct.storeID} data={sellerProduct} />
           ))}
           <CheckoutVoucher />
-          <CheckoutSummary subtotal={subtotal} deliveryTotal={0} />
+          <CheckoutSummary
+            subtotal={subtotal}
+            deliveryTotal={deliveryTotal}
+            handleClick={() => setIsModalOpen(true)}
+          />
         </div>
       </div>
     </>
