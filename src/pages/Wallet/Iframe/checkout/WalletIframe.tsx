@@ -46,17 +46,20 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems }) => {
       const config = {
         headers: { Authorization: `Bearer ${data.id_token}` },
       };
+      toast.loading('Requesting Payment');
       const checkoutRes = await axiosPrivate.post(
         'checkout-cart',
         JSON.stringify(payload),
         config,
       );
+      toast.dismiss();
 
       toast.success('Transaction Paid Successfully!');
       console.log(checkoutRes);
       // redirect to order history page
     } catch (err:any) {
       const { message } = err.response.data;
+      toast.dismiss();
       toast.error(message);
       setPIN(PINDefault);
     }

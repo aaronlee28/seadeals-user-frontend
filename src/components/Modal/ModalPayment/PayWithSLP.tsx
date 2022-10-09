@@ -4,6 +4,9 @@ import Button from '../../Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import SelectSLP from './SelectSLP';
 import RegisterSLP from './RegisterSLP';
+import { generateCheckoutPayload } from '../../../utils/CartCheckoutHelper';
+import PAYMENT_TYPE from '../../../constants/payment';
+import SLPIframeFull from '../../../pages/Wallet/Iframe/checkout/SLPIframeFull';
 
 interface PayWithSLPProps {
   orderItems: any[],
@@ -14,6 +17,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
   const [isSelecting, setIsSelecting] = useState(true);
+  const [paymentLink, setPaymentLink] = useState('');
 
   useEffect(() => {
     let isMounted = true;
@@ -31,6 +35,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
         data = data.sort((x:any) => (x.is_main ? -1 : 0));
         // check juga kalo empty
         if (isMounted) {
+          setSelectedSLP(data[0]);
           setSLPAccounts(data);
         }
       } catch (err) {
@@ -52,10 +57,45 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
     setSLPAccounts(newList);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!selectedSLP) return;
     console.log(orderItems);
-    console.log('asd');
+    console.log(selectedSLP);
+
+    try {
+      if (!selectedSLP.id) {
+        toast.loading('Registering Account');
+        const registerSLPRes = await axiosPrivate.post('user/sea-labs-pay/register', JSON.stringify(selectedSLP));
+        console.log(registerSLPRes);
+        toast.dismiss();
+        toast.success('Account Registered!');
+      }
+
+      const payload = generateCheckoutPayload(orderItems, PAYMENT_TYPE.SLP, '', selectedSLP.account_number);
+
+      toast.loading('Requesting Payment');
+      const checkoutRes = await axiosPrivate.post(
+        'order/pay/sea-labs-pay',
+        JSON.stringify(payload),
+      );
+      toast.dismiss();
+
+      const { data } = checkoutRes.data;
+      setPaymentLink(data.redirect_url);
+      // // if selected is new account, register it
+      // if (!selectedSLP.id) {
+      //   const registerSLPRes = await axiosPrivate.
+      //   post('user/sea-labs-pay/register', JSON.stringify(selectedSLP));
+      //   console.log(registerSLPRes);
+      //   toast.success('Account Registered!');
+      // }
+
+      console.log(checkoutRes);
+    } catch (err:any) {
+      toast.dismiss();
+      const { message } = err.response.data;
+      toast.error(message);
+    }
   };
 
   const handleOption = () => {
@@ -64,37 +104,40 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
   };
 
   return (
-    <div className="p-2 d-flex flex-column justify-content-between h-100">
-      <div>
-        <div className="d-flex justify-content-end mb-3">
-          <Button
-            buttonType="plain p-2 border"
-            text={`${isSelecting ? 'Register New Account' : 'Select an Account'}`}
-            handleClickedButton={handleOption}
-          />
-        </div>
-        {isSelecting
-          ? (
-            <>
-              <p className="fs-5 text-center mb-3">Select SeaLabs Pay Account</p>
-              <SelectSLP
-                selectedID={selectedSLP?.id || 0}
-                SLPAccounts={SLPAccounts}
-                selectSLP={selectSLP}
+    paymentLink ? <SLPIframeFull url={paymentLink} />
+      : (
+        <div className="p-2 d-flex flex-column justify-content-between h-100">
+          <div>
+            <div className="d-flex justify-content-end mb-3">
+              <Button
+                buttonType="plain p-2 border"
+                text={`${isSelecting ? 'Register New Account' : 'Select an Account'}`}
+                handleClickedButton={handleOption}
               />
-            </>
-          )
-          : (
-            <>
-              <p className="fs-5 text-center mb-3">Register SeaLabs Pay Account</p>
-              <RegisterSLP selectSLP={setSelectedSLP} />
-            </>
-          )}
-      </div>
-      <div className="py-2">
-        <Button buttonType={`${selectedSLP ? 'primary' : 'disabled'} mx-auto`} handleClickedButton={() => handleContinue()} text="Bayar dengan SeaLabs Pay" />
-      </div>
-    </div>
+            </div>
+            {isSelecting
+              ? (
+                <>
+                  <p className="fs-5 text-center mb-3">Select SeaLabs Pay Account</p>
+                  <SelectSLP
+                    selectedID={selectedSLP?.id || 0}
+                    SLPAccounts={SLPAccounts}
+                    selectSLP={selectSLP}
+                  />
+                </>
+              )
+              : (
+                <>
+                  <p className="fs-5 text-center mb-3">Register SeaLabs Pay Account</p>
+                  <RegisterSLP selectSLP={setSelectedSLP} />
+                </>
+              )}
+          </div>
+          <div className="py-2">
+            <Button buttonType={`${selectedSLP ? 'primary' : 'disabled'} mx-auto`} handleClickedButton={() => handleContinue()} text="Bayar dengan SeaLabs Pay" />
+          </div>
+        </div>
+      )
   );
 };
 
