@@ -21,7 +21,9 @@ const PaymentCards:FC<PaymentCardsProps> = ({ total, selectedMethod, setSelected
 
   useEffect(() => {
     setIsWalletDisabled(checkWalletDisabled());
-    if (!checkWalletDisabled()) setSelectedMethod(PAYMENT_TYPE.WALLET);
+    if (!checkWalletDisabled() && !loadingBalance && !loadingIsBlocked) {
+      setSelectedMethod(PAYMENT_TYPE.WALLET);
+    }
   }, [balance, isBlocked]);
 
   return (

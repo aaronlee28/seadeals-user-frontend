@@ -8,12 +8,14 @@ import './ModalPayment.scss';
 import PaymentCards from './PaymentCards';
 
 type ModalPaymentProps = {
+  orderItems: any[],
   handleCloseModal: () => void,
   total: number
 };
 
 const ModalPayment = (props: ModalPaymentProps) => {
   const {
+    orderItems,
     handleCloseModal,
     total,
   } = props;
@@ -23,9 +25,9 @@ const ModalPayment = (props: ModalPaymentProps) => {
   const renderPaymentMethod = () => {
     switch (selectedMethod) {
       case PAYMENT_TYPE.SLP:
-        return <PayWithSLP />;
+        return <PayWithSLP orderItems={orderItems} />;
       case PAYMENT_TYPE.WALLET:
-        return <WalletIframe />;
+        return <WalletIframe orderItems={orderItems} />;
       default:
         return (
           <div className="h-100 d-flex align-items-center">
@@ -36,7 +38,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
   };
 
   const children = () => (
-    <div className="w-100 p-4">
+    <div className="w-100 p-4 payment_modal_window">
       <div className="d-flex justify-content-between p-3 px-4 border-bottom-dashed">
         <p className="fw-bold fs-5">Total Pembayaran</p>
         <p className="text-accent fw-bold fs-5">

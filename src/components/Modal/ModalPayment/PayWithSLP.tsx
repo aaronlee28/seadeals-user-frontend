@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import Button from '../../Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import SelectSLP from './SelectSLP';
 import RegisterSLP from './RegisterSLP';
 
-const PayWithSLP = () => {
+interface PayWithSLPProps {
+  orderItems: any[],
+}
+
+const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
   const axiosPrivate = useAxiosPrivate();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
@@ -50,6 +54,7 @@ const PayWithSLP = () => {
 
   const handleContinue = () => {
     if (!selectedSLP) return;
+    console.log(orderItems);
     console.log('asd');
   };
 

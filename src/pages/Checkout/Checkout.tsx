@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { calculateSubtotal, groupBySeller } from '../../utils/CartCheckoutHelper';
+import { calculateSubtotal, groupBySeller, parseCartItemsToPayload } from '../../utils/CartCheckoutHelper';
 import CardCheckout from '../../components/Cards/CardCheckout/CardCheckout';
 import CheckoutAddress from './CheckoutAddress';
 import CheckoutVoucher from './CheckoutVoucher';
@@ -11,9 +12,11 @@ import ModalPayment from '../../components/Modal/ModalPayment/ModalPayment';
 
 const Checkout = () => {
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [sellerProducts, setSellerProducts] = useState([]);
+  const [cartPerStore, setCartPerStore] = useState<any[]>([]);
   const [selectedAddr, setSelectedAddr] = useState<any>({});
 
   const [subtotal, setSubtotal] = useState(0);
@@ -32,8 +35,14 @@ const Checkout = () => {
           },
         );
         const { data } = response.data;
+
+        if (data.cart_items.length === 0) navigate('/cart');
+
         if (isMounted) {
-          setSellerProducts((groupBySeller(data.cart_items)));
+          const groupedBySeller = groupBySeller(data.cart_items);
+          setSellerProducts(groupedBySeller);
+          setCartPerStore(parseCartItemsToPayload(groupedBySeller));
+
           setSubtotal(calculateSubtotal(data.cart_items));
         }
       } catch (err) {
@@ -48,11 +57,19 @@ const Checkout = () => {
     };
   }, []);
 
+  const handleClickOrder = () => {
+    if (sellerProducts.length === 0) return;
+
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       {isModalOpen
           && (
           <ModalPayment
+              // masukin vouchers juga
+            orderItems={cartPerStore}
             handleCloseModal={() => setIsModalOpen(false)}
             total={subtotal + deliveryTotal}
           />
@@ -67,7 +84,7 @@ const Checkout = () => {
           <CheckoutSummary
             subtotal={subtotal}
             deliveryTotal={deliveryTotal}
-            handleClick={() => setIsModalOpen(true)}
+            handleClick={() => handleClickOrder()}
           />
         </div>
       </div>

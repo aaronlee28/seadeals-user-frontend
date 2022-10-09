@@ -1,9 +1,66 @@
-import React, { useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import InputPINField from '../../PIN/InputPINField';
 import Button from '../../../../components/Button/Button';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import { generateCheckoutPayload } from '../../../../utils/CartCheckoutHelper';
+import PAYMENT_TYPE from '../../../../constants/payment';
 
-const WalletIframe = () => {
-  const [PIN, setPIN] = useState<string[]>(new Array(6).fill(''));
+const PINDefault = new Array(6).fill('');
+
+interface WalletIframeProps {
+  orderItems: any[]
+}
+
+const WalletIframe:FC<WalletIframeProps> = ({ orderItems }) => {
+  const axiosPrivate = useAxiosPrivate();
+  const [PIN, setPIN] = useState<string[]>(PINDefault);
+  const [isPINComplete, setIsPINComplete] = useState(false);
+
+  useEffect(() => {
+    if (PIN.join('').length === 6) {
+      setIsPINComplete(true);
+      return;
+    }
+
+    if (isPINComplete) { setIsPINComplete(false); }
+  }, [PIN]);
+
+  const payWithWallet = async () => {
+    const pinValue = PIN.join('');
+    if (pinValue.length < 6) {
+      toast.error('PIN is incomplete!');
+      return;
+    }
+
+    try {
+      const response = await axiosPrivate.post(
+        'user/validator/wallet-pin',
+        JSON.stringify({ pin: pinValue }),
+      );
+
+      const { data } = response.data;
+
+      const payload = generateCheckoutPayload(orderItems, PAYMENT_TYPE.WALLET, '', '');
+
+      const config = {
+        headers: { Authorization: `Bearer ${data.id_token}` },
+      };
+      const checkoutRes = await axiosPrivate.post(
+        'checkout-cart',
+        JSON.stringify(payload),
+        config,
+      );
+
+      toast.success('Transaction Paid Successfully!');
+      console.log(checkoutRes);
+      // redirect to order history page
+    } catch (err:any) {
+      const { message } = err.response.data;
+      toast.error(message);
+      setPIN(PINDefault);
+    }
+  };
 
   return (
     <div className="text-center h-100 d-flex flex-column justify-content-between">
@@ -16,7 +73,11 @@ const WalletIframe = () => {
         <a href="/wallet/settings"><p className="mt-1 mb-3">Lupa PIN?</p></a>
       </div>
       <div className="pb-4 w-50 mx-auto">
-        <Button text="Bayar" buttonType="primary mx-auto w-75" handleClickedButton={() => console.log()} />
+        <Button
+          text="Bayar"
+          buttonType={`${isPINComplete ? 'primary' : 'disabled'} mx-auto w-75`}
+          handleClickedButton={() => payWithWallet()}
+        />
       </div>
     </div>
   );
