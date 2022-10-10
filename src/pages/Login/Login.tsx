@@ -61,8 +61,8 @@ const Login = () => {
       }
 
       navigate(from, { replace: true });
-    } catch (err) {
-      navigate('/register', { replace: true });
+    } catch (err:any) {
+      navigate('/register', { replace: true, state: err.response.data.data });
     }
   };
 
