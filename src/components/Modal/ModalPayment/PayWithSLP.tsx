@@ -10,9 +10,10 @@ import SLPIframeFull from '../../../pages/Wallet/Iframe/checkout/SLPIframeFull';
 
 interface PayWithSLPProps {
   orderItems: any[],
+  closeModal: ()=>void,
 }
 
-const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
+const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, closeModal }) => {
   const axiosPrivate = useAxiosPrivate();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
@@ -59,14 +60,11 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
 
   const handleContinue = async () => {
     if (!selectedSLP) return;
-    console.log(orderItems);
-    console.log(selectedSLP);
 
     try {
       if (!selectedSLP.id) {
         toast.loading('Registering Account');
-        const registerSLPRes = await axiosPrivate.post('user/sea-labs-pay/register', JSON.stringify(selectedSLP));
-        console.log(registerSLPRes);
+        await axiosPrivate.post('user/sea-labs-pay/register', JSON.stringify(selectedSLP));
         toast.dismiss();
         toast.success('Account Registered!');
       }
@@ -82,15 +80,6 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
 
       const { data } = checkoutRes.data;
       setPaymentLink(data.redirect_url);
-      // // if selected is new account, register it
-      // if (!selectedSLP.id) {
-      //   const registerSLPRes = await axiosPrivate.
-      //   post('user/sea-labs-pay/register', JSON.stringify(selectedSLP));
-      //   console.log(registerSLPRes);
-      //   toast.success('Account Registered!');
-      // }
-
-      console.log(checkoutRes);
     } catch (err:any) {
       toast.dismiss();
       const { message } = err.response.data;
@@ -104,7 +93,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems }) => {
   };
 
   return (
-    paymentLink ? <SLPIframeFull url={paymentLink} />
+    paymentLink ? <SLPIframeFull url={paymentLink} closeModal={closeModal} />
       : (
         <div className="p-2 d-flex flex-column justify-content-between h-100">
           <div>

@@ -1,41 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import './WalletTopup.scss';
 import { useSearchParams } from 'react-router-dom';
-import formatTitle from '../../../utils/titleFormatter';
-import successIcon from '../../../assets/svg/success.svg';
-import cancelIcon from '../../../assets/svg/cancel.svg';
-import failIcon from '../../../assets/svg/fail.svg';
-import { formatPrice } from '../../../utils/product';
+import formatTitle from '../../utils/titleFormatter';
+import { formatPrice } from '../../utils/product';
+import successIcon from '../../assets/svg/success.svg';
+import failIcon from '../../assets/svg/fail.svg';
 
 const PostTopupSLP = () => {
   const [searchParam] = useSearchParams();
+  const [seconds, setSeconds] = useState(3);
   const [subMsg, setSubMsg] = useState('');
   const [icon, setIcon] = useState('');
 
-  useEffect(() => {
-    const status = searchParam.get('status');
+  const redirectToOrders = () => {
+    // @ts-ignore
+    window.top.location.href = '/transactions/';
+  };
+
+  const initializePage = (status:string | null) => {
     switch (status) {
       case 'TXN_FAILED':
         setIcon(failIcon);
-        setSubMsg('Top Up with SeaLabs Pay Failed');
+        setSubMsg('Payment with SeaLabs Pay Failed');
         return;
       case 'TXN_PAID':
         setIcon(successIcon);
-        setSubMsg('Top Up Successfully Paid with SeaLabs Pay');
-        return;
-      case 'TXN_CANCEL':
-        setIcon(cancelIcon);
-        setSubMsg('Top Up with SeaLabs Pay Cancelled');
+        setSubMsg('Payment Successfully Paid with SeaLabs Pay');
         return;
       default:
         setSubMsg('');
     }
-  }, []);
-
-  const redirectToWallet = () => {
-    // @ts-ignore
-    window.top.location.href = '/wallet';
   };
+
+  useEffect(() => {
+    const status = searchParam.get('status');
+    initializePage(status);
+    const timerId = setInterval(() => setSeconds((prevState) => prevState - 1), 1000);
+    setTimeout(() => { clearInterval(timerId); redirectToOrders(); }, 3250);
+  }, []);
 
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -52,12 +53,13 @@ const PostTopupSLP = () => {
             {formatPrice(parseInt(searchParam.get('amount') || '', 10))}
           </p>
         </div>
+        <small className="mb-2">{`Redirecting in ${seconds}..`}</small>
         <button
           type="button"
           className="p-2 rounded bg-main text-white fw-bold"
-          onClick={redirectToWallet}
+          onClick={redirectToOrders}
         >
-          Back to Wallet
+          Back to Orders
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import InputPINField from '../../PIN/InputPINField';
 import Button from '../../../../components/Button/Button';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
@@ -14,6 +15,7 @@ interface WalletIframeProps {
 }
 
 const WalletIframe:FC<WalletIframeProps> = ({ orderItems, closeModal }) => {
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [PIN, setPIN] = useState<string[]>(PINDefault);
   const [isPINComplete, setIsPINComplete] = useState(false);
@@ -48,16 +50,17 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, closeModal }) => {
         headers: { Authorization: `Bearer ${data.id_token}` },
       };
       toast.loading('Requesting Payment');
-      const checkoutRes = await axiosPrivate.post(
+      const paymentRes = await axiosPrivate.post(
         'checkout-cart',
         JSON.stringify(payload),
         config,
       );
+      const { status } = paymentRes.data.data;
       toast.dismiss();
-
       toast.success('Transaction Paid Successfully!');
-      console.log(checkoutRes);
-      // redirect to order history page
+      closeModal();
+
+      navigate(`/transactions/${status.transaction_id}`);
     } catch (err:any) {
       const { message } = err.response.data;
       toast.dismiss();

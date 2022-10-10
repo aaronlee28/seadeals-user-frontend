@@ -25,7 +25,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
   const renderPaymentMethod = () => {
     switch (selectedMethod) {
       case PAYMENT_TYPE.SLP:
-        return <PayWithSLP orderItems={orderItems} />;
+        return <PayWithSLP orderItems={orderItems} closeModal={handleCloseModal} />;
       case PAYMENT_TYPE.WALLET:
         return <WalletIframe orderItems={orderItems} closeModal={handleCloseModal} />;
       default:
