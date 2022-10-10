@@ -19,35 +19,28 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    const response = await axios.post(
+      LOGIN_URL,
+      JSON.stringify({ email, password }),
+      {
+        withCredentials: true,
+      },
+    );
+    const decode:any = jwt_decode(response.data.data.id_token);
+    const accessToken = response?.data?.data.id_token;
+    const { user, scope } = decode;
 
-    try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ email, password }),
-        {
-          withCredentials: true,
-        },
-      );
-      const decode:any = jwt_decode(response.data.data.id_token);
-      const accessToken = response?.data?.data.id_token;
-      const { user, scope } = decode;
+    setAuth({ user, roles: scope.split(' '), accessToken });
+    localStorage.setItem('access_token', accessToken);
 
-      setAuth({ user, roles: scope.split(' '), accessToken });
-      localStorage.setItem('access_token', accessToken);
+    setEmail('');
+    setPassword('');
 
-      setEmail('');
-      setPassword('');
-
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error(err);
-    }
+    navigate(from, { replace: true });
   };
 
   const handleCallbackResponse = async (response: any) => {
-    console.log('response google: ', response);
     try {
       const res = await axios.post(
         '/google/sign-in',
@@ -56,7 +49,6 @@ const Login = () => {
           headers: { 'Content-Type': 'application/json' },
         },
       );
-      console.log('localhost response: ', res);
       const decode:any = jwt_decode(res.data.data.id_token);
       const accessToken = res?.data?.data.id_token;
       const { user, scope } = decode;
@@ -92,12 +84,8 @@ const Login = () => {
 
   useEffect(() => {
     const token:any = localStorage.getItem('access_token');
-    console.log(token);
     if (token !== null) {
       const dateNow = new Date();
-      // @ts-ignore
-      console.log(jwt_decode(token).exp * 1000);
-      console.log(dateNow.getTime());
       // @ts-ignore
       if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
         setStatus('expired');

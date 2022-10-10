@@ -83,7 +83,6 @@ const Register = () => {
           withCredentials: true,
         },
       );
-      console.log(response);
       const decode:any = jwt_decode(response.data.data.data.id_token);
       const accessToken = response?.data?.data.data.id_token;
       const { user, scope } = decode;
@@ -102,7 +101,7 @@ const Register = () => {
 
       navigate('/', { replace: true });
     } catch (err) {
-      console.error(err);
+      navigate('/register', { replace: true });
     }
   };
 
@@ -115,12 +114,8 @@ const Register = () => {
     }
 
     const token:any = localStorage.getItem('access_token');
-    console.log(token);
     if (token !== null) {
       const dateNow = new Date();
-      // @ts-ignore
-      console.log(jwt_decode(token).exp * 1000);
-      console.log(dateNow.getTime());
       // @ts-ignore
       if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
         setStatus('expired');
@@ -313,7 +308,8 @@ const Register = () => {
                   <input
                     className="form-control mb-2"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: { target: { value: React.SetStateAction<string>; };
+                    }) => setEmail(event.target.value)}
                     type="email"
                     id="email-m"
                     placeholder="Email"
