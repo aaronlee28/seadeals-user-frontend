@@ -62,6 +62,7 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const googleUser = location.state ? location.state.user : null;
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -108,6 +109,11 @@ const Register = () => {
   const [status, setStatus] = useState('');
 
   useEffect(() => {
+    if (googleUser) {
+      setEmail(googleUser.email);
+      setFullName(googleUser.name);
+    }
+
     const token:any = localStorage.getItem('access_token');
     console.log(token);
     if (token !== null) {
