@@ -27,7 +27,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
       case PAYMENT_TYPE.SLP:
         return <PayWithSLP orderItems={orderItems} />;
       case PAYMENT_TYPE.WALLET:
-        return <WalletIframe orderItems={orderItems} />;
+        return <WalletIframe orderItems={orderItems} closeModal={handleCloseModal} />;
       default:
         return (
           <div className="h-100 d-flex align-items-center">

@@ -4,15 +4,16 @@ import InputPINField from '../../PIN/InputPINField';
 import Button from '../../../../components/Button/Button';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import { generateCheckoutPayload } from '../../../../utils/CartCheckoutHelper';
-import PAYMENT_TYPE from '../../../../constants/payment';
+import PAYMENT_TYPE, { WALLET_BLOCKED } from '../../../../constants/payment';
 
 const PINDefault = new Array(6).fill('');
 
 interface WalletIframeProps {
-  orderItems: any[]
+  orderItems: any[],
+  closeModal: ()=>void,
 }
 
-const WalletIframe:FC<WalletIframeProps> = ({ orderItems }) => {
+const WalletIframe:FC<WalletIframeProps> = ({ orderItems, closeModal }) => {
   const axiosPrivate = useAxiosPrivate();
   const [PIN, setPIN] = useState<string[]>(PINDefault);
   const [isPINComplete, setIsPINComplete] = useState(false);
@@ -61,6 +62,9 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems }) => {
       const { message } = err.response.data;
       toast.dismiss();
       toast.error(message);
+      if (message === WALLET_BLOCKED) {
+        closeModal();
+      }
       setPIN(PINDefault);
     }
   };
