@@ -24,6 +24,10 @@ class Products {
   static GetPromotionPrice(ProductID: number) {
     return axios.get(`/products/${ProductID}/promotion-price`);
   }
+
+  static GetSimilarProducts(ProductID: number) {
+    return axios.get(`/products/${ProductID}/similar-products`);
+  }
 }
 
 export default Products;

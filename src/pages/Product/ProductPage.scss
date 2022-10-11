@@ -102,5 +102,53 @@
         }
       }
     }
+    .seller_product_container,
+    .similar_product_container {
+      width: 100%;
+      .seller_product_content,
+      .similar_product_content{
+        width: 100%;
+        .header {
+          width: 100%;
+          text-align: left;
+          background: #FFFFFF;
+          margin-bottom: 24px;
+          padding: 20px;
+          border-width: 1px;
+          border-style: solid;
+          border-color: #EFEFEF;
+          border-radius: 10px;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          .title {
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 39px;
+            color: rgba(38, 88, 205, 0.8);
+          }
+          .plain {
+            color: #2658CD;
+            .all {
+              path {
+                fill: #2658CD;
+              }
+            }
+          }
+        }
+        .items {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+      }
+    }
+
   }
 }

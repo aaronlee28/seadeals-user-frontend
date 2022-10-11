@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import './SellerProduct.scss';
 import { useNavigate } from 'react-router-dom';
 import Products from '../../../api/products';
 import Card from '../../../components/Cards/Card';

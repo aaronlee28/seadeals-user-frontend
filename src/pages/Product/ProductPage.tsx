@@ -9,6 +9,7 @@ import { PRODUCT_SPECIFICATION } from '../../constants/product';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SellerInfo from './Seller/SellerInfo';
 import SellerProduct from './SellerProduct/SellerProduct';
+import SimilarProduct from './SimilarProduct/SimilarProduct';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -82,6 +83,7 @@ const ProductPage = () => {
               sellerId={productSeller.id}
               productId={product.product.id}
             />
+            <SimilarProduct productId={product.product.id} />
           </div>
         )
       }
