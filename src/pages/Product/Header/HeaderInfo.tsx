@@ -273,7 +273,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const postToCart = async () => {
     if (checkSelectedVariant()) {
       const val = {
-        product_variant_detail_id: variantDetail.id,
+        product_variant_detail_id: Object.keys(variantDetail).length <= 1
+          ? product.id
+          : variantDetail.id,
         quantity: amount,
       };
       await Carts.PostCartItem(axiosPrivate, val)

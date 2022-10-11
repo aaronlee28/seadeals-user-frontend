@@ -40,14 +40,13 @@ const AppRoutes = () => (
         <Route path="similar/">
           <Route path=":slug" element={<SimilarPage />} />
         </Route>
-        <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route path="product/">
             <Route path=":slug" element={<ProductPage />} />
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/profile" element={<Profile />} />
-
+            <Route path="cart" element={<Cart />} />
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />
               <Route path="settings" element={<WalletPIN />} />

@@ -1,70 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import Card from '../../components/Cards/Card';
 
 import './Cart.scss';
 import CardCartAll from '../../components/Cards/CardCart/CardCartAll';
+import Carts from '../../api/carts';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAuth from '../../hooks/useAuth';
 
 const Cart = () => {
-  const [dummy, setDummy] = useState(
-    [
-      {
-        storeId: 1,
-        storeName: 'Kamari Odd Space',
-        storeIsChecked: false,
-        storeItems: [
-          {
-            id: 1,
-            name: 'Es Kopi Susu',
-            imgUrl: 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/categories%2Faudio.png?alt=media&token=3092aa1f-3aab-40ea-9902-0990599b09c5',
-            price: 100000,
-            amount: 2,
-            isChecked: false,
-          },
-          {
-            id: 2,
-            name: 'Es Hazelnut Latte',
-            imgUrl: 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/categories%2Faudio.png?alt=media&token=3092aa1f-3aab-40ea-9902-0990599b09c5',
-            price: 50000,
-            amount: 4,
-            isChecked: false,
-          },
-        ],
-      },
-      {
-        storeId: 2,
-        storeName: 'Kamari Odd Space KW',
-        storeIsChecked: false,
-        storeItems: [
-          {
-            id: 1,
-            name: 'Es Kopi Susu',
-            imgUrl: 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/categories%2Faudio.png?alt=media&token=3092aa1f-3aab-40ea-9902-0990599b09c5',
-            price: 100000,
-            amount: 2,
-            isChecked: false,
-          },
-          {
-            id: 2,
-            name: 'Es Hazelnut Latte',
-            imgUrl: 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/categories%2Faudio.png?alt=media&token=3092aa1f-3aab-40ea-9902-0990599b09c5',
-            price: 50000,
-            amount: 4,
-            isChecked: false,
-          },
-        ],
-      },
-    ],
-  );
+  const [cartItems, setCartItems] = useState([
+    {
+      storeId: 0,
+      storeName: '',
+      storeIsChecked: false,
+      storeItems: [
+        {
+          id: 0,
+          name: '',
+          imgUrl: '',
+          price: 0,
+          amount: 0,
+          isChecked: false,
+        },
+      ],
+    },
+  ]);
   const [total, setTotal] = useState({
     totalPrice: 0,
     totalProduct: 0,
   });
 
   const [isAllProductsChecked, setIsAllProductsChecked] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
 
   const isAllChecked = () => {
-    for (let i = 0; i < dummy.length; i += 1) {
-      if (!dummy[i].storeIsChecked) {
+    for (let i = 0; i < cartItems.length; i += 1) {
+      if (!cartItems[i].storeIsChecked) {
         return false;
       }
     }
@@ -99,7 +72,7 @@ const Cart = () => {
   };
 
   const handleCheckedAllProducts = () => {
-    const checkedStore = dummy.map(
+    const checkedStore = cartItems.map(
       (storeData: any) => {
         const newStoreData = storeData;
         newStoreData.storeIsChecked = !isAllProductsChecked;
@@ -114,13 +87,13 @@ const Cart = () => {
       },
     );
 
-    setDummy(checkedStore);
+    setCartItems(checkedStore);
     setIsAllProductsChecked(isAllChecked);
     setTotalCheck(checkedStore);
   };
 
   const handleCheckedStore = (storeId: number) => {
-    const checkedStore = dummy.map(
+    const checkedStore = cartItems.map(
       (storeData: any) => {
         if (storeData.storeId === storeId) {
           const newStoreData = storeData;
@@ -138,13 +111,13 @@ const Cart = () => {
       },
     );
 
-    setDummy(checkedStore);
+    setCartItems(checkedStore);
     setIsAllProductsChecked(isAllChecked);
     setTotalCheck(checkedStore);
   };
 
   const handleCheckedItem = (storeId: number, id: number) => {
-    const checkedItem = dummy.map(
+    const checkedItem = cartItems.map(
       (storeData: any) => {
         if (storeData.storeId === storeId) {
           const newStoreData = storeData;
@@ -165,34 +138,9 @@ const Cart = () => {
       },
     );
 
-    setDummy(checkedItem);
+    setCartItems(checkedItem);
     setIsAllProductsChecked(isAllChecked);
     setTotalCheck(checkedItem);
-  };
-
-  const handleDeleteItem = (storeId: number, id: number) => {
-    const deletedItem = dummy.map(
-      (storeData: any) => {
-        if (storeData.storeId === storeId) {
-          const newStoreData = storeData;
-          newStoreData.storeItems.map(
-            (item: any) => {
-              if (item.id === id) {
-                const newItem = item;
-                newItem.amount = 0;
-                return newItem;
-              }
-              return item;
-            },
-          );
-          return newStoreData;
-        }
-        return storeData;
-      },
-    );
-
-    setDummy(deletedItem);
-    setTotalCheck(deletedItem);
   };
 
   const handleAmount = (storeId: number, id: number, amount: any) => {
@@ -200,7 +148,7 @@ const Cart = () => {
     if (amount === '') {
       newAmount = 0;
     }
-    const updatedStore = dummy.map(
+    const updatedStore = cartItems.map(
       (storeData: any) => {
         if (storeData.storeId === storeId) {
           const newStoreData = storeData;
@@ -220,9 +168,97 @@ const Cart = () => {
       },
     );
 
-    setDummy(updatedStore);
+    setCartItems(updatedStore);
     setTotalCheck(updatedStore);
   };
+
+  const splitCart = (items: any[]) => {
+    let tempCart: any[] = [];
+    for (let i = 0; i < items.length; i += 1) {
+      const isSellerExist = tempCart.find(
+        (el: any) => el.storeId === items[i].id,
+      );
+      if (!isSellerExist) {
+        const newItem = {
+          id: items[i].id,
+          name: items[i].product_name,
+          imgUrl: items[i].image_url,
+          price: items[i].price_per_item,
+          amount: items[i].quantity,
+          isChecked: false,
+        };
+        const newSeller = {
+          storeId: items[i].seller_id,
+          storeName: items[i].seller_name,
+          storeIsChecked: false,
+          storeItems: [newItem],
+        };
+        tempCart = [...tempCart, newSeller];
+      }
+      if (isSellerExist) {
+        tempCart = tempCart.map(
+          (element: any) => {
+            if (element.storeId === items[i].id) {
+              const newItem = {
+                id: items[i].id,
+                name: items[i].product_name,
+                imgUrl: items[i].image_url,
+                price: items[i].price_per_item,
+                amount: items[i].quantity,
+                isChecked: false,
+              };
+              const addedItems = [...element.storeItems, newItem];
+              return {
+                storeId: element.storeId,
+                storeName: element.storeName,
+                storeIsChecked: element.storeIsChecked,
+                storeItems: addedItems,
+              };
+            }
+            return element;
+          },
+        );
+      }
+    }
+    console.log(tempCart);
+    setCartItems(tempCart);
+  };
+
+  const getCartItems = async () => {
+    await Carts.GetCartItem(axiosPrivate)
+      .then((resp: any) => {
+        const allItems = resp.data.data.cart_items;
+        splitCart(allItems);
+      })
+      .catch((err: any) => err);
+  };
+
+  const deleteItem = async (id: number) => {
+    console.log('COBA');
+    console.log(auth.user.user_id);
+    const val = {
+      user_id: auth.user.user_id,
+      cart_item_id: id,
+    };
+    console.log(val);
+    await Carts.DeleteCartItem(axiosPrivate, val)
+      .then(() => {
+        console.log('BERHASIL');
+        toast.success('Barang berhasil dihapus dari keranjang');
+        getCartItems().then();
+      })
+      .catch(() => {
+        toast.error('Barang gagal dihapus');
+      });
+  };
+  const handleDeleteItem = (storeId: number, id: number) => {
+    console.log('SINI');
+    deleteItem(id).then();
+  };
+
+  useEffect(() => {
+    getCartItems().then();
+  }, []);
 
   return (
     <div className="cart_container">
@@ -235,7 +271,7 @@ const Cart = () => {
         />
         <div className="cart_items">
           {
-            dummy.map(
+            cartItems.map(
               (item) => (
                 <Card
                   key={`${item.storeId}-${item.storeName}`}

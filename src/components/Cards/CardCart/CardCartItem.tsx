@@ -90,16 +90,13 @@ const CardCartItem = (props: CardCartItemProps) => {
           <p className="title">Total Harga:</p>
           <p className="total_price">{ formatPriceWithCurrency(price * amount) }</p>
         </div>
-        <div className="fifth_content">
+        <div
+          className="fifth_content"
+          onClick={() => handleDelete(storeId, id)}
+          role="presentation"
+        >
           {
-            React.createElement(
-              IconDelete,
-              {
-                className: 'icon_delete',
-                onClick: () => handleDelete(storeId, id),
-                role: 'presentation',
-              },
-            )
+            React.createElement(IconDelete, { className: 'icon_delete' })
           }
         </div>
       </div>
