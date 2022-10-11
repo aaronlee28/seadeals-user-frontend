@@ -8,6 +8,7 @@ import { PRODUCT_SPECIFICATION } from '../../constants/product';
 // import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SellerInfo from './Seller/SellerInfo';
+import SellerProduct from './SellerProduct/SellerProduct';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -76,6 +77,10 @@ const ProductPage = () => {
             <ProductDetail
               description={productDetail.description}
               specification={productDetail.specification}
+            />
+            <SellerProduct
+              sellerId={productSeller.id}
+              productId={product.product.id}
             />
           </div>
         )
