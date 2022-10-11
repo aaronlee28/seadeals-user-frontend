@@ -89,6 +89,13 @@
       background: #EFEFEF;
     }
   }
+  &.disabled{
+      color: #5f5f5f;
+      background: #CCCCCC;
+      border: solid 1px #CCCCCC;
+      padding: 10px 20px;
+      cursor: unset;
+  }
   &.plain {
     .text {
 

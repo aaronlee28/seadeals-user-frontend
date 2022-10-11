@@ -21,9 +21,12 @@ import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/History/WalletHistory';
 import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
-import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
 import CategoryPage from '../pages/Category/CategoryPage';
 import RecommendationPage from '../pages/Recommendation/RecommendationPage';
+import PostTrxSLP from '../pages/PostSLP/PostTrxSLP';
+import PostTopupSLP from '../pages/PostSLP/PostTopupSLP';
+import Checkout from '../pages/Checkout/Checkout';
+import TrxPage from '../pages/Transaction/TrxPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -48,6 +51,10 @@ const AppRoutes = () => (
               <Route path="history/:id" element={<WalletTrxDetails />} />
               <Route path="topup" element={<WalletTopup />} />
             </Route>
+
+            <Route path="/checkout" element={<Checkout />} />
+
+            <Route path="/transactions/:trxID" element={<TrxPage />} />
           </Route>
 
           <Route path="/toko/">
@@ -60,7 +67,8 @@ const AppRoutes = () => (
         </Route>
       </Route>
 
-      <Route path="/wallet/post-topup/" element={<PostTopupSLP />} />
+      <Route path="/transactions/post-slp-topup/" element={<PostTopupSLP />} />
+      <Route path="/transactions/post-slp-trx/" element={<PostTrxSLP />} />
 
       <Route element={<PersistLogin />}>
         <Route path="/seller/" element={<SellerLayout />}>

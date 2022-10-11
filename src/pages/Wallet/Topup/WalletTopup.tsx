@@ -9,10 +9,13 @@ import formatCardNumber from '../../../utils/walletFormatter';
 import { formatPrice } from '../../../utils/product';
 import LoadingPlain from '../../../components/Loading/LoadingPlain';
 import SLPIframe from '../Iframe/SLPIframe';
+import useWalletStatus from '../../../hooks/useWalletStatus';
 
 const WalletTopup = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const { loadingIsBlocked, isBlocked } = useWalletStatus();
+
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
   const [selected, setSelected] = useState<any>();
   const [amount, setAmount] = useState <any>('');
@@ -30,6 +33,7 @@ const WalletTopup = () => {
         if (!isWalletPINSet(data.status)) {
           toast.error('Anda harus mengatur PIN untuk melakukan transaksi.');
           navigate('/wallet/settings');
+          return;
         }
       } catch (err) {
         toast.error('Failed to Fetch User Wallet Info');
@@ -54,7 +58,7 @@ const WalletTopup = () => {
           setSelected(data[0]);
         }
       } catch (err) {
-        toast.error('Failed to Fetch Connected SeaLabsPay Accounts');
+        if (isMounted) toast.error('Failed to Fetch Connected SeaLabsPay Accounts');
       }
     };
     getSLPAccounts();
@@ -64,6 +68,13 @@ const WalletTopup = () => {
       controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (!loadingIsBlocked && isBlocked) {
+      toast.error('Your Wallet is Currently Blocked.');
+      navigate('/wallet');
+    }
+  });
 
   const requestTopup = async () => {
     if (!selected) {

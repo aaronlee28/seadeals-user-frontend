@@ -1,0 +1,27 @@
+.address_container{
+  .address_selector{
+    .address_main{
+      cursor:pointer;
+    }
+    .address_options{
+      .address_options_item{
+        cursor:pointer;
+      }
+      .address_options_item:hover{
+        background-color: rgba(38, 88, 205, 0.1);
+      }
+    }
+    .address_options_open{
+      min-height: 42px;
+      max-height: 130px;
+      overflow-y: scroll;
+    }
+    .address_options_collapse{
+      display: none;
+    }
+  }
+}
+
+.modal_content{
+ width: 40% !important;
+}
