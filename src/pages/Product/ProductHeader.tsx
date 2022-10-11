@@ -13,11 +13,9 @@ const ProductHeader = (props: ProductHeaderProps) => {
     product,
   } = props;
 
-  const [photos, setPhotos] = useState([]);
+  console.log(product);
 
-  const handleFavorite = () => {
-    console.log(product.product.favorite);
-  };
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     setPhotos(product.product.product_photos);
@@ -33,7 +31,7 @@ const ProductHeader = (props: ProductHeaderProps) => {
             <ProductFavorite
               isFavorite={product.product.favorite}
               favorite={product.product.favorite_count}
-              handleClicked={handleFavorite}
+              productId={product.product.id}
             />
           </div>
         </div>

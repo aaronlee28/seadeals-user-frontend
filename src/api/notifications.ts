@@ -1,8 +1,6 @@
-import axios from './axios';
-
 class Notifications {
-  static PostFavorite(data: any) {
-    return axios.post('/products/favorites', data);
+  static PostFavorite(ax: any, data: any) {
+    return ax.post('/products/favorites', data);
   }
 }
 

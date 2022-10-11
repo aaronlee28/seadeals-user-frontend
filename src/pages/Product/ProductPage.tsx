@@ -5,7 +5,8 @@ import ProductDetail from './ProductDetail';
 import ProductHeader from './ProductHeader';
 import Products from '../../api/products';
 import PRODUCT_SPECIFICATION from '../../constants/product';
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -16,9 +17,8 @@ const ProductPage = () => {
   });
   const [productSeller, setProductSeller] = useState<any>({});
   const [, setLoadingProduct] = useState(true);
-  const { auth } = useAuth();
-
-  console.log(auth);
+  // const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   const getID = () => {
     const splitSlug = slug?.split('.');
@@ -41,8 +41,8 @@ const ProductPage = () => {
   };
 
   const getProduct = async () => {
-    await Products.GetProductByID(parseInt(getID(), 10))
-      .then((resp) => {
+    await Products.GetProductByID(axiosPrivate, parseInt(getID(), 10))
+      .then((resp: any) => {
         const newProduct = resp.data.data.product_detail;
         const prodSeller = resp.data.data.seller;
         setProduct(newProduct);
@@ -54,7 +54,7 @@ const ProductPage = () => {
           specification: getSpec,
         });
       })
-      .catch((err) => err)
+      .catch((err: any) => err)
       .finally(() => {
         setLoadingProduct(false);
       });
