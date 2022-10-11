@@ -24,7 +24,7 @@ interface FormProps
   FormOptionalProps {}
 
 const defaultProps: FormOptionalProps = {
-  setInput: '',
+  setInput: (e: any) => e,
   haveSubmitButton: false,
   readOnly: false,
 };

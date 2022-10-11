@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useLocation } from 'react-router-dom';
 import Card from '../../components/Cards/Card';
 
 import './Cart.scss';
@@ -34,6 +35,11 @@ const Cart = () => {
   const [isAllProductsChecked, setIsAllProductsChecked] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  const location = useLocation();
+  const buyNow = location?.state?.cartId || '';
+
+  console.log(location);
+  console.log(buyNow);
 
   const isAllChecked = () => {
     for (let i = 0; i < cartItems.length; i += 1) {
@@ -116,31 +122,38 @@ const Cart = () => {
     setTotalCheck(checkedStore);
   };
 
-  const handleCheckedItem = (storeId: number, id: number) => {
+  const handleCheckedItem = (id: number) => {
     const checkedItem = cartItems.map(
       (storeData: any) => {
-        if (storeData.storeId === storeId) {
-          const newStoreData = storeData;
-          newStoreData.storeItems.map(
-            (item: any) => {
-              if (item.id === id) {
-                const newItem = item;
-                newItem.isChecked = !newItem.isChecked;
-                return newItem;
-              }
-              return item;
-            },
-          );
-          newStoreData.storeIsChecked = isAllInStoreChecked(newStoreData.storeItems);
-          return newStoreData;
-        }
-        return storeData;
+        const newStoreData = storeData;
+        newStoreData.storeItems.map(
+          (item: any) => {
+            if (item.id === id) {
+              const newItem = item;
+              newItem.isChecked = !newItem.isChecked;
+              return newItem;
+            }
+            return item;
+          },
+        );
+        newStoreData.storeIsChecked = isAllInStoreChecked(newStoreData.storeItems);
+        return newStoreData;
       },
     );
 
     setCartItems(checkedItem);
     setIsAllProductsChecked(isAllChecked);
     setTotalCheck(checkedItem);
+  };
+
+  const updateAmount = async (id: number, amount: number) => {
+    const val = {
+      cart_item_id: id,
+      current_quantity: amount,
+    };
+    await Carts.PatchCartItem(axiosPrivate, val)
+      .then()
+      .catch();
   };
 
   const handleAmount = (storeId: number, id: number, amount: any) => {
@@ -168,6 +181,7 @@ const Cart = () => {
       },
     );
 
+    updateAmount(id, amount).then();
     setCartItems(updatedStore);
     setTotalCheck(updatedStore);
   };
@@ -176,7 +190,7 @@ const Cart = () => {
     let tempCart: any[] = [];
     for (let i = 0; i < items.length; i += 1) {
       const isSellerExist = tempCart.find(
-        (el: any) => el.storeId === items[i].id,
+        (el: any) => el.storeId === items[i].seller_id,
       );
       if (!isSellerExist) {
         const newItem = {
@@ -185,12 +199,12 @@ const Cart = () => {
           imgUrl: items[i].image_url,
           price: items[i].price_per_item,
           amount: items[i].quantity,
-          isChecked: false,
+          isChecked: items[i].id === buyNow,
         };
         const newSeller = {
           storeId: items[i].seller_id,
           storeName: items[i].seller_name,
-          storeIsChecked: false,
+          storeIsChecked: newItem.isChecked,
           storeItems: [newItem],
         };
         tempCart = [...tempCart, newSeller];
@@ -198,20 +212,20 @@ const Cart = () => {
       if (isSellerExist) {
         tempCart = tempCart.map(
           (element: any) => {
-            if (element.storeId === items[i].id) {
+            if (element.storeId === items[i].seller_id) {
               const newItem = {
                 id: items[i].id,
                 name: items[i].product_name,
                 imgUrl: items[i].image_url,
                 price: items[i].price_per_item,
                 amount: items[i].quantity,
-                isChecked: false,
+                isChecked: items[i].id === buyNow,
               };
               const addedItems = [...element.storeItems, newItem];
               return {
                 storeId: element.storeId,
                 storeName: element.storeName,
-                storeIsChecked: element.storeIsChecked,
+                storeIsChecked: isAllInStoreChecked(addedItems),
                 storeItems: addedItems,
               };
             }
@@ -220,7 +234,7 @@ const Cart = () => {
         );
       }
     }
-    console.log(tempCart);
+
     setCartItems(tempCart);
   };
 
@@ -228,22 +242,19 @@ const Cart = () => {
     await Carts.GetCartItem(axiosPrivate)
       .then((resp: any) => {
         const allItems = resp.data.data.cart_items;
+        console.log(allItems);
         splitCart(allItems);
       })
       .catch((err: any) => err);
   };
 
   const deleteItem = async (id: number) => {
-    console.log('COBA');
-    console.log(auth.user.user_id);
     const val = {
       user_id: auth.user.user_id,
       cart_item_id: id,
     };
-    console.log(val);
     await Carts.DeleteCartItem(axiosPrivate, val)
       .then(() => {
-        console.log('BERHASIL');
         toast.success('Barang berhasil dihapus dari keranjang');
         getCartItems().then();
       })
@@ -251,14 +262,19 @@ const Cart = () => {
         toast.error('Barang gagal dihapus');
       });
   };
+
   const handleDeleteItem = (storeId: number, id: number) => {
-    console.log('SINI');
     deleteItem(id).then();
   };
 
   useEffect(() => {
     getCartItems().then();
   }, []);
+
+  useEffect(() => {
+    console.log(buyNow);
+    handleCheckedItem(buyNow);
+  }, [buyNow]);
 
   return (
     <div className="cart_container">

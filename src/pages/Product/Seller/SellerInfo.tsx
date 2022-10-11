@@ -67,7 +67,10 @@ const SellerInfo = (props: SellerInfoProps) => {
           {
             sellerItems?.map(
               (item: any) => (
-                <div className={`item ${item.classes}`}>
+                <div
+                  key={`${item.variable}-${item.value}`}
+                  className={`item ${item.classes}`}
+                >
                   <div className="variable">
                     { item.variable }
                   </div>

@@ -14,7 +14,7 @@ type CardCartItemProps = {
     isChecked: boolean;
   };
   storeId: number;
-  handleChecked: (storeId: number, id: number) => void;
+  handleChecked: (id: number) => void;
   handleDelete: (storeId: number, id: number) => void;
   handleAmount: (storeId: number, id: number, amount: number) => void;
 };
@@ -54,7 +54,7 @@ const CardCartItem = (props: CardCartItemProps) => {
       <div className="card_cart_item_content">
         <div
           className={`checkbox ${isChecked ? 'checked' : ''}`}
-          onClick={() => handleChecked(storeId, id)}
+          onClick={() => handleChecked(id)}
           role="presentation"
         >
           {

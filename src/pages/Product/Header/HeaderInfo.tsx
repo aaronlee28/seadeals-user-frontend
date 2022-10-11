@@ -109,6 +109,11 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     console.log(variantDetail);
     console.log(selectedVariant);
     let getVar = variantDetail;
+    if (variantItems.length === 0) {
+      getVar = product.product_variant_detail.find(
+        (el: any) => !el.variant1_value,
+      );
+    }
     if (variantItems.length === 1) {
       if (selectedVariant.variant1 === '') {
         getVar = { price: 0 };
@@ -278,17 +283,21 @@ const HeaderInfo = (props: HeaderInfoProps) => {
           : variantDetail.id,
         quantity: amount,
       };
+      let cartId;
       await Carts.PostCartItem(axiosPrivate, val)
-        .then(() => {
+        .then((resp: any) => {
           toast.success('Barang berhasil dimasukkan ke keranjang');
+          cartId = resp.data.data.id;
         })
         .catch(() => {
           toast.error('Barang gagal dimasukkan ke keranjang');
         });
+      return cartId;
     }
     if (!checkSelectedVariant()) {
       toast.error('Anda belum memilih varian');
     }
+    return '';
   };
 
   const addToCart = () => {
@@ -301,10 +310,12 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     }
   };
 
-  const buyNow = () => {
+  const buyNow = async () => {
     if (auth.user) {
-      postToCart().then();
-      navigate('/cart', { state: { from: location } });
+      // let i?d;
+      const id = await postToCart().then((res) => res);
+      console.log(id);
+      navigate('/cart', { state: { cartId: id } });
     }
     if (!auth.user) {
       navigate('/login', { state: { from: location } });
