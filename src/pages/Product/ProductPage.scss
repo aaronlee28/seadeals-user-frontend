@@ -108,6 +108,10 @@
       .seller_product_content,
       .similar_product_content{
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
         .header {
           width: 100%;
           text-align: left;
@@ -147,8 +151,15 @@
           gap: 24px;
           flex-wrap: wrap;
         }
+        .show_all {
+          margin-top: 40px;
+          width: 100%;
+          max-width: 300px;
+          min-height: 40px;
+          border: 2px solid #2658CD;
+          border-radius: 5px;
+        }
       }
     }
-
   }
 }
