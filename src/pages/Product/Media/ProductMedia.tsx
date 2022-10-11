@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import MainMedia from './MainMedia';
 
+import './ProductMedia.scss';
+
 const ProductMedia:FC<any> = ({ photos }) => {
   const [mainImage, setMainImage] = useState({
     id: 0,

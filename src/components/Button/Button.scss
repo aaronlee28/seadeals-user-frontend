@@ -161,4 +161,29 @@
 
     }
   }
+  &.select {
+    border-radius: 5px;
+    background: #FFFFFF;
+    border: solid 2px #CACACA;
+    padding: 10px 20px;
+
+    .text {
+      color: #000000;
+    }
+    &:hover {
+      background: #EFEFEF;
+      border: solid 2px #2658CD;
+    }
+    &.active {
+      border: solid 2px #2658CD;
+    }
+  }
+  &.disabled {
+    cursor: not-allowed;
+    background: #CACACA;
+    &:hover {
+      background: #CACACA;
+      border: solid 2px #CACACA;
+    }
+  }
 }

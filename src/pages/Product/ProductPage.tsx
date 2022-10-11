@@ -5,6 +5,7 @@ import ProductDetail from './ProductDetail';
 import ProductHeader from './ProductHeader';
 import Products from '../../api/products';
 import PRODUCT_SPECIFICATION from '../../constants/product';
+import useAuth from '../../hooks/useAuth';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -13,21 +14,18 @@ const ProductPage = () => {
     description: '',
     specification: [],
   });
+  const [productSeller, setProductSeller] = useState<any>({});
   const [, setLoadingProduct] = useState(true);
+  const { auth } = useAuth();
 
-  // const [variantsLv1, setVariantsLv1] = useState([]);
-  // const [variantsLv2, setVariantsLv2] = useState([]);
-  // const [selectedVar1, setSelectedVar1] = useState(null);
-  // const [selectedVar2, setSelectedVar2] = useState(null);
-
-  // const [params, setParams] = useSearchParams();
+  console.log(auth);
 
   const getID = () => {
     const splitSlug = slug?.split('.');
     return splitSlug ? splitSlug[splitSlug.length - 1] : '';
   };
 
-  const setSpecificationItems = (prod: any) => {
+  const setSpecificationItems = (prod: any, seller: any) => {
     const spec = [...PRODUCT_SPECIFICATION];
 
     spec[0].value = prod.product.category.name;
@@ -37,9 +35,7 @@ const ProductPage = () => {
     spec[4].value = prod.product.product_detail.height;
     spec[5].value = prod.product.product_detail.weight;
     spec[6].value = prod.total_stock;
-    spec[7].value = 'DARIMANA YA';
-
-    // prod.product.seller.address
+    spec[7].value = seller.address.city;
 
     return spec;
   };
@@ -48,9 +44,11 @@ const ProductPage = () => {
     await Products.GetProductByID(parseInt(getID(), 10))
       .then((resp) => {
         const newProduct = resp.data.data.product_detail;
+        const prodSeller = resp.data.data.seller;
         setProduct(newProduct);
+        setProductSeller(prodSeller);
         const getDesc = newProduct.product.product_detail.description;
-        const getSpec = setSpecificationItems(newProduct);
+        const getSpec = setSpecificationItems(newProduct, prodSeller);
         setProductDetail({
           description: getDesc,
           specification: getSpec,

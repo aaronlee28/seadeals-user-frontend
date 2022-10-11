@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
 import { formatSoldCount, validatePrice } from '../../../utils/product';
 import Form from '../../../components/Form/Form';
 import Button from '../../../components/Button/Button';
 import { ReactComponent as IconAddToCart } from '../../../assets/svg/icon_add_to_cart.svg';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 import './HeaderInfo.scss';
+import useAuth from '../../../hooks/useAuth';
+import Carts from '../../../api/carts';
 
 type HeaderInfoProps = {
   data: any,
@@ -19,10 +24,16 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const maxPrice = data.max_price;
 
   const [amount, setAmount] = useState(1);
-  const [variantDetail, setVariantDetail] = useState<any>([]);
-  // const [pickedVariant, setPickedVariant] = useState({
-  //   id: 0
-  // })
+  const [variantDetail, setVariantDetail] = useState<any>({});
+  const [variantItems, setVariantItems] = useState<any>([]);
+  const [selectedVariant, setSelectedVariant] = useState<any>({
+    variant1: '',
+    variant2: '',
+  });
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   const amountItems = [
     {
@@ -32,102 +43,265 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     },
   ];
 
+  const checkDisabled = (index: number, value: string, name: string) => {
+    const updated = variantItems.map(
+      (item: any, idx: 0) => {
+        if (index !== idx) {
+          const updatedItem = item.items.map(
+            (element: any) => {
+              const isRelated = element.relatedVariant.find(
+                (el: any) => el === value,
+              );
+              if (!isRelated) {
+                return {
+                  value: element.value,
+                  isDisabled: selectedVariant[name] !== value,
+                  relatedVariant: element.relatedVariant,
+                };
+              }
+              if (isRelated) {
+                return {
+                  value: element.value,
+                  isDisabled: false,
+                  relatedVariant: element.relatedVariant,
+                };
+              }
+              return element;
+            },
+          );
+          return {
+            name: item.name,
+            items: updatedItem,
+          };
+        }
+        return item;
+      },
+    );
+    console.log(updated);
+    setVariantItems(updated);
+  };
+
   const handleAmount = (event: any) => {
     setAmount(event.target.value);
+  };
+
+  const handleSelectedVariant = (name: string, value: string) => {
+    if (selectedVariant[name] !== value) {
+      setSelectedVariant((prevState: any) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+    if (selectedVariant[name] === value) {
+      setSelectedVariant((prevState: any) => ({
+        ...prevState,
+        [name]: '',
+      }));
+    }
+
+    checkDisabled(parseInt(name.charAt(name.length - 1), 10) - 1, value, name);
+  };
+
+  const getVariantDetail = () => {
+    let getVar;
+    if (variantItems.length === 1) {
+      getVar = product.product_variant_detail.find(
+        (el: any) => el.variant1_value === selectedVariant.variant1,
+      );
+    }
+    if (variantItems.length === 2) {
+      if (selectedVariant.variant1 === '' || selectedVariant.variant2 === '') {
+        getVar = {};
+      }
+      if (selectedVariant.variant1 !== '' && selectedVariant.variant2 !== '') {
+        getVar = product.product_variant_detail.find(
+          (el: any) => el.variant1_value === selectedVariant.variant1
+            && el.variant2_value === selectedVariant.variant2,
+        );
+      }
+    }
+    setVariantDetail(getVar);
   };
 
   const splitProductVariant = (items: any[]) => {
     let variants: any[] = [];
     for (let i = 0; i < items.length; i += 1) {
-      let isVariant1Exist = -1;
-      let isVariant2Exist = -1;
-
-      if (items[i].product_variant1) {
-        isVariant1Exist = variants.findIndex(
-          (el: any) => el.name === items[i].product_variant1.name,
+      const isExistName = variants.find(
+        (el: any) => el.name === items[i].product_variant1?.name
+        || el.name === items[i].product_variant2?.name,
+      );
+      if (isExistName) {
+        variants = variants.map(
+          (item: any) => {
+            if (item.name === items[i].product_variant1.name) {
+              const isExistValue = item.items.find(
+                (el: any) => el.value === items[i].variant1_value,
+              );
+              if (isExistValue) {
+                const updatedItems = item.items.map(
+                  (element: any) => {
+                    if (element.value === items[i].variant1_value) {
+                      const updatedRelatedVariant = [
+                        ...element.relatedVariant,
+                        items[i].variant2_value,
+                      ];
+                      return {
+                        value: element.value,
+                        isDisabled: false,
+                        relatedVariant: updatedRelatedVariant,
+                      };
+                    }
+                    return element;
+                  },
+                );
+                return {
+                  name: item.name,
+                  items: updatedItems,
+                };
+              }
+              const newItem = {
+                value: items[i].variant1_value,
+                isDisabled: false,
+                relatedVariant: [items[i].variant2_value],
+              };
+              return {
+                name: item.name,
+                items: [
+                  ...item.items,
+                  newItem,
+                ],
+              };
+            }
+            if (item.name === items[i].product_variant2.name) {
+              const isExistValue = item.items.find(
+                (el: any) => el.value === items[i].variant2_value,
+              );
+              if (isExistValue) {
+                const updatedItems = item.items.map(
+                  (element: any) => {
+                    if (element.value === items[i].variant2_value) {
+                      const updatedRelatedVariant = [
+                        ...element.relatedVariant,
+                        items[i].variant1_value,
+                      ];
+                      return {
+                        value: element.value,
+                        isDisabled: false,
+                        relatedVariant: updatedRelatedVariant,
+                      };
+                    }
+                    return element;
+                  },
+                );
+                return {
+                  name: item.name,
+                  items: updatedItems,
+                };
+              }
+              const newItem = {
+                value: items[i].variant2_value,
+                isDisabled: false,
+                relatedVariant: [items[i].variant1_value],
+              };
+              return {
+                name: item.name,
+                items: [
+                  ...item.items,
+                  newItem,
+                ],
+              };
+            }
+            return item;
+          },
         );
       }
-      if (items[i].product_variant2) {
-        isVariant2Exist = variants.findIndex(
-          (el: any) => el.name === items[i].product_variant2.name,
-        );
-      }
-
-      if (isVariant1Exist !== -1) {
-        const isItemExist = variants[isVariant1Exist].items.find(
-          (el: any) => el.value === items[i].variant1_value,
-        );
-        if (!isItemExist) {
-          const newItem = {
-            id: items[i].id,
-            value: items[i].variant1_value,
-          };
-          variants[isVariant1Exist].items = [
-            ...variants[isVariant1Exist].items,
-            newItem,
-          ];
-        }
-      }
-      if (isVariant1Exist === -1 && items[i].product_variant1) {
-        const newItem = {
-          id: items[i].id,
-          value: items[i].variant1_value,
-        };
-        const newVariant = {
+      if (!isExistName) {
+        const variant1 = {
           name: items[i].product_variant1.name,
-          items: [newItem],
+          items: [
+            {
+              value: items[i].variant1_value,
+              isDisabled: false,
+              relatedVariant: [items[i].variant2_value],
+            },
+          ],
         };
-        variants = [
-          ...variants,
-          newVariant,
-        ];
-      }
-
-      if (isVariant2Exist !== -1) {
-        const isItemExist = variants[isVariant2Exist].items.find(
-          (el: any) => el.value === items[i].variant2_value,
-        );
-        if (!isItemExist) {
-          const newItem = {
-            id: items[i].id,
-            value: items[i].variant2_value,
-          };
-          variants[isVariant2Exist].items = [
-            ...variants[isVariant2Exist].items,
-            newItem,
-          ];
-        }
-      }
-      if (isVariant2Exist === -1 && items[i].product_variant2) {
-        const newItem = {
-          id: items[i].id,
-          value: items[i].variant2_value,
-        };
-        const newVariant = {
+        const variant2 = {
           name: items[i].product_variant2.name,
-          items: [newItem],
+          items: [
+            {
+              value: items[i].variant2_value,
+              isDisabled: false,
+              relatedVariant: [items[i].variant1_value],
+            },
+          ],
         };
         variants = [
-          ...variants,
-          newVariant,
+          variant1,
+          variant2,
         ];
       }
     }
-    console.log(variants);
     return variants;
   };
 
+  const checkSelectedVariant = () => {
+    if (variantItems.length === 1) {
+      return selectedVariant.variant1 !== '';
+    }
+    if (variantItems.length === 2) {
+      return selectedVariant.variant1 !== ''
+        && selectedVariant.variant2 !== '';
+    }
+    return true;
+  };
+
+  const postToCart = async () => {
+    if (checkSelectedVariant()) {
+      const val = {
+        product_variant_detail_id: variantDetail.id,
+        quantity: amount,
+      };
+      await Carts.PostCartItem(axiosPrivate, val)
+        .then(() => {
+          toast.success('Barang berhasil dimasukkan ke keranjang');
+        })
+        .catch(() => {
+          toast.error('Barang gagal dimasukkan ke keranjang');
+        });
+    }
+    if (!checkSelectedVariant()) {
+      toast.error('Anda belum memilih varian');
+    }
+  };
+
   const addToCart = () => {
-    console.log('ADD TO CART');
+    if (auth.user) {
+      postToCart().then();
+    }
+    if (!auth.user) {
+      navigate('/login', { state: { from: location } });
+      toast.error('Silahkan masuk terlebih dahulu');
+    }
   };
 
   const buyNow = () => {
-    console.log('BUY NOW');
+    if (auth.user) {
+      console.log('Buy Now');
+    }
+    if (!auth.user) {
+      navigate('/login', { state: { from: location } });
+      toast.error('Silahkan masuk terlebih dahulu');
+    }
   };
 
   useEffect(() => {
-    setVariantDetail(splitProductVariant(product.product_variant_detail));
+    setVariantItems(splitProductVariant(product.product_variant_detail));
   }, [data]);
+
+  useEffect(() => {
+    getVariantDetail();
+  }, [selectedVariant]);
 
   return (
     <div className="header_info_container">
@@ -152,28 +326,58 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             <div className="info third_content">
               <h2 className="price">
                 {
-                  validatePrice(minPrice, maxPrice)
+                  product.promotion
+                  && (
+                    <div className="promotion">
+                      {
+                        !variantDetail
+                          ? validatePrice(
+                            minPrice - product.promotion.amount,
+                            maxPrice - product.promotion.amount,
+                          )
+                          : validatePrice(
+                            400000 - product.promotion.amount,
+                            400000 - product.promotion.amount,
+                          )
+                      }
+                    </div>
+                  )
+                }
+                {
+                  !variantDetail
+                    ? validatePrice(minPrice, maxPrice)
+                    : validatePrice(400000, 400000)
                 }
               </h2>
             </div>
             {
-              variantDetail.length > 0
-              && variantDetail.map(
-                (item: any) => (
-                  <div className="info fourth_content">
+              variantItems.length > 0
+              && variantItems.map(
+                (item: any, index: number) => (
+                  <div
+                    key={item.name}
+                    className="info fourth_content"
+                  >
                     <p className="variable">{ item.name }</p>
                     <div className="variants">
                       {
                         item.items.map(
                           (el: any) => (
                             <Button
-                              buttonType="primary alt"
+                              key={el.value}
+                              buttonType={`select ${
+                                selectedVariant.variant1 === el.value
+                                || selectedVariant.variant2 === el.value
+                                  ? 'active'
+                                  : ''
+                              }`}
                               text={el.value}
-                              handleClickedButton={() => console.log(el.value)}
+                              handleClickedButton={() => handleSelectedVariant(
+                                index === 0 ? 'variant1' : 'variant2',
+                                el.value,
+                              )}
+                              isDisabled={el.isDisabled}
                             />
-                            // <div className="item">
-                            //   <p className="value">{ el.value }</p>
-                            // </div>
                           ),
                         )
                       }

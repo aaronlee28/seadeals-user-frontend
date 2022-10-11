@@ -11,6 +11,7 @@ type ButtonOptionalProps = {
   text?: string;
   iconUrl?: any;
   iconName?: string;
+  isDisabled?: boolean;
 };
 
 interface ButtonProps
@@ -21,6 +22,7 @@ const defaultProps: ButtonOptionalProps = {
   text: '',
   iconUrl: null,
   iconName: '',
+  isDisabled: false,
 };
 
 const Button = (props: ButtonProps) => {
@@ -29,14 +31,16 @@ const Button = (props: ButtonProps) => {
     text,
     iconUrl,
     iconName,
+    isDisabled,
     handleClickedButton,
   } = props;
 
   return (
     <button
       type="button"
-      className={`button ${buttonType}`}
+      className={`button ${buttonType} ${isDisabled ? 'disabled' : ''}`}
       onClick={handleClickedButton}
+      disabled={isDisabled}
     >
       {
         iconUrl && !buttonType.includes('right')

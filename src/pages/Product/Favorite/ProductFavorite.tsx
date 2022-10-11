@@ -3,6 +3,7 @@ import React from 'react';
 import { ReactComponent as IconHeart } from '../../../assets/svg/icon_heart.svg';
 
 import './ProductFavorite.scss';
+import { formatFavorite } from '../../../utils/product';
 
 type ProductFavoriteProps = {
   isFavorite: any;
@@ -31,7 +32,7 @@ const ProductFavorite = (props: ProductFavoriteProps) => {
         }
         <p className="text">
           Favorit (
-          { favorite }
+          { formatFavorite(favorite) }
           )
         </p>
       </div>
