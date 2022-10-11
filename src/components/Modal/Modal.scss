@@ -11,14 +11,16 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease-in-out;
   z-index: 1000;
   position: fixed;
   overflow: hidden;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.5);
-  @include animation('0.2s pop-out 0s 1');
-
+  transform: scale(1);
+  @include animation('0.6s pop-out');
+  &.close {
+    @include animation('0.6s close');
+  }
   .modal_content {
     width: 100%;
     max-width: 900px;
@@ -29,6 +31,10 @@
     justify-content: center;
     align-items: center;
     border-radius: 20px;
+    //@include animation('0.6s pop-out');
+    //&.close {
+    //  @include animation('0.6s close');
+    //}
     .close_button {
       position: relative;
       width: 100%;
@@ -61,17 +67,21 @@
 @include keyframes(pop-out) {
   0% {
     opacity: 0;
+    transform: scale(0);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 @include keyframes(close) {
   0% {
     opacity: 1;
+    transform: scale(1);
   }
   100% {
     opacity: 0;
+    transform: scale(0);
   }
 }

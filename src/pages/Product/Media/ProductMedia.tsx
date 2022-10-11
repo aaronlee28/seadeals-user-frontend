@@ -17,7 +17,9 @@ const ProductMedia:FC<any> = ({ photos }) => {
   };
 
   const closeModalPhotoZoom = () => {
-    setIsModalPhotoZoomOpen(false);
+    setTimeout(() => {
+      setIsModalPhotoZoomOpen(false);
+    }, 500);
   };
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const ProductMedia:FC<any> = ({ photos }) => {
         isModalPhotoZoomOpen
         && (
           <ModalPhotoZoom
+            isOpen={isModalPhotoZoomOpen}
             imgUrl={mainImage.photo_url}
             imgName={mainImage.name}
             handleCloseModal={closeModalPhotoZoom}

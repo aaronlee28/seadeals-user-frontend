@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Modal.scss';
 import Button from '../Button/Button';
 
@@ -6,8 +6,9 @@ type ModalRequiredProps = {
   // modalType: string;
   // data: any;
   // accept: () => void;
-  cancel: () => void;
-  children: any;
+  isOpen: boolean,
+  cancel: () => void,
+  children: any,
 };
 
 type ModalOptionalProps = {
@@ -26,17 +27,32 @@ const Modal = (props: ModalProps) => {
   const {
     cancel,
     isHaveCloseButton,
+    isOpen,
     children,
   } = props;
 
+  const [open, setOpen] = useState(isOpen);
+
+  const handleCancel = () => {
+    setOpen(!open);
+    cancel();
+  };
+
+  useEffect(() => {
+    setOpen(isOpen);
+    if (!isOpen) {
+      cancel();
+    }
+  }, [isOpen]);
+
   return (
     <div
-      className="modal_container"
-      onClick={cancel}
+      className={`modal_container ${open ? 'open' : 'close'}`}
+      onClick={handleCancel}
       role="presentation"
     >
       <div
-        className="modal_content"
+        className={`modal_content ${open ? 'open' : 'close'}`}
         onClick={(e) => e.stopPropagation()}
         role="presentation"
       >
@@ -47,7 +63,7 @@ const Modal = (props: ModalProps) => {
               <Button
                 buttonType="secondary alt"
                 text="X"
-                handleClickedButton={cancel}
+                handleClickedButton={handleCancel}
               />
             </div>
           )

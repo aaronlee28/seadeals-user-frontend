@@ -4,6 +4,7 @@ import Modal from '../Modal';
 import './ModalPhotoZoom.scss';
 
 type ModalPhotoZoomProps = {
+  isOpen: boolean,
   imgUrl: string,
   imgName: string,
   handleCloseModal: () => void;
@@ -11,6 +12,7 @@ type ModalPhotoZoomProps = {
 
 const ModalPhotoZoom = (props: ModalPhotoZoomProps) => {
   const {
+    isOpen,
     imgUrl,
     imgName,
     handleCloseModal,
@@ -32,6 +34,7 @@ const ModalPhotoZoom = (props: ModalPhotoZoomProps) => {
     <Modal
       cancel={handleCloseModal}
       isHaveCloseButton
+      isOpen={isOpen}
     >
       {
         children()
