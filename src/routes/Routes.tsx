@@ -6,7 +6,7 @@ import Login from '../pages/Login/Login';
 import Home from '../pages/Home/Home';
 import RequireAuth from '../RequireAuth';
 import SellerHome from '../pages/Seller/SellerHome';
-import Profile from '../pages/Profile/Profile';
+import User from '../pages/User/User';
 import SellerLayout from '../layouts/SellerLayout';
 import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
@@ -21,6 +21,8 @@ import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/History/WalletHistory';
 import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
+import CategoryPage from '../pages/Category/CategoryPage';
+import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 import PostTrxSLP from '../pages/PostSLP/PostTrxSLP';
 import PostTopupSLP from '../pages/PostSLP/PostTopupSLP';
 import Checkout from '../pages/Checkout/Checkout';
@@ -29,16 +31,18 @@ import TrxPage from '../pages/Transaction/TrxPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
+      <Route path="user" element={<User />} />
 
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
+        <Route path="category" element={<CategoryPage />} />
+        <Route path="recommendation" element={<RecommendationPage />} />
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/profile" element={<Profile />} />
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />

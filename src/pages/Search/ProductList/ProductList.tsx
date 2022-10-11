@@ -18,7 +18,7 @@ const ProductList = (props: ProductListProps) => {
             data.map(
               (item) => (
                 <Card
-                  key={`${item.product.slug}`}
+                  key={`${item.product.slug}-${item.product.id}`}
                   data={item}
                   cardType="product-list"
                 />

@@ -27,6 +27,7 @@ const FilterCategory = (props: FilterCategoryProps) => {
             data.map(
               (item: any) => (
                 <div
+                  key={`${item.name}-${item.id}`}
                   className={`category ${values === item.id ? 'active' : ''}`}
                   onClick={() => handleInput(item.id)}
                   role="presentation"

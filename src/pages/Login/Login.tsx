@@ -18,45 +18,29 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-  const token = useState(localStorage.getItem('access_token'));
 
-  useEffect(() => {
-    if (token[0] !== null) {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [token]);
+  const handleSubmit = async () => {
+    const response = await axios.post(
+      LOGIN_URL,
+      JSON.stringify({ email, password }),
+      {
+        withCredentials: true,
+      },
+    );
+    const decode:any = jwt_decode(response.data.data.id_token);
+    const accessToken = response?.data?.data.id_token;
+    const { user, scope } = decode;
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault();
+    setAuth({ user, roles: scope.split(' '), accessToken });
+    localStorage.setItem('access_token', accessToken);
 
-    try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ email, password }),
-        {
-          withCredentials: true,
-        },
-      );
-      const decode:any = jwt_decode(response.data.data.id_token);
-      const accessToken = response?.data?.data.id_token;
-      const { user, scope } = decode;
+    setEmail('');
+    setPassword('');
 
-      setAuth({ user, roles: scope.split(' '), accessToken });
-      localStorage.setItem('access_token', accessToken);
-
-      setEmail('');
-      setPassword('');
-
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error(err);
-    }
+    navigate(from, { replace: true });
   };
 
   const handleCallbackResponse = async (response: any) => {
-    console.log('response google: ', response);
     try {
       const res = await axios.post(
         '/google/sign-in',
@@ -65,7 +49,6 @@ const Login = () => {
           headers: { 'Content-Type': 'application/json' },
         },
       );
-      console.log('localhost response: ', res);
       const decode:any = jwt_decode(res.data.data.id_token);
       const accessToken = res?.data?.data.id_token;
       const { user, scope } = decode;
@@ -78,8 +61,8 @@ const Login = () => {
       }
 
       navigate(from, { replace: true });
-    } catch (err) {
-      navigate('/register', { replace: true });
+    } catch (err:any) {
+      navigate('/register', { replace: true, state: err.response.data.data });
     }
   };
 
@@ -97,6 +80,31 @@ const Login = () => {
     );
   }, []);
 
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    const token:any = localStorage.getItem('access_token');
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
+  }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
+
   const [revealed, setRevealed] = useState(false);
 
   const handleReveal = () => {
@@ -104,9 +112,9 @@ const Login = () => {
   };
 
   return (
-    <div className="login__container">
-      <div className="login__cards__container mx-5">
-        <div className="register__cards row">
+    <div className="login_container">
+      <div className="login_cards_container mx-5">
+        <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>

@@ -21,11 +21,11 @@ const Home = () => {
   const getRecommendedProducts = async () => {
     await Products.GetRecommendedProducts()
       .then((resp) => {
-        const temp1 = resp.data.data.products;
-        const temp2 = temp1.concat(temp1);
-        const temp3 = temp2.concat(temp2);
-        const temp4 = temp3.concat(temp2);
-        setRecommendedProducts(temp4.slice(0, 18));
+        // const temp1 = resp.data.data.products;
+        // const temp2 = temp1.concat(temp1);
+        // const temp3 = temp2.concat(temp2);
+        // const temp4 = temp3.concat(temp2);
+        setRecommendedProducts(resp.data.data.products.slice(0, 18));
         // setRecommendedProducts(resp.data.data.searched_product);
       })
       .catch((err) => err);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ReactComponent as IconCart } from '../../assets/svg/icon_cart.svg';
 import Button from '../../components/Button/Button';
@@ -9,6 +9,8 @@ import SEARCH_INPUT from '../../constants/form';
 const NavbarCenterContent = () => {
   const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
+  const [search] = useSearchParams();
+  const getCategoryParams = search.get('categoryName');
 
   const goToCart = () => {
     console.log('GOTOCART');
@@ -20,7 +22,15 @@ const NavbarCenterContent = () => {
   };
 
   const searchProduct = () => {
-    navigate(`search?${searchInput.length > 0 ? `searchInput=${searchInput}` : ''}`);
+    navigate(`search?${
+      searchInput.length > 0
+        ? `searchInput=${searchInput}`
+        : ''
+    }${
+      getCategoryParams
+        ? `&categoryName=${getCategoryParams}`
+        : ''
+    }`);
   };
 
   return (

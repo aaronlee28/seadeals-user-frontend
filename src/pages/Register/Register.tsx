@@ -60,17 +60,9 @@ const Register = () => {
 
   const { setAuth } = useAuth();
   const navigate = useNavigate();
-  const token = useState(localStorage.getItem('access_token'));
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-
-  useEffect(() => {
-    if (token[0] !== null) {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [token]);
+  const googleUser = location.state ? location.state.user : null;
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -91,7 +83,6 @@ const Register = () => {
           withCredentials: true,
         },
       );
-      console.log(response);
       const decode:any = jwt_decode(response.data.data.data.id_token);
       const accessToken = response?.data?.data.data.id_token;
       const { user, scope } = decode;
@@ -110,14 +101,44 @@ const Register = () => {
 
       navigate('/', { replace: true });
     } catch (err) {
-      console.error(err);
+      navigate('/register', { replace: true });
     }
   };
 
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    if (googleUser) {
+      setEmail(googleUser.email);
+      setFullName(googleUser.name);
+    }
+
+    const token:any = localStorage.getItem('access_token');
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
+  }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
+
   return (
-    <div className="register__container">
-      <div className="register__cards__container mx-5">
-        <div className="register__cards row">
+    <div className="register_container">
+      <div className="register_cards_container mx-5">
+        <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
           </div>
@@ -287,7 +308,8 @@ const Register = () => {
                   <input
                     className="form-control mb-2"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: { target: { value: React.SetStateAction<string>; };
+                    }) => setEmail(event.target.value)}
                     type="email"
                     id="email-m"
                     placeholder="Email"
