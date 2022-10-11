@@ -424,7 +424,11 @@ const HeaderInfo = (props: HeaderInfoProps) => {
               <div className="stock_content">
                 <p className={`stock ${data.total_stock < 20 ? 'red' : ''}`}>
                   Tersisa&nbsp;
-                  { data.total_stock }
+                  {
+                    Object.keys(variantDetail).length <= 1
+                      ? data.total_stock
+                      : variantDetail.stock
+                  }
                   &nbsp;Buah
                 </p>
               </div>

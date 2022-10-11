@@ -1,15 +1,15 @@
 const getNumberOrder = (multiple: number) => {
   if (multiple === 1) {
-    return 'RB';
+    return ' RB';
   }
   if (multiple === 2) {
-    return 'JT';
+    return ' JT';
   }
   if (multiple === 3) {
-    return 'M';
+    return ' M';
   }
   if (multiple === 4) {
-    return 'T';
+    return ' T';
   }
   return '';
 };
@@ -43,20 +43,20 @@ const validatePrice = (minPrice: number, maxPrice: number) => {
   return formatPriceWithCurrency(minPrice);
 };
 
-const formatFavorite = (count: number) => {
-  let formatCount = count;
+const formatCount = (count: number) => {
+  let format = count;
   let multiple = 0;
-  while (formatCount >= 1000 && multiple < 4) {
-    formatCount = Math.round((formatCount / 1000) * 100) / 100;
+  while (format >= 1000 && multiple < 4) {
+    format = Math.round((format / 1000) * 100) / 100;
     multiple += 1;
   }
-  return `${formatCount} ${getNumberOrder(multiple)}`;
+  return `${format}${getNumberOrder(multiple)}`;
 };
 
 export {
   formatSoldCount,
   formatPrice,
   formatPriceWithCurrency,
-  formatFavorite,
+  formatCount,
   validatePrice,
 };

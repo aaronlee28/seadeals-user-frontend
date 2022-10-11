@@ -4,9 +4,10 @@ import './ProductPage.scss';
 import ProductDetail from './ProductDetail';
 import ProductHeader from './ProductHeader';
 import Products from '../../api/products';
-import PRODUCT_SPECIFICATION from '../../constants/product';
+import { PRODUCT_SPECIFICATION } from '../../constants/product';
 // import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import SellerInfo from './Seller/SellerInfo';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -71,6 +72,7 @@ const ProductPage = () => {
         && (
           <div className="product_page_content">
             <ProductHeader product={product} />
+            <SellerInfo seller={productSeller} />
             <ProductDetail
               description={productDetail.description}
               specification={productDetail.specification}

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { ReactComponent as IconHeart } from '../../../assets/svg/icon_heart.svg';
 
 import './ProductFavorite.scss';
-import { formatFavorite } from '../../../utils/product';
+import { formatCount } from '../../../utils/product';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import useAuth from '../../../hooks/useAuth';
 import Notifications from '../../../api/notifications';
@@ -23,6 +23,7 @@ const ProductFavorite = (props: ProductFavoriteProps) => {
   } = props;
 
   const [isFav, setIsFav] = useState(isFavorite);
+  const [favCount, setFavCount] = useState(favorite);
 
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
@@ -38,9 +39,11 @@ const ProductFavorite = (props: ProductFavoriteProps) => {
         .then((resp: any) => {
           if (isFav) {
             toast.success('Barang berhasil dikeluarkan dari favorit');
+            setFavCount(favCount - 1);
           }
           if (!isFav) {
             toast.success('Barang berhasil dimasukkan ke favorit');
+            setFavCount(favCount + 1);
           }
           setIsFav(resp.data.data.favorites.is_favorite);
         })
@@ -73,7 +76,7 @@ const ProductFavorite = (props: ProductFavoriteProps) => {
         }
         <p className="text">
           Favorit (
-          { formatFavorite(favorite) }
+          { formatCount(favCount) }
           )
         </p>
       </div>
