@@ -9,6 +9,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 const User = () => {
   const uRL = '/user/profiles/addresses';
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const [focus, setFocus] = useState('address');
   const [cityId, setCityId] = useState('152');
   const [provinceId, setProvinceId] = useState('6');
@@ -97,9 +98,36 @@ const User = () => {
     return '';
   };
 
+  const [addresses, setAddresses] = useState<any[]>([]);
+  const [mainAddress, setMainAddress] = useState<any>('');
+  const getAddresses = async () => {
+    try {
+      const res = await axiosPrivate.get(
+        uRL,
+        {
+          withCredentials: true,
+        },
+      );
+      setAddresses(res.data.data);
+    } catch (err) {
+      navigate('/user', { replace: true });
+    }
+  };
+
   useEffect(() => {
     getAllProvince();
+    getAddresses();
   }, []);
+
+  useEffect(() => {
+    if (addresses.length > 0) {
+      for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
+        if (addresses[addressCount].is_main) {
+          setMainAddress(addresses[addressCount]);
+        }
+      }
+    }
+  }, [addresses]);
 
   useEffect(() => {
     if (province !== '') {
@@ -119,7 +147,6 @@ const User = () => {
     }
   }, [cities]);
 
-  const navigate = useNavigate();
   const handleSubmit = () => {
     try {
       axiosPrivate.post(
@@ -136,6 +163,7 @@ const User = () => {
         }),
       );
       setShow(false);
+      window.location.reload();
     } catch (err) {
       navigate('/user', { replace: true });
     }
@@ -172,11 +200,11 @@ const User = () => {
           <p className="mb-2" onClick={handleAddress}>Alamat</p>
           <p onClick={handleAccount}>Akun Sea Labs Pay</p>
         </div>
-        <div className="profile_container col-8 col-md-8">
+        <div className="main-side_container col-8 col-md-8">
           {
               focus === 'profile'
                 && (
-                  <div className="address_container row p-2 border-bottom">
+                  <div className="address_container row">
                     <div className="col-6 col-md-4 col-lg-3">
                       Profil
                     </div>
@@ -186,12 +214,14 @@ const User = () => {
           {
             focus === 'address'
               && (
-                <div className="address_container row p-2 border-bottom">
-                  <div className="col-6 col-md-4 col-lg-3">
-                    Alamat Saya
-                  </div>
-                  <div className="col-6 col-md-4 col-lg-3">
-                    <Button buttonType="primary" text="Tambah alamat" handleClickedButton={handleShow} />
+                <div className="address_container">
+                  <div className="header row">
+                    <div className="h-text col-6 col-md-4 col-lg-3">
+                      Alamat Saya
+                    </div>
+                    <div className="button col-6 col-md-4 col-lg-3">
+                      <Button buttonType="primary" text="Tambah alamat" handleClickedButton={handleShow} />
+                    </div>
                   </div>
                   <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -257,13 +287,71 @@ const User = () => {
                       <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
                     </Modal.Footer>
                   </Modal>
+                  {
+                    mainAddress !== '' && (
+                    <div className="children mb-5">
+                      <div className="child row">
+                        <div className="contents row">
+                          <div className="order col-1">
+                            1
+                          </div>
+                          <div className="left-side col-8">
+                            {mainAddress.province}
+                            {', '}
+                            {mainAddress.city}
+                            {', '}
+                            {mainAddress.sub_district}
+                            {', '}
+                            {mainAddress.postal_code}
+                          </div>
+                          <div className="right-side col-2">
+                            <p role="button">
+                              Edit
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      {
+                              addresses.map((a:any, i) => (
+                                !a.is_main
+                                  && (
+                                  <div className="child row" key={a.id}>
+                                    <div className="contents row">
+                                      <div className="order col-1">
+                                        {i + 2}
+                                      </div>
+                                      <div className="left-side col-8">
+                                        {a.province}
+                                        {', '}
+                                        {a.city}
+                                        {', '}
+                                        {a.sub_district}
+                                        {', '}
+                                        {a.postal_code}
+                                      </div>
+                                      <div className="right-side col-2">
+                                        <p role="button">
+                                          Jadikan utama
+                                        </p>
+                                        <p role="button">
+                                          Edit
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  )
+                              ))
+                            }
+                    </div>
+                    )
+                  }
                 </div>
               )
           }
           {
               focus === 'payment-account'
                 && (
-                  <div className="address_container row p-2 border-bottom">
+                  <div className="address_container row">
                     <div className="col-6 col-md-4 col-lg-3">
                       Akun Sea Labs Pay
                     </div>
