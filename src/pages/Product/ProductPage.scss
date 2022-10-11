@@ -105,6 +105,9 @@
     .seller_product_container,
     .similar_product_container {
       width: 100%;
+      &.hide {
+        display: none;
+      }
       .seller_product_content,
       .similar_product_content{
         width: 100%;

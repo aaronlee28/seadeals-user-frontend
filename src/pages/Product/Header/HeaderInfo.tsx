@@ -48,12 +48,19 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const checkDisabled = (index: number, value: string, name: string) => {
     const updated = variantItems.map(
-      (item: any, idx: 0) => {
+      (item: any, idx: number) => {
         if (index !== idx) {
           const updatedItem = item.items.map(
             (element: any) => {
               const isRelated = element.relatedVariant.find(
                 (el: any) => el === value,
+              );
+              const isHasAmount = product.product_variant_detail.find(
+                (el: any) => {
+                  const var1 = `variant${index + 1}_value`;
+                  const var2 = `variant${idx + 1}_value`;
+                  return el[var1] === value && el[var2] === element.value && el.stock > 0;
+                },
               );
               if (!isRelated) {
                 return {
@@ -65,7 +72,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
               if (isRelated) {
                 return {
                   value: element.value,
-                  isDisabled: false,
+                  isDisabled: selectedVariant[name] !== value && !isHasAmount,
                   relatedVariant: element.relatedVariant,
                 };
               }
@@ -80,12 +87,24 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         return item;
       },
     );
-    console.log(updated);
     setVariantItems(updated);
   };
 
   const handleAmount = (event: any) => {
-    setAmount(event.target.value);
+    const { value } = event.target;
+    const maxQuantity = product.max_quantity;
+    const minQuantity = product.min_quantity;
+    if (maxQuantity !== 0 || minQuantity !== 0) {
+      if (value <= maxQuantity && value >= minQuantity) {
+        setAmount(event.target.value);
+      }
+      if (value > maxQuantity) {
+        toast.error(`Maksimum pembelian adalah ${maxQuantity}`);
+      }
+      if (value < minQuantity) {
+        toast.error(`Minimum pembelian adalah ${minQuantity}`);
+      }
+    }
   };
 
   const handleSelectedVariant = (name: string, value: string) => {
@@ -106,12 +125,10 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   };
 
   const getVariantDetail = () => {
-    console.log(variantDetail);
-    console.log(selectedVariant);
     let getVar = variantDetail;
     if (variantItems.length === 0) {
       getVar = product.product_variant_detail.find(
-        (el: any) => !el.variant1_value,
+        (el: any) => el.variant1_value === null,
       );
     }
     if (variantItems.length === 1) {
@@ -135,8 +152,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         );
       }
     }
-    console.log(getVar);
-    setVariantDetail(getVar);
+    if (getVar) {
+      setVariantDetail(getVar);
+    }
   };
 
   const splitProductVariant = (items: any[]) => {
@@ -260,7 +278,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         }
       }
     }
-    console.log(variants);
     return variants;
   };
 
@@ -312,9 +329,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const buyNow = async () => {
     if (auth.user) {
-      // let i?d;
       const id = await postToCart().then((res) => res);
-      console.log(id);
       navigate('/cart', { state: { cartId: id } });
     }
     if (!auth.user) {
@@ -324,6 +339,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   };
 
   useEffect(() => {
+    setAmount(product.min_quantity);
     setVariantItems(splitProductVariant(product.product_variant_detail));
   }, [data]);
 
@@ -331,7 +347,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     getVariantDetail();
   }, [selectedVariant]);
 
-  console.log(Object.keys(variantDetail).length);
+  console.log(variantDetail);
 
   return (
     <div className="header_info_container">

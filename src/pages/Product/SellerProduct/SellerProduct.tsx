@@ -42,32 +42,42 @@ const SellerProduct = (props: SellerProductProps) => {
   }, []);
 
   return (
-    <div className="seller_product_container">
-      <div className="seller_product_content">
-        <div className="header">
-          <h3 className="title">PRODUK LAIN DARI TOKO INI</h3>
-          <Button
-            buttonType="plain right"
-            text="Lihat semua"
-            iconUrl={IconChevronRight}
-            iconName="all"
-            handleClickedButton={goToSellerPage}
-          />
-        </div>
-        <div className="items">
-          {
-            sellerProduct?.map(
-              (item: any) => (
-                <Card
-                  key={`${item.product.id}-${item.product.name}`}
-                  data={item}
-                  cardType="product-list"
-                />
-              ),
-            )
-          }
-        </div>
-      </div>
+    <div className={`seller_product_container ${sellerProduct.length === 0 ? 'hide' : ''}`}>
+      {
+        sellerProduct.length > 0
+        && (
+          <div className="seller_product_content">
+            <div className="header">
+              <h3 className="title">PRODUK LAIN DARI TOKO INI</h3>
+              {
+                sellerProduct.length === 12
+                && (
+                  <Button
+                    buttonType="plain right"
+                    text="Lihat semua"
+                    iconUrl={IconChevronRight}
+                    iconName="all"
+                    handleClickedButton={goToSellerPage}
+                  />
+                )
+              }
+            </div>
+            <div className="items">
+              {
+                sellerProduct?.map(
+                  (item: any) => (
+                    <Card
+                      key={`${item.product.id}-${item.product.name}`}
+                      data={item}
+                      cardType="product-list"
+                    />
+                  ),
+                )
+              }
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 };
