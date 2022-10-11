@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import MainMedia from './MainMedia';
 
 import './ProductMedia.scss';
+import ModalPhotoZoom from '../../../components/Modal/ModalPhotoZoom/ModalPhotoZoom';
 
 const ProductMedia:FC<any> = ({ photos }) => {
   const [mainImage, setMainImage] = useState({
@@ -9,6 +10,15 @@ const ProductMedia:FC<any> = ({ photos }) => {
     photo_url: '',
     name: '',
   });
+  const [isModalPhotoZoomOpen, setIsModalPhotoZoomOpen] = useState(false);
+
+  const openModalPhotoZoom = () => {
+    setIsModalPhotoZoomOpen(true);
+  };
+
+  const closeModalPhotoZoom = () => {
+    setIsModalPhotoZoomOpen(false);
+  };
 
   useEffect(() => {
     if (photos.length > 0) {
@@ -18,7 +28,10 @@ const ProductMedia:FC<any> = ({ photos }) => {
 
   return (
     <div className="product__media">
-      <MainMedia img={mainImage} />
+      <MainMedia
+        img={mainImage}
+        handleClicked={openModalPhotoZoom}
+      />
       <div className="d-flex product__media__carousel gap-3">
         {
           photos.length > 0
@@ -33,6 +46,7 @@ const ProductMedia:FC<any> = ({ photos }) => {
                 }`}
                 onMouseOver={() => setMainImage(photo)}
                 onFocus={() => setMainImage(photo)}
+                onClick={openModalPhotoZoom}
                 role="presentation"
               >
                 <img src={photo?.photo_url} alt="product" />
@@ -41,6 +55,16 @@ const ProductMedia:FC<any> = ({ photos }) => {
           )
         }
       </div>
+      {
+        isModalPhotoZoomOpen
+        && (
+          <ModalPhotoZoom
+            imgUrl={mainImage.photo_url}
+            imgName={mainImage.name}
+            handleCloseModal={closeModalPhotoZoom}
+          />
+        )
+      }
     </div>
   );
 };
