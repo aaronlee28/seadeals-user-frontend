@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
-import { formatSoldCount, validatePrice } from '../../../utils/product';
+import { formatPrice, formatSoldCount, validatePrice } from '../../../utils/product';
 import Form from '../../../components/Form/Form';
 import Button from '../../../components/Button/Button';
 import { ReactComponent as IconAddToCart } from '../../../assets/svg/icon_add_to_cart.svg';
@@ -12,6 +12,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import './HeaderInfo.scss';
 import useAuth from '../../../hooks/useAuth';
 import Carts from '../../../api/carts';
+import Promotion from '../../../components/Promotion/Promotion';
 
 type HeaderInfoProps = {
   data: any,
@@ -24,7 +25,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const maxPrice = data.max_price;
 
   const [amount, setAmount] = useState(1);
-  const [variantDetail, setVariantDetail] = useState<any>({});
+  const [variantDetail, setVariantDetail] = useState<any>({
+    price: 0,
+  });
   const [variantItems, setVariantItems] = useState<any>([]);
   const [selectedVariant, setSelectedVariant] = useState<any>({
     variant1: '',
@@ -103,15 +106,22 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   };
 
   const getVariantDetail = () => {
-    let getVar;
+    console.log(variantDetail);
+    console.log(selectedVariant);
+    let getVar = variantDetail;
     if (variantItems.length === 1) {
-      getVar = product.product_variant_detail.find(
-        (el: any) => el.variant1_value === selectedVariant.variant1,
-      );
+      if (selectedVariant.variant1 === '') {
+        getVar = { price: 0 };
+      }
+      if (selectedVariant.variant1 !== '') {
+        getVar = product.product_variant_detail.find(
+          (el: any) => el.variant1_value === selectedVariant.variant1,
+        );
+      }
     }
     if (variantItems.length === 2) {
       if (selectedVariant.variant1 === '' || selectedVariant.variant2 === '') {
-        getVar = {};
+        getVar = { price: 0 };
       }
       if (selectedVariant.variant1 !== '' && selectedVariant.variant2 !== '') {
         getVar = product.product_variant_detail.find(
@@ -120,6 +130,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         );
       }
     }
+    console.log(getVar);
     setVariantDetail(getVar);
   };
 
@@ -216,32 +227,35 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         );
       }
       if (!isExistName) {
-        const variant1 = {
-          name: items[i].product_variant1.name,
-          items: [
-            {
-              value: items[i].variant1_value,
-              isDisabled: false,
-              relatedVariant: [items[i].variant2_value],
-            },
-          ],
-        };
-        const variant2 = {
-          name: items[i].product_variant2.name,
-          items: [
-            {
-              value: items[i].variant2_value,
-              isDisabled: false,
-              relatedVariant: [items[i].variant1_value],
-            },
-          ],
-        };
-        variants = [
-          variant1,
-          variant2,
-        ];
+        if (items[i].product_variant1) {
+          const variant1 = {
+            name: items[i].product_variant1.name,
+            items: [
+              {
+                value: items[i].variant1_value,
+                isDisabled: false,
+                relatedVariant: [items[i].variant2_value],
+              },
+            ],
+          };
+          variants = [...variants, variant1];
+        }
+        if (items[i].product_variant2) {
+          const variant2 = {
+            name: items[i].product_variant2.name,
+            items: [
+              {
+                value: items[i].variant2_value,
+                isDisabled: false,
+                relatedVariant: [items[i].variant1_value],
+              },
+            ],
+          };
+          variants = [...variants, variant2];
+        }
       }
     }
+    console.log(variants);
     return variants;
   };
 
@@ -303,6 +317,8 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     getVariantDetail();
   }, [selectedVariant]);
 
+  console.log(Object.keys(variantDetail).length);
+
   return (
     <div className="header_info_container">
       {
@@ -330,23 +346,32 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                   && (
                     <div className="promotion">
                       {
-                        !variantDetail
+                        Object.keys(variantDetail).length <= 1
                           ? validatePrice(
                             minPrice - product.promotion.amount,
                             maxPrice - product.promotion.amount,
                           )
                           : validatePrice(
-                            400000 - product.promotion.amount,
-                            400000 - product.promotion.amount,
+                            variantDetail.price - product.promotion.amount,
+                            variantDetail.price - product.promotion.amount,
                           )
                       }
                     </div>
                   )
                 }
                 {
-                  !variantDetail
+                  Object.keys(variantDetail).length <= 1
                     ? validatePrice(minPrice, maxPrice)
-                    : validatePrice(400000, 400000)
+                    : validatePrice(variantDetail.price, variantDetail.price)
+                }
+                {
+                  product.promotion
+                  && (
+                    <Promotion
+                      promotionType="orange"
+                      text={`${formatPrice(product.promotion.amount)} OFF`}
+                    />
+                  )
                 }
               </h2>
             </div>
