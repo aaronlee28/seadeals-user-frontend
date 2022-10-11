@@ -24,6 +24,7 @@ import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
 import PostTopupSLP from '../pages/Wallet/Topup/PostTopupSLP';
 import CategoryPage from '../pages/Category/CategoryPage';
 import RecommendationPage from '../pages/Recommendation/RecommendationPage';
+import SimilarPage from '../pages/Similar/SimilarPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -36,6 +37,9 @@ const AppRoutes = () => (
         <Route path="search" element={<Search />} />
         <Route path="category" element={<CategoryPage />} />
         <Route path="recommendation" element={<RecommendationPage />} />
+        <Route path="similar/">
+          <Route path=":slug" element={<SimilarPage />} />
+        </Route>
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route path="product/">

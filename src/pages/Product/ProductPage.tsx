@@ -83,7 +83,10 @@ const ProductPage = () => {
               sellerId={productSeller.id}
               productId={product.product.id}
             />
-            <SimilarProduct productId={product.product.id} />
+            <SimilarProduct
+              productId={product.product.id}
+              productSlug={product.product.slug}
+            />
           </div>
         )
       }

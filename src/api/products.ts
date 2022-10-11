@@ -25,8 +25,8 @@ class Products {
     return axios.get(`/products/${ProductID}/promotion-price`);
   }
 
-  static GetSimilarProducts(ProductID: number) {
-    return axios.get(`/products/${ProductID}/similar-products`);
+  static GetSimilarProducts(ProductID: number, filter: string) {
+    return axios.get(`/products/${ProductID}/similar-products${filter}`);
   }
 }
 

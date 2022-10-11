@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import Products from '../../../api/products';
 import Card from '../../../components/Cards/Card';
-// import Button from '../../../components/Button/Button';
+import Button from '../../../components/Button/Button';
 
 type SimilarProductProps = {
-  productId: number
+  productId: number,
+  productSlug: string,
 };
 
 const SimilarProduct = (props: SimilarProductProps) => {
   const {
     productId,
+    productSlug,
   } = props;
 
   const [similarProduct, setSimilarProduct] = useState([]);
+  const navigate = useNavigate();
 
   const getSimilarProducts = async () => {
-    await Products.GetSimilarProducts(productId)
+    await Products.GetSimilarProducts(productId, '')
       .then((resp) => {
         setSimilarProduct(resp.data.data.products);
       })
       .catch((err) => err);
+  };
+
+  const goToSimilarPage = () => {
+    navigate(`/similar/${productSlug}`);
   };
 
   useEffect(() => {
@@ -46,11 +54,11 @@ const SimilarProduct = (props: SimilarProductProps) => {
             )
           }
         </div>
-        {/* <Button */}
-        {/*  buttonType="primary alt show_all" */}
-        {/*  text="Lihat Semua" */}
-        {/*  handleClickedButton={goToRecommendationPage} */}
-        {/* /> */}
+        <Button
+          buttonType="primary alt show_all"
+          text="Lihat Semua"
+          handleClickedButton={goToSimilarPage}
+        />
       </div>
     </div>
   );
