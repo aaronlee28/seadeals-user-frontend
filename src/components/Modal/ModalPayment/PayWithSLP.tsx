@@ -10,10 +10,11 @@ import SLPIframeFull from '../../../pages/Wallet/Iframe/checkout/SLPIframeFull';
 
 interface PayWithSLPProps {
   orderItems: any[],
+  address: any,
   closeModal: ()=>void,
 }
 
-const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, closeModal }) => {
+const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => {
   const axiosPrivate = useAxiosPrivate();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
@@ -69,7 +70,14 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, closeModal }) => {
         toast.success('Account Registered!');
       }
 
-      const payload = generateCheckoutPayload(orderItems, PAYMENT_TYPE.SLP, '', selectedSLP.account_number);
+      const payload = generateCheckoutPayload(
+        orderItems,
+        PAYMENT_TYPE.SLP,
+        '',
+        selectedSLP.account_number,
+        parseInt(address.city_id, 10),
+      );
+      console.log(payload);
 
       toast.loading('Requesting Payment');
       const checkoutRes = await axiosPrivate.post(

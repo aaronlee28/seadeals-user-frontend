@@ -72,6 +72,7 @@ const Checkout = () => {
             orderItems={cartPerStore}
             handleCloseModal={() => setIsModalOpen(false)}
             total={subtotal + deliveryTotal}
+            address={selectedAddr}
           />
           )}
       <div className="w-75 mx-auto">
