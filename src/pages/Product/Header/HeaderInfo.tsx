@@ -301,7 +301,8 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const buyNow = () => {
     if (auth.user) {
-      console.log('Buy Now');
+      postToCart().then();
+      navigate('/cart', { state: { from: location } });
     }
     if (!auth.user) {
       navigate('/login', { state: { from: location } });
