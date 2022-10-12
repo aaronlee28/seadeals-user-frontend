@@ -20,10 +20,16 @@ const User = () => {
   const [city, setCity] = useState('Jakarta Selatan');
   const [postalCode, setPostalCode] = useState('');
   const [address, setAddress] = useState('');
+  const [newPostalCode, setNewPostalCode] = useState('');
+  const [newAddress, setNewAddress] = useState('');
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleShowEditModal = () => setShowEditModal(true);
 
   const [provinces, setProvinces] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
@@ -174,16 +180,23 @@ const User = () => {
 
   const [addressId, setAddressId] = useState<any>(mainAddress.id);
   const [prevStateAID, setPrevStateAID] = useState<any>(mainAddress.id);
+  const [checked, setChecked] = useState(false);
 
-  useEffect(() => {
-    getAddresses();
+  const resetAddress = () => {
     if (addresses.length > 0) {
       for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
         if (addresses[addressCount].is_main) {
           setMainAddress(addresses[addressCount]);
+          if (checked) {
+            window.location.reload();
+          }
         }
       }
     }
+  };
+
+  useEffect(() => {
+    resetAddress();
   }, [addresses]);
 
   useEffect(() => {
@@ -204,11 +217,45 @@ const User = () => {
         );
         setShow(false);
         setPrevStateAID(addressId);
+        getAddresses();
+        setChecked(true);
       } catch (err) {
         navigate('/user', { replace: true });
       }
     }
   }, [addressId]);
+
+  const [newAddressId, setNewAddressId] = useState<any>('');
+  const [prevStateNewAID, setPrevStateNewAID] = useState<any>('');
+
+  const handleSubmitEditForm = () => {
+    const accessToken:any = localStorage.getItem('access_token');
+    const decode:any = jwt_decode(accessToken);
+    const userId = decode.user.user_id;
+    try {
+      axiosPrivate.patch(
+        `${uRL}`,
+        JSON.stringify({
+          id: Number(newAddressId),
+          zipcode: newPostalCode,
+          sub_district_id: 0,
+          address: newAddress,
+          user_id: Number(userId),
+        }),
+      );
+      setPrevStateNewAID(newAddressId);
+      setShowEditModal(false);
+    } catch (err) {
+      navigate('/user', { replace: true });
+    }
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (newAddressId !== prevStateNewAID) {
+      handleShowEditModal();
+    }
+  }, [newAddressId]);
 
   const handleSelectProvince = (e: any) => {
     setProvince(e.target.value);
@@ -316,9 +363,40 @@ const User = () => {
                       <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
                     </Modal.Footer>
                   </Modal>
+                  <Modal show={showEditModal} onHide={handleCloseEditModal}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Sunting Alamat</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <form>
+                        <input
+                          className="form-control mb-2"
+                          value={newPostalCode}
+                          onChange={(event) => setNewPostalCode(event.target.value)}
+                          id="postal-code"
+                          placeholder="Isi nomor kode pos baru"
+                          autoComplete="new-password"
+                          required
+                        />
+                        <textarea
+                          className="form-control mb-2"
+                          value={newAddress}
+                          onChange={(event) => setNewAddress(event.target.value)}
+                          id="address"
+                          placeholder="Isi alamat lengkap baru"
+                          autoComplete="new-password"
+                          required
+                        />
+                      </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleCloseEditModal} />
+                      <Button buttonType="primary" text="Sunting alamat" handleClickedButton={handleSubmitEditForm} />
+                    </Modal.Footer>
+                  </Modal>
                   {
                     mainAddress !== '' && (
-                    <div className="children mb-5">
+                    <div className="children">
                       <div className="child row">
                         <div className="contents row">
                           <div className="order col-2">
@@ -336,7 +414,7 @@ const User = () => {
                             {mainAddress.address}
                           </div>
                           <div className="right-side col-2">
-                            <p role="button">
+                            <p role="button" onClick={() => setNewAddressId(mainAddress.id)}>
                               Edit
                             </p>
                           </div>
@@ -363,7 +441,7 @@ const User = () => {
                                     <p role="button" onClick={() => setAddressId(a.id)}>
                                       Jadikan utama
                                     </p>
-                                    <p role="button">
+                                    <p role="button" onClick={() => setNewAddressId(a.id)}>
                                       Edit
                                     </p>
                                   </div>
