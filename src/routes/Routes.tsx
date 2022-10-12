@@ -31,7 +31,6 @@ import TrxPage from '../pages/Transaction/TrxPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
-      <Route path="user" element={<User />} />
 
       <Route element={<UserLayout />}>
         <Route path="" element={<Home />} />
@@ -43,6 +42,7 @@ const AppRoutes = () => (
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+            <Route path="/user" element={<User />} />
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />

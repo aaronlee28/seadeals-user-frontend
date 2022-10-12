@@ -28,7 +28,6 @@ const User = () => {
   const handleShow = () => setShow(true);
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const handleCloseEditModal = () => setShowEditModal(false);
   const handleShowEditModal = () => setShowEditModal(true);
 
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -228,6 +227,11 @@ const User = () => {
   const [newAddressId, setNewAddressId] = useState<any>('');
   const [prevStateNewAID, setPrevStateNewAID] = useState<any>('');
 
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setNewAddressId('');
+  };
+
   const handleSubmitEditForm = () => {
     const accessToken:any = localStorage.getItem('access_token');
     const decode:any = jwt_decode(accessToken);
@@ -237,7 +241,7 @@ const User = () => {
         `${uRL}`,
         JSON.stringify({
           id: Number(newAddressId),
-          zipcode: newPostalCode,
+          postal_code: newPostalCode,
           sub_district_id: 0,
           address: newAddress,
           user_id: Number(userId),
