@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './User.scss';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 import Button from '../../components/Button/Button';
 import Cities from '../../api/cities';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -120,16 +121,6 @@ const User = () => {
   }, []);
 
   useEffect(() => {
-    if (addresses.length > 0) {
-      for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
-        if (addresses[addressCount].is_main) {
-          setMainAddress(addresses[addressCount]);
-        }
-      }
-    }
-  }, [addresses]);
-
-  useEffect(() => {
     if (province !== '') {
       getCities();
       setCity(province);
@@ -163,10 +154,10 @@ const User = () => {
         }),
       );
       setShow(false);
-      window.location.reload();
     } catch (err) {
       navigate('/user', { replace: true });
     }
+    window.location.reload();
   };
 
   const handleProfile = () => {
@@ -180,6 +171,44 @@ const User = () => {
   const handleAccount = () => {
     setFocus('payment-account');
   };
+
+  const [addressId, setAddressId] = useState<any>(mainAddress.id);
+  const [prevStateAID, setPrevStateAID] = useState<any>(mainAddress.id);
+
+  useEffect(() => {
+    getAddresses();
+    if (addresses.length > 0) {
+      for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
+        if (addresses[addressCount].is_main) {
+          setMainAddress(addresses[addressCount]);
+        }
+      }
+    }
+  }, [addresses]);
+
+  useEffect(() => {
+    if (addressId !== prevStateAID) {
+      const accessToken:any = localStorage.getItem('access_token');
+      const decode:any = jwt_decode(accessToken);
+      const userId = decode.user.user_id;
+      try {
+        axiosPrivate.patch(
+          `${uRL}/${addressId.toString()}`,
+          JSON.stringify({
+            id: Number(addressId),
+            zipcode: postalCode,
+            sub_district_id: 0,
+            address,
+            user_id: userId,
+          }),
+        );
+        setShow(false);
+        setPrevStateAID(addressId);
+      } catch (err) {
+        navigate('/user', { replace: true });
+      }
+    }
+  }, [addressId]);
 
   const handleSelectProvince = (e: any) => {
     setProvince(e.target.value);
@@ -292,8 +321,8 @@ const User = () => {
                     <div className="children mb-5">
                       <div className="child row">
                         <div className="contents row">
-                          <div className="order col-1">
-                            1
+                          <div className="order col-2">
+                            Alamat utama
                           </div>
                           <div className="left-side col-8">
                             {mainAddress.province}
@@ -303,6 +332,8 @@ const User = () => {
                             {mainAddress.sub_district}
                             {', '}
                             {mainAddress.postal_code}
+                            <br />
+                            {mainAddress.address}
                           </div>
                           <div className="right-side col-2">
                             <p role="button">
@@ -311,37 +342,34 @@ const User = () => {
                           </div>
                         </div>
                       </div>
-                      {
-                              addresses.map((a:any, i) => (
-                                !a.is_main
-                                  && (
-                                  <div className="child row" key={a.id}>
-                                    <div className="contents row">
-                                      <div className="order col-1">
-                                        {i + 2}
-                                      </div>
-                                      <div className="left-side col-8">
-                                        {a.province}
-                                        {', '}
-                                        {a.city}
-                                        {', '}
-                                        {a.sub_district}
-                                        {', '}
-                                        {a.postal_code}
-                                      </div>
-                                      <div className="right-side col-2">
-                                        <p role="button">
-                                          Jadikan utama
-                                        </p>
-                                        <p role="button">
-                                          Edit
-                                        </p>
-                                      </div>
-                                    </div>
+                      { addresses.map((a:any) => (
+                        !a.is_main
+                              && (
+                              <div className="child row" key={a.id}>
+                                <div className="contents row">
+                                  <div className="order col-2" />
+                                  <div className="left-side col-8">
+                                    {a.province}
+                                    {', '}
+                                    {a.city}
+                                    {', '}
+                                    {a.sub_district}
+                                    {', '}
+                                    {a.postal_code}
+                                    <br />
+                                    {a.address}
                                   </div>
-                                  )
-                              ))
-                            }
+                                  <div className="right-side col-2">
+                                    <p role="button" onClick={() => setAddressId(a.id)}>
+                                      Jadikan utama
+                                    </p>
+                                    <p role="button">
+                                      Edit
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                              ))) }
                     </div>
                     )
                   }
