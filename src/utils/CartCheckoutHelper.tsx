@@ -16,7 +16,9 @@ const groupBySeller = (cartItems:any) => {
 };
 
 const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((sellerProduct) => {
-  const storeCart = { seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '' };
+  const storeCart = {
+    seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '', courier_id: 1,
+  };
   storeCart.cart_item_id = sellerProduct.storeItems.map((item: any) => item.id);
   return storeCart;
 });
@@ -29,7 +31,13 @@ const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((se
 //   return cartStore;
 // });
 
-const generateCheckoutPayload = (cartPerStore:any[], method:string, globalVoucher:string = '', accountNumber = '') => {
+const generateCheckoutPayload = (
+  cartPerStore:any[],
+  method:string,
+  globalVoucher:string = '',
+  accountNumber = '',
+  buyerAddressID: number = 0,
+) => {
   let paymentMethod = '';
   if (method === PAYMENT_TYPE.SLP) paymentMethod = 'sea-labs-pay';
   if (method === PAYMENT_TYPE.WALLET) paymentMethod = 'wallet';
@@ -39,6 +47,7 @@ const generateCheckoutPayload = (cartPerStore:any[], method:string, globalVouche
     cart_per_store: cartPerStore,
     payment_method: paymentMethod,
     account_number: accountNumber,
+    buyer_address_id: buyerAddressID,
   };
 };
 

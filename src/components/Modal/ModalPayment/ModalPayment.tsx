@@ -11,6 +11,7 @@ type ModalPaymentProps = {
   orderItems: any[],
   handleCloseModal: () => void,
   total: number
+  address: any
 };
 
 const ModalPayment = (props: ModalPaymentProps) => {
@@ -18,6 +19,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
     orderItems,
     handleCloseModal,
     total,
+    address,
   } = props;
 
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -25,9 +27,21 @@ const ModalPayment = (props: ModalPaymentProps) => {
   const renderPaymentMethod = () => {
     switch (selectedMethod) {
       case PAYMENT_TYPE.SLP:
-        return <PayWithSLP orderItems={orderItems} closeModal={handleCloseModal} />;
+        return (
+          <PayWithSLP
+            orderItems={orderItems}
+            closeModal={handleCloseModal}
+            address={address}
+          />
+        );
       case PAYMENT_TYPE.WALLET:
-        return <WalletIframe orderItems={orderItems} closeModal={handleCloseModal} />;
+        return (
+          <WalletIframe
+            orderItems={orderItems}
+            closeModal={handleCloseModal}
+            address={address}
+          />
+        );
       default:
         return (
           <div className="h-100 d-flex align-items-center">
