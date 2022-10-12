@@ -377,22 +377,22 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                     <div className="promotion">
                       {
                         Object.keys(variantDetail).length <= 1
-                          ? validatePrice(
-                            minPrice - product.promotion.amount,
-                            maxPrice - product.promotion.amount,
-                          )
-                          : validatePrice(
-                            variantDetail.price - product.promotion.amount,
-                            variantDetail.price - product.promotion.amount,
-                          )
+                          ? validatePrice(minPrice, maxPrice)
+                          : validatePrice(variantDetail.price, variantDetail.price)
                       }
                     </div>
                   )
                 }
                 {
                   Object.keys(variantDetail).length <= 1
-                    ? validatePrice(minPrice, maxPrice)
-                    : validatePrice(variantDetail.price, variantDetail.price)
+                    ? validatePrice(
+                      minPrice - product.promotion.amount,
+                      maxPrice - product.promotion.amount,
+                    )
+                    : validatePrice(
+                      variantDetail.price - product.promotion.amount,
+                      variantDetail.price - product.promotion.amount,
+                    )
                 }
                 {
                   product.promotion

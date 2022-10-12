@@ -10,6 +10,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SellerInfo from './Seller/SellerInfo';
 import SellerProduct from './SellerProduct/SellerProduct';
 import SimilarProduct from './SimilarProduct/SimilarProduct';
+import ReviewInfo from './Review/ReviewInfo';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -20,7 +21,7 @@ const ProductPage = () => {
   });
   const [productSeller, setProductSeller] = useState<any>({});
   const [, setLoadingProduct] = useState(true);
-  // const { auth } = useAuth();
+
   const axiosPrivate = useAxiosPrivate();
 
   const getID = () => {
@@ -78,6 +79,9 @@ const ProductPage = () => {
             <ProductDetail
               description={productDetail.description}
               specification={productDetail.specification}
+            />
+            <ReviewInfo
+              productId={product.product.id}
             />
             <SellerProduct
               sellerId={productSeller.id}
