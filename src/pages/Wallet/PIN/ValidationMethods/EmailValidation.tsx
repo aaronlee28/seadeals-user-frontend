@@ -14,9 +14,10 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
     setEmailSent(true);
     try {
       const response = await axiosPrivate.post('/wallet/pin-by-email/');
+      const { data } = response;
       if (response.status === 200) {
         toast.dismiss();
-        setEmailKey(response.data.key);
+        setEmailKey(data.data.key);
       }
     } catch (err) {
       toast.error('error requesting email');
@@ -25,9 +26,12 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
 
   const validateToken = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!emailKey) return;
+
     try {
       const response = await axiosPrivate.post(
-        '/wallet/pin-by-email/code',
+        '/wallet/validator/pin-by-email/code',
         JSON.stringify({ key: emailKey, code: token }),
       );
 
@@ -57,7 +61,7 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
                 />
                 <button
                   type="submit"
-                  className="btn w-50 border bg-secondary text-backdrop fw-bold"
+                  className={`btn w-50 border bg-secondary text-backdrop fw-bold ${!emailKey && 'disabled'}`}
                 >
                   Verifikasi
                 </button>
