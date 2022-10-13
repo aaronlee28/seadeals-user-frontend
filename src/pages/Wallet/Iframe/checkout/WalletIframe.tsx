@@ -50,9 +50,8 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal })
         PAYMENT_TYPE.WALLET,
         '',
         '',
-        parseInt(address.city_id, 10),
+        parseInt(address.id, 10),
       );
-      console.log(payload);
 
       const config = {
         headers: { Authorization: `Bearer ${data.id_token}` },
@@ -63,13 +62,14 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal })
         JSON.stringify(payload),
         config,
       );
-      const { status } = paymentRes.data.data;
+      const { transaction } = paymentRes.data.data;
       toast.dismiss();
       toast.success('Transaction Paid Successfully!');
       closeModal();
 
-      navigate(`/transactions/${status.transaction_id}`);
+      navigate(`/transactions/${transaction.transaction_id}`);
     } catch (err:any) {
+      console.log(err);
       const { message } = err.response.data;
       toast.dismiss();
       toast.error(message);

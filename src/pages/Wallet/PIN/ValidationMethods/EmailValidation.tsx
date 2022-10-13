@@ -26,6 +26,9 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
 
   const validateToken = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!emailKey) return;
+
     try {
       const response = await axiosPrivate.post(
         '/wallet/validator/pin-by-email/code',
@@ -58,7 +61,7 @@ const EmailValidation:FC<any> = ({ setMethod, setAuthPass }) => {
                 />
                 <button
                   type="submit"
-                  className="btn w-50 border bg-secondary text-backdrop fw-bold"
+                  className={`btn w-50 border bg-secondary text-backdrop fw-bold ${!emailKey && 'disabled'}`}
                 >
                   Verifikasi
                 </button>
