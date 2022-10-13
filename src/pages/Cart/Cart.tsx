@@ -42,7 +42,7 @@ const Cart = () => {
 
   const [isAllProductsChecked, setIsAllProductsChecked] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { auth } = useAuth();
+  // const { auth } = useAuth();
   const location = useLocation();
   const buyNow = location?.state?.cartId || '';
 
@@ -291,7 +291,6 @@ const Cart = () => {
 
   const deleteItem = async (id: number) => {
     const val = {
-      // user_id: auth.user.user_id,
       cart_item_id: id,
     };
     await Carts.DeleteCartItem(axiosPrivate, val)
