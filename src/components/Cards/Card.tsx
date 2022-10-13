@@ -3,6 +3,7 @@ import React from 'react';
 import CardCategory from './CardCategory/CardCategory';
 import CardProductList from './CardProductList/CardProductList';
 import CardCart from './CardCart/CardCart';
+import CardReview from './CardReview/CardReview';
 
 type CardRequiredProps = {
   data: any;
@@ -42,7 +43,7 @@ const Card = (props: CardProps) => {
   } = props;
 
   return (
-    <div>
+    <div className="card_container">
       {
         cardType === 'category'
         && (
@@ -65,6 +66,12 @@ const Card = (props: CardProps) => {
             handleDeleteItem={handleDeleteItem}
             handleAmount={handleAmount}
           />
+        )
+      }
+      {
+        cardType === 'review'
+        && (
+          <CardReview data={data} />
         )
       }
     </div>

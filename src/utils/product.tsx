@@ -1,3 +1,19 @@
+const getNumberOrder = (multiple: number) => {
+  if (multiple === 1) {
+    return ' RB';
+  }
+  if (multiple === 2) {
+    return ' JT';
+  }
+  if (multiple === 3) {
+    return ' M';
+  }
+  if (multiple === 4) {
+    return ' T';
+  }
+  return '';
+};
+
 const formatSoldCount = (count: number) => {
   if (count >= 10000) {
     return '10RB+ Terjual';
@@ -17,11 +33,30 @@ const formatPrice = (price: number) => {
 const formatPriceWithCurrency = (price: number) => {
   const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
   const priceJoin = priceSplit.join('.');
-  return `Rp. ${priceJoin},00`;
+  return `Rp${priceJoin}`;
+};
+
+const validatePrice = (minPrice: number, maxPrice: number) => {
+  if (minPrice !== maxPrice) {
+    return `${formatPriceWithCurrency(minPrice)} - ${formatPriceWithCurrency(maxPrice)}`;
+  }
+  return formatPriceWithCurrency(minPrice);
+};
+
+const formatCount = (count: number) => {
+  let format = count;
+  let multiple = 0;
+  while (format >= 1000 && multiple < 4) {
+    format = Math.round((format / 1000) * 100) / 100;
+    multiple += 1;
+  }
+  return `${format}${getNumberOrder(multiple)}`;
 };
 
 export {
   formatSoldCount,
   formatPrice,
   formatPriceWithCurrency,
+  formatCount,
+  validatePrice,
 };

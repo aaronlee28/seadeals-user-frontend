@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { formatSoldCount, formatPrice } from '../../../utils/product';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
@@ -36,9 +37,18 @@ const CardProductList = (props: CardProductListProps) => {
   } = product;
   const mediaUrl = product.media_url;
   const totalSold = product.total_sold;
+  const navigate = useNavigate();
+
+  const goToProductPage = () => {
+    navigate(`/product/${slug}`);
+  };
 
   return (
-    <div className="card_product_list_container">
+    <div
+      className="card_product_list_container"
+      onClick={goToProductPage}
+      role="presentation"
+    >
       <div className="card_product_list_content">
         <img
           className="image"

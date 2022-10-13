@@ -28,9 +28,12 @@
         color: #2658CD;
       }
       .title {
+        width: 100%;
+        min-width: fit-content;
         font-size: 60px;
         font-weight: 600;
         color: #2658CD;
+        text-align: center;
       }
     }
     .items_content {

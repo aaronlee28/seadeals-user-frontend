@@ -5,8 +5,8 @@ class Products {
     return axios.get(`/products${filter}`);
   }
 
-  static GetProductBySlug(slug: string) {
-    return axios.get(`/products/detail/${slug}`);
+  static GetProductByID(ax: any, ID: number) {
+    return ax.get(`/products/detail/${ID}`);
   }
 
   static GetProductsBySellerID(SellerID: number, filter: string) {
@@ -23,6 +23,10 @@ class Products {
 
   static GetPromotionPrice(ProductID: number) {
     return axios.get(`/products/${ProductID}/promotion-price`);
+  }
+
+  static GetSimilarProducts(ProductID: number, filter: string) {
+    return axios.get(`/products/${ProductID}/similar-products${filter}`);
   }
 }
 

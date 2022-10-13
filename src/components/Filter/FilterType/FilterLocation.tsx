@@ -9,7 +9,6 @@ type FilterLocationProps = {
   data: any[];
   handleInput: (cityName: string) => void;
   handleDelete: () => void;
-  // handleChecked: (cityId: number) => void;
 };
 
 const FilterLocation = (props: FilterLocationProps) => {
@@ -18,8 +17,6 @@ const FilterLocation = (props: FilterLocationProps) => {
     data,
     handleInput,
     handleDelete,
-    // handleChecked,
-
   } = props;
 
   const [isModalFilterLocationOpen, setIsModalFilterLocationOpen] = useState(false);
@@ -53,7 +50,9 @@ const FilterLocation = (props: FilterLocationProps) => {
   };
 
   const closeModalLocationFilter = () => {
-    setIsModalFilterLocationOpen(false);
+    setTimeout(() => {
+      setIsModalFilterLocationOpen(false);
+    }, 500);
   };
 
   useEffect(() => {
@@ -110,6 +109,7 @@ const FilterLocation = (props: FilterLocationProps) => {
         isModalFilterLocationOpen
         && (
           <ModalFilterLocation
+            isOpen={isModalFilterLocationOpen}
             data={citiesByLetter}
             handleInput={handleInput}
             handleDelete={handleDelete}

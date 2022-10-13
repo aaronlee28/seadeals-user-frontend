@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import ReactTooltip from 'react-tooltip';
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
 import Button from '../../Button/Button';
@@ -9,6 +9,7 @@ import './ModalFilterLocation.scss';
 
 type ModalFilterLocationProps = {
   data: any[],
+  isOpen: boolean,
   handleInput: (cityName: string) => void;
   handleDelete: () => void;
   handleCloseModal: () => void;
@@ -17,37 +18,17 @@ type ModalFilterLocationProps = {
 const ModalFilterLocation = (props: ModalFilterLocationProps) => {
   const {
     data,
+    isOpen,
     handleInput,
     handleDelete,
     handleCloseModal,
   } = props;
 
-  // const [citiesByLetter, setCitiesByLetter] = useState<any>([]);
-  //
-  // const groupingCities = () => {
-  //   let grouping: any[] = [];
-  //   for (let i = 0; i < data.length; i += 1) {
-  // const isLetterExist = grouping.findIndex((el) => el.letter === data[i].city_name.charAt(0));
-  //     if (isLetterExist >= 0) {
-  //       grouping[isLetterExist].items = [
-  //         ...grouping[isLetterExist].items,
-  //         data[i],
-  //       ];
-  //     }
-  //     if (isLetterExist < 0) {
-  //       const newGrouping = {
-  //         letter: data[i].city_name.charAt(0),
-  //         items: [data[i]],
-  //       };
-  //       grouping = [...grouping, newGrouping];
-  //     }
-  //   }
-  //   setCitiesByLetter(grouping);
-  // };
-  //
-  // useEffect(() => {
-  //   groupingCities();
-  // }, [data]);
+  const [open, setOpen] = useState(isOpen);
+
+  const handleClose = () => {
+    setOpen(!open);
+  };
 
   const children = () => (
     <div className="modal_filter_location">
@@ -62,7 +43,7 @@ const ModalFilterLocation = (props: ModalFilterLocationProps) => {
           <Button
             buttonType="primary"
             text="Simpan"
-            handleClickedButton={handleCloseModal}
+            handleClickedButton={handleClose}
           />
         </div>
       </div>
@@ -100,13 +81,6 @@ const ModalFilterLocation = (props: ModalFilterLocationProps) => {
                             data-for="name"
                           >
                             { item.city_name }
-                            {/* <ReactTooltip */}
-                            {/*  id="name" */}
-                            {/*  place="left" */}
-                            {/*  type="warning" */}
-                            {/* > */}
-                            {/*  <span>{ item.city_name }</span> */}
-                            {/* </ReactTooltip> */}
                           </div>
                         </div>
                       ),
@@ -124,6 +98,7 @@ const ModalFilterLocation = (props: ModalFilterLocationProps) => {
   return (
     <Modal
       cancel={handleCloseModal}
+      isOpen={open}
     >
       {
         children()

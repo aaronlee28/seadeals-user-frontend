@@ -17,7 +17,7 @@ const Pagination: FC<PaginationProps> = ({
     setPage(num);
   };
   return (
-    <div className="pt-3">
+    <div className="pt-3 pagination_container">
       <div className="d-flex gap-2 justify-content-center">
         <PaginationItem pageNumber="&#171;" setPage={() => changePage(1)} />
         {Array(totalPage).fill(0).map((el, i) => (

@@ -9,7 +9,7 @@ import Filter from '../../components/Filter/Filter';
 import ProductCategories from '../../api/product_categories';
 import { FILTER_PRICE } from '../../constants/filter';
 import Sort from '../../components/Sort/Sort';
-import SORT_SEARCH from '../../constants/sort';
+import { SORT_SEARCH } from '../../constants/sort';
 // import MiniPagination from '../../components/Pagination/MiniPagination';
 import Pagination from '../../components/Pagination/Pagination';
 import Cities from '../../api/cities';
@@ -87,11 +87,6 @@ const Search = () => {
       })
       .catch((err) => err);
   };
-
-  // const getCategoryID = (name: string) => {
-  //   const category = categories.find((el: any) => el.name === name);
-  //   return category.id;
-  // };
 
   const validatePriceFilter = () => {
     if (

@@ -21,4 +21,15 @@ const SORT_SEARCH = [
   },
 ];
 
-export default SORT_SEARCH;
+const SORT_REVIEWS = [
+  {
+    id: 1,
+    name: 'Terbaru',
+  },
+  {
+    id: 2,
+    name: 'Terlama',
+  },
+];
+
+export { SORT_SEARCH, SORT_REVIEWS };

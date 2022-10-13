@@ -1,31 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Modal.scss';
+import Button from '../Button/Button';
 
-type ModalProps = {
+type ModalRequiredProps = {
   // modalType: string;
   // data: any;
   // accept: () => void;
-  cancel: () => void;
-  children: any;
+  isOpen: boolean,
+  cancel: () => void,
+  children: any,
+};
+
+type ModalOptionalProps = {
+  isHaveCloseButton?: boolean,
+};
+
+interface ModalProps
+  extends ModalRequiredProps,
+  ModalOptionalProps {}
+
+const defaultProps: ModalOptionalProps = {
+  isHaveCloseButton: false,
 };
 
 const Modal = (props: ModalProps) => {
   const {
     cancel,
+    isHaveCloseButton,
+    isOpen,
     children,
   } = props;
 
+  const [open, setOpen] = useState(isOpen);
+
+  const handleCancel = () => {
+    setOpen(!open);
+    cancel();
+  };
+
+  useEffect(() => {
+    setOpen(isOpen);
+    if (!isOpen) {
+      cancel();
+    }
+  }, [isOpen]);
+
   return (
     <div
-      className="modal_container"
-      onClick={cancel}
+      className={`modal_container ${open ? 'open' : 'close'}`}
+      onClick={handleCancel}
       role="presentation"
     >
       <div
-        className="modal_content"
+        className={`modal_content ${open ? 'open' : 'close'}`}
         onClick={(e) => e.stopPropagation()}
         role="presentation"
       >
+        {
+          isHaveCloseButton
+          && (
+            <div className="close_button">
+              <Button
+                buttonType="secondary alt"
+                text="X"
+                handleClickedButton={handleCancel}
+              />
+            </div>
+          )
+        }
         {
           children
         }
@@ -33,5 +75,7 @@ const Modal = (props: ModalProps) => {
     </div>
   );
 };
+
+Modal.defaultProps = defaultProps;
 
 export default Modal;

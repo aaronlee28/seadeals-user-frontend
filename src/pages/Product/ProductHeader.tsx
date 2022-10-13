@@ -1,20 +1,44 @@
-import React, { FC } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductMedia from './Media/ProductMedia';
 import ProductShare from './Share/ProductShare';
 import HeaderInfo from './Header/HeaderInfo';
+import ProductFavorite from './Favorite/ProductFavorite';
 
-const ProductHeader:FC<any> = ({ product }) => (
-  <div className="bg-white p-3 rounded shadow-sm mb-3">
-    <div className="row">
-      <div className="col-12 col-lg-5 mb-4">
-        <ProductMedia photos={product?.product_photos} />
-      </div>
-      <div className="col-12 col-lg-7">
-        <HeaderInfo product={product} />
+type ProductHeaderProps = {
+  product: any,
+};
+
+const ProductHeader = (props: ProductHeaderProps) => {
+  const {
+    product,
+  } = props;
+
+  const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    setPhotos(product.product.product_photos);
+  }, [product]);
+
+  return (
+    <div className="product_header_container">
+      <div className="product_header_content">
+        <div className="left_content">
+          <ProductMedia photos={photos} />
+          <div className="bottom">
+            <ProductShare url={window.location.href} />
+            <ProductFavorite
+              isFavorite={product.product.favorite}
+              favorite={product.product.favorite_count}
+              productId={product.product.id}
+            />
+          </div>
+        </div>
+        <div className="right_content">
+          <HeaderInfo data={product} />
+        </div>
       </div>
     </div>
-    <ProductShare url={window.location.href} />
-  </div>
-);
+  );
+};
 
 export default ProductHeader;

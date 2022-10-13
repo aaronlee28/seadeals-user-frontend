@@ -28,6 +28,7 @@ import PostTopupSLP from '../pages/PostSLP/PostTopupSLP';
 import Checkout from '../pages/Checkout/Checkout';
 import TrxPage from '../pages/Transaction/TrxPage';
 import Address from '../pages/User/Address';
+import SimilarPage from '../pages/Similar/SimilarPage';
 
 const AppRoutes = () => (
   <Routes>
@@ -40,9 +41,15 @@ const AppRoutes = () => (
         <Route path="search" element={<Search />} />
         <Route path="category" element={<CategoryPage />} />
         <Route path="recommendation" element={<RecommendationPage />} />
-        <Route path="cart" element={<Cart />} />
+        <Route path="similar/">
+          <Route path=":slug" element={<SimilarPage />} />
+        </Route>
         <Route element={<PersistLogin />}>
+          <Route path="product/">
+            <Route path=":slug" element={<ProductPage />} />
+          </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+            <Route path="cart" element={<Cart />} />
             <Route path="/user">
               <Route path="" element={<User />} />
               <Route path="addresses" element={<Address />} />
@@ -63,10 +70,6 @@ const AppRoutes = () => (
 
           <Route path="/toko/">
             <Route path=":sellerID/" element={<SellerPage />} />
-          </Route>
-
-          <Route path="/produk/">
-            <Route path=":slug/" element={<ProductPage />} />
           </Route>
         </Route>
       </Route>

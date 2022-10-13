@@ -12,7 +12,7 @@ type CardCartProps = {
     storeItems: any[];
   };
   handleCheckedStore: (storeId: number) => void;
-  handleCheckedItem: (storeId: number, id: number) => void
+  handleCheckedItem: (id: number) => void
   handleDeleteItem: (storeId: number, id: number) => void;
   handleAmount: (storeId: number, id: number, amount: number) => void;
 };

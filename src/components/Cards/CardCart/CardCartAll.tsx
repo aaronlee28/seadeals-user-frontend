@@ -7,7 +7,8 @@ import Button from '../../Button/Button';
 
 type CardCartAllProps = {
   totalProduct: number;
-  totalPrice: number;
+  totalPricePromotion: number;
+  totalPriceBase: number;
   isAllProductsChecked: boolean;
   handleCheckedAllProducts: () => void;
 };
@@ -15,7 +16,8 @@ type CardCartAllProps = {
 const CardCartAll = (props: CardCartAllProps) => {
   const {
     totalProduct,
-    totalPrice,
+    totalPricePromotion,
+    totalPriceBase,
     isAllProductsChecked,
     handleCheckedAllProducts,
   } = props;
@@ -53,7 +55,13 @@ const CardCartAll = (props: CardCartAllProps) => {
             </div>
             <div className="total_price">
               <p className="title">Total Harga:</p>
-              <p className="amount">{ formatPriceWithCurrency(totalPrice) }</p>
+              {
+                totalPriceBase !== totalPricePromotion
+                && (
+                  <p className="base">{ formatPriceWithCurrency(totalPriceBase) }</p>
+                )
+              }
+              <p className="amount">{ formatPriceWithCurrency(totalPricePromotion) }</p>
             </div>
             <Button
               buttonType="primary"
