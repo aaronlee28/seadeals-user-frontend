@@ -270,7 +270,8 @@ const Address = () => {
           <div className="mb-2">
             <a className="mb-2" href="/user/addresses">Alamat</a>
           </div>
-          <a href="/user/accounts/slp">Akun Sea Labs Pay</a>
+          <a href="/wallet">Akun Sea Labs Pay</a>
+          {/* <a href="/user/accounts/slp">Akun Sea Labs Pay</a> */}
         </div>
         <div className="main-side_container col-8 col-md-8">
           <div className="address_container">

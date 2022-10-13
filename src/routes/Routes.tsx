@@ -33,18 +33,17 @@ import SimilarPage from '../pages/Similar/SimilarPage';
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
-
       <Route element={<UserLayout />}>
-        <Route path="" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="search" element={<Search />} />
-        <Route path="category" element={<CategoryPage />} />
-        <Route path="recommendation" element={<RecommendationPage />} />
-        <Route path="similar/">
-          <Route path=":slug" element={<SimilarPage />} />
-        </Route>
         <Route element={<PersistLogin />}>
+          <Route path="" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="search" element={<Search />} />
+          <Route path="category" element={<CategoryPage />} />
+          <Route path="recommendation" element={<RecommendationPage />} />
+          <Route path="similar/">
+            <Route path=":slug" element={<SimilarPage />} />
+          </Route>
           <Route path="product/">
             <Route path=":slug" element={<ProductPage />} />
           </Route>

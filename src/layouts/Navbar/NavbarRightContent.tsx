@@ -10,6 +10,8 @@ const NavbarRightContent = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
 
+  console.log(auth);
+
   const goToRegisterPage = () => {
     navigate('/register');
   };
@@ -20,6 +22,7 @@ const NavbarRightContent = () => {
 
   const openDropdown = () => {
     console.log('OPEN DROPDOWN');
+    navigate('/user/addresses');
   };
 
   return (
