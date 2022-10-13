@@ -5,6 +5,7 @@ import Category from './Category/Category';
 import ProductCategories from '../../api/product_categories';
 import Products from '../../api/products';
 import Recommendation from './Recommendation/Recommendation';
+import PromotionBanner from './PromotionBanner/PromotionBanner';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -39,6 +40,7 @@ const Home = () => {
   return (
     <div className="home_container">
       <div className="home_content">
+        <PromotionBanner />
         {
           categories.length !== 0
           && (
