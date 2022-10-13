@@ -12,8 +12,6 @@ const ProductSpecification = (props: ProductSpecificationProps) => {
     data,
   } = props;
 
-  console.log(data);
-
   return (
     <div className="specification_container">
       <div className="specification_content">

@@ -22,8 +22,6 @@ const NavbarRightContent = () => {
     console.log('OPEN DROPDOWN');
   };
 
-  console.log(auth);
-
   return (
     <div className="right_content">
       {

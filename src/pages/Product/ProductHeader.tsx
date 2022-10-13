@@ -13,8 +13,6 @@ const ProductHeader = (props: ProductHeaderProps) => {
     product,
   } = props;
 
-  console.log(product);
-
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {

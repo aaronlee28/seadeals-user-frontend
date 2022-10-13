@@ -344,7 +344,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   };
 
   useEffect(() => {
-    console.log(product.min_quantity);
     setAmount(product.min_quantity > 0 ? product.min_quantity : amount);
     setVariantItems(splitProductVariant(product.product_variant_detail));
   }, [data]);
