@@ -27,6 +27,7 @@ import PostTrxSLP from '../pages/PostSLP/PostTrxSLP';
 import PostTopupSLP from '../pages/PostSLP/PostTopupSLP';
 import Checkout from '../pages/Checkout/Checkout';
 import TrxPage from '../pages/Transaction/TrxPage';
+import Address from '../pages/User/Address';
 
 const AppRoutes = () => (
   <Routes>
@@ -42,7 +43,10 @@ const AppRoutes = () => (
         <Route path="cart" element={<Cart />} />
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/user" element={<User />} />
+            <Route path="/user">
+              <Route path="" element={<User />} />
+              <Route path="addresses" element={<Address />} />
+            </Route>
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />
