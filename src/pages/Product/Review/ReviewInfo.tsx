@@ -9,6 +9,7 @@ import { REVIEW_FILTER_ITEMS } from '../../../constants/product';
 import Pagination from '../../../components/Pagination/Pagination';
 import Sort from '../../../components/Sort/Sort';
 import { SORT_REVIEWS } from '../../../constants/sort';
+import PHOTO_DEFAULT from '../../../constants/user';
 
 type ReviewInfoProps = {
   productId: number,
@@ -41,7 +42,7 @@ const ReviewInfo = (props: ReviewInfoProps) => {
     name: review.username,
     rating: review.rating,
     createdAt: review.created_at,
-    avatarUrl: review.avatar_url,
+    avatarUrl: review.avatar_url ? review.avatar_url : PHOTO_DEFAULT,
     description: review.description,
     imgUrl: review.image_url,
     imgName: review.image_name,
@@ -62,18 +63,22 @@ const ReviewInfo = (props: ReviewInfoProps) => {
     setTotalFilter(filters);
   };
 
+  const getAllReviews = async () => {
+    await Reviews.GetReviewsByProductID(productId, '')
+      .then((resp) => {
+        const res = resp.data.data;
+        splitFilter(res.reviews);
+        setTotalReviews(res.total_reviews);
+        setAverageRating(res.average_rating);
+      });
+  };
+
   const getReviews = async (filters: string = '') => {
     setFilter(filters);
     const tempFilter = `?limit=6${filters}`;
-    let rev;
     await Reviews.GetReviewsByProductID(productId, tempFilter)
       .then((resp) => {
         const result = resp.data.data;
-        rev = {
-          reviews: result.reviews,
-          totalReviews: result.total_reviews,
-          averageRating: result.average_rating,
-        };
         setReviews(result.reviews);
         setPagination((prevState) => ({
           ...prevState,
@@ -81,7 +86,6 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         }));
       })
       .catch((err) => err);
-    return rev;
   };
 
   const getReviewFilterItems = () => {
@@ -157,14 +161,8 @@ const ReviewInfo = (props: ReviewInfoProps) => {
   };
 
   useEffect(() => {
-    const start = async () => {
-      await getReviews().then((res: any) => {
-        splitFilter(res.reviews);
-        setTotalReviews(res.totalReviews);
-        setAverageRating(res.averageRating);
-      });
-    };
-    start().then();
+    getAllReviews().then();
+    getReviews().then();
   }, []);
 
   useEffect(() => {
@@ -182,20 +180,30 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         <div className="header">
           <div className="top_content">
             <h3 className="title">PENILAIAN PRODUK</h3>
-            <Sort
-              sortType="search"
-              options={sortOptions}
-              values={sorting}
-              handleInput={handleSort}
-            />
+            {
+              reviews.length > 0
+              && (
+                <Sort
+                  sortType="search"
+                  options={sortOptions}
+                  values={sorting}
+                  handleInput={handleSort}
+                />
+              )
+            }
           </div>
-          <ReviewFilter
-            items={getReviewFilterItems()}
-            value={selectedFilter}
-            rating={averageRating}
-            totalReviewer={totalReviews}
-            handleFilter={handleFilter}
-          />
+          {
+            reviews.length > 0
+            && (
+              <ReviewFilter
+                items={getReviewFilterItems()}
+                value={selectedFilter}
+                rating={averageRating}
+                totalReviewer={totalReviews}
+                handleFilter={handleFilter}
+              />
+            )
+          }
         </div>
         <div className="items">
           {
@@ -212,13 +220,24 @@ const ReviewInfo = (props: ReviewInfoProps) => {
               )
             )
           }
+          {
+            reviews.length === 0
+            && (
+              <p className="empty">Belum ada Penilaian</p>
+            )
+          }
         </div>
-        <Pagination
-          page={pagination.page}
-          totalPage={pagination.totalPage}
-          setPage={handlePagination}
-          innerRef={innerRef}
-        />
+        {
+          reviews.length > 0
+          && (
+            <Pagination
+              page={pagination.page}
+              totalPage={pagination.totalPage}
+              setPage={handlePagination}
+              innerRef={innerRef}
+            />
+          )
+        }
       </div>
     </div>
   );

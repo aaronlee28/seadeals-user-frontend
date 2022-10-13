@@ -94,15 +94,20 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     const { value } = event.target;
     const maxQuantity = product.max_quantity;
     const minQuantity = product.min_quantity;
-    if (maxQuantity !== 0 || minQuantity !== 0) {
+    if (maxQuantity !== 0 && minQuantity !== 0) {
       if (value <= maxQuantity && value >= minQuantity) {
-        setAmount(event.target.value);
+        setAmount(value);
       }
       if (value > maxQuantity) {
         toast.error(`Maksimum pembelian adalah ${maxQuantity}`);
       }
       if (value < minQuantity) {
         toast.error(`Minimum pembelian adalah ${minQuantity}`);
+      }
+    }
+    if (maxQuantity === 0 && minQuantity === 0) {
+      if (value >= 1) {
+        setAmount(value);
       }
     }
   };
@@ -339,15 +344,14 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   };
 
   useEffect(() => {
-    setAmount(product.min_quantity);
+    console.log(product.min_quantity);
+    setAmount(product.min_quantity > 0 ? product.min_quantity : amount);
     setVariantItems(splitProductVariant(product.product_variant_detail));
   }, [data]);
 
   useEffect(() => {
     getVariantDetail();
   }, [selectedVariant]);
-
-  console.log(variantDetail);
 
   return (
     <div className="header_info_container">
@@ -386,12 +390,20 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 {
                   Object.keys(variantDetail).length <= 1
                     ? validatePrice(
-                      minPrice - product.promotion.amount,
-                      maxPrice - product.promotion.amount,
+                      product.promotion
+                        ? minPrice - product.promotion.amount
+                        : minPrice,
+                      product.promotion
+                        ? maxPrice - product.promotion.amount
+                        : maxPrice,
                     )
                     : validatePrice(
-                      variantDetail.price - product.promotion.amount,
-                      variantDetail.price - product.promotion.amount,
+                      product.promotion
+                        ? variantDetail.price - product.promotion.amount
+                        : variantDetail.price,
+                      product.promotion
+                        ? variantDetail.price - product.promotion.amount
+                        : variantDetail.price,
                     )
                 }
                 {

@@ -76,11 +76,16 @@ const CardReview = (props: CardReviewProps) => {
           onClick={openModalPhotoZoom}
           role="presentation"
         >
-          <img
-            className="image"
-            src={imgUrl}
-            alt={imgName}
-          />
+          {
+            imgUrl
+            && (
+              <img
+                className="image"
+                src={imgUrl}
+                alt={imgName}
+              />
+            )
+          }
         </div>
       </div>
       {

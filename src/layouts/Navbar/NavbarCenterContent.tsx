@@ -13,7 +13,7 @@ const NavbarCenterContent = () => {
   const getCategoryParams = search.get('categoryName');
 
   const goToCart = () => {
-    console.log('GOTOCART');
+    navigate('/cart');
   };
 
   const handleInput = (event: any) => {
@@ -22,7 +22,7 @@ const NavbarCenterContent = () => {
   };
 
   const searchProduct = () => {
-    navigate(`search?${
+    navigate(`/search?${
       searchInput.length > 0
         ? `searchInput=${searchInput}`
         : ''

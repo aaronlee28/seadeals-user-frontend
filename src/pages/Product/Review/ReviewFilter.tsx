@@ -24,10 +24,10 @@ const ReviewFilter = (props: ReviewFilterProps) => {
       <div className="review_filter_content">
         <div className="rating_content">
           <div className="text">
-            <p className="rating">
+            <div className="rating">
               { rating }
               <p className="next">&nbsp;dari 5</p>
-            </p>
+            </div>
             <p className="total">
               { totalReviewer }
               &nbsp;Penilaian
@@ -63,6 +63,7 @@ const ReviewFilter = (props: ReviewFilterProps) => {
             items.map(
               (item: any) => (
                 <Button
+                  key={`${item.id}-${item.value}`}
                   buttonType={`primary ${value !== item.filter ? 'alt' : ''}`}
                   text={item.value}
                   handleClickedButton={() => handleFilter(item.filter)}

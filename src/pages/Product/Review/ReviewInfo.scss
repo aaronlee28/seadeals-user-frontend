@@ -149,6 +149,14 @@
       .card_container {
         width: 100%;
       }
+      .empty {
+        width: 100%;
+        font-size: 60px;
+        font-weight: 500;
+        text-align: center;
+        padding: 100px;
+        color: rgba(0, 0, 0, 0.5);
+      }
     }
     .pagination_container {
       padding-bottom: 40px;

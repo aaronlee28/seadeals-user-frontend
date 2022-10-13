@@ -5,7 +5,6 @@ import ProductDetail from './ProductDetail';
 import ProductHeader from './ProductHeader';
 import Products from '../../api/products';
 import { PRODUCT_SPECIFICATION } from '../../constants/product';
-// import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SellerInfo from './Seller/SellerInfo';
 import SellerProduct from './SellerProduct/SellerProduct';
