@@ -41,7 +41,6 @@ const Cart = () => {
 
   const [isAllProductsChecked, setIsAllProductsChecked] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  // const { auth } = useAuth();
   const location = useLocation();
   const buyNow = location?.state?.cartId || '';
 
