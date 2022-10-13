@@ -23,6 +23,7 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
       border-bottom: solid 1px #EFEFEF;
       .header_name {
+
         .name {
           font-weight: 500;
           font-size: 20px;
@@ -53,7 +54,7 @@
           box-sizing: border-box;
           .first_content {
             width: 100%;
-            max-width: 260px;
+            max-width: 300px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -67,12 +68,17 @@
             }
             .description {
               width: 100%;
-              max-width: 150px;
+              max-width: 200px;
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               align-items: flex-start;
+              gap: 5px;
+              .orange {
+                font-size: 10px;
+              }
               .name {
+                width: 100%;
                 font-size: 16px;
                 font-weight: 500;
                 color: #000000;
@@ -83,8 +89,13 @@
                 -webkit-line-clamp: 2;
                 line-clamp: 2;
                 text-align: left;
-                min-height: 40px;
+                min-height: 20px;
                 line-height: 20px;
+              }
+              .variant {
+                font-size: 14px;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 0.5);
               }
             }
           }
@@ -113,6 +124,12 @@
             .price, .total_price {
               font-size: 18px;
               font-weight: 500;
+            }
+            .base {
+              color: #4F4F4F;
+              font-size: 14px;
+              font-weight: 600;
+              text-decoration: line-through;
             }
             .amount {
               font-size: 14px;
@@ -193,8 +210,15 @@
             max-width: 200px;
             font-weight: 600;
           }
+          .base {
+            color: #4F4F4F;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: line-through;
+          }
           .amount {
             max-width: 400px;
+            color: #2658CD;
           }
         }
       }

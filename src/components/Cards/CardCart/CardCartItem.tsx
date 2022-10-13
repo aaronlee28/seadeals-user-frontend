@@ -1,17 +1,23 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
 import { ReactComponent as IconDelete } from '../../../assets/svg/icon_delete.svg';
-import { formatPriceWithCurrency } from '../../../utils/product';
+import { formatPrice, formatPriceWithCurrency } from '../../../utils/product';
 import Form from '../../Form/Form';
+import Promotion from '../../Promotion/Promotion';
 
 type CardCartItemProps = {
   data: {
     id: number;
+    slug: string;
+    variant: string;
     name: string;
     imgUrl: string;
-    price: number;
     amount: number;
     isChecked: boolean;
+    pricePromotion: number;
+    priceBase: number;
+    discount: number;
   };
   storeId: number;
   handleChecked: (id: number) => void;
@@ -31,11 +37,17 @@ const CardCartItem = (props: CardCartItemProps) => {
   const {
     id,
     name,
+    slug,
+    variant,
     imgUrl,
-    price,
     amount,
     isChecked,
+    pricePromotion,
+    priceBase,
+    discount,
   } = data;
+
+  const navigate = useNavigate();
 
   const amountItems = [
     {
@@ -47,6 +59,10 @@ const CardCartItem = (props: CardCartItemProps) => {
 
   const handleInput = (event: any) => {
     handleAmount(storeId, id, event.target.value);
+  };
+
+  const goToProductPage = () => {
+    navigate(`/product/${slug}`);
   };
 
   return (
@@ -66,14 +82,38 @@ const CardCartItem = (props: CardCartItemProps) => {
             className="image"
             src={imgUrl}
             alt={name}
+            onClick={goToProductPage}
+            role="presentation"
           />
           <div className="description">
-            <p className="name">{name}</p>
+            {
+              discount
+              && (
+                <Promotion
+                  promotionType="orange"
+                  text={`${formatPrice(discount)} OFF`}
+                />
+              )
+            }
+            <div
+              className="name"
+              onClick={goToProductPage}
+              role="presentation"
+            >
+              {name}
+            </div>
+            <p className="variant">{variant}</p>
           </div>
         </div>
         <div className="second_content">
           <p className="title">Harga Satuan:</p>
-          <p className="price">{ formatPriceWithCurrency(price) }</p>
+          {
+            priceBase !== pricePromotion
+            && (
+              <p className="base">{ formatPriceWithCurrency(priceBase) }</p>
+            )
+          }
+          <p className="price">{ formatPriceWithCurrency(pricePromotion) }</p>
         </div>
         <div className="third_content">
           <p className="title">Jumlah:</p>
@@ -88,7 +128,13 @@ const CardCartItem = (props: CardCartItemProps) => {
         </div>
         <div className="fourth_content">
           <p className="title">Total Harga:</p>
-          <p className="total_price">{ formatPriceWithCurrency(price * amount) }</p>
+          {
+            priceBase !== pricePromotion
+            && (
+              <p className="base">{ formatPriceWithCurrency(priceBase * amount) }</p>
+            )
+          }
+          <p className="total_price">{ formatPriceWithCurrency(pricePromotion * amount) }</p>
         </div>
         <div
           className="fifth_content"

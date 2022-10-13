@@ -4,6 +4,7 @@ class Carts {
   }
 
   static DeleteCartItem(ax: any, data: any) {
+    console.log(data);
     return ax.delete('/user/cart', data);
   }
 
