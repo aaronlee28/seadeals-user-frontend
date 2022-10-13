@@ -42,13 +42,16 @@
       }
     }
     .right_content {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 20px;
       width: 100%;
       max-width: 300px;
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+      }
     }
   }
 }
