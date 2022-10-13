@@ -10,8 +10,9 @@ import PaymentCards from './PaymentCards';
 type ModalPaymentProps = {
   orderItems: any[],
   handleCloseModal: () => void,
-  total: number
-  address: any
+  total: number,
+  address: any,
+  isOpen: boolean,
 };
 
 const ModalPayment = (props: ModalPaymentProps) => {
@@ -20,9 +21,15 @@ const ModalPayment = (props: ModalPaymentProps) => {
     handleCloseModal,
     total,
     address,
+    isOpen,
   } = props;
 
+  const [open, setOpen] = useState(isOpen);
   const [selectedMethod, setSelectedMethod] = useState('');
+
+  const handleClose = () => {
+    setOpen(!open);
+  };
 
   const renderPaymentMethod = () => {
     switch (selectedMethod) {
@@ -30,7 +37,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
         return (
           <PayWithSLP
             orderItems={orderItems}
-            closeModal={handleCloseModal}
+            closeModal={handleClose}
             address={address}
           />
         );
@@ -38,7 +45,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
         return (
           <WalletIframe
             orderItems={orderItems}
-            closeModal={handleCloseModal}
+            closeModal={handleClose}
             address={address}
           />
         );
@@ -75,7 +82,10 @@ const ModalPayment = (props: ModalPaymentProps) => {
   );
 
   return (
-    <Modal cancel={handleCloseModal}>
+    <Modal
+      cancel={handleCloseModal}
+      isOpen={open}
+    >
       {children()}
     </Modal>
   );

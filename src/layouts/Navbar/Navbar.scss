@@ -44,6 +44,9 @@
     .right_content {
       width: 100%;
       max-width: 300px;
+      //&.auth {
+      //  max-width: 1000px;
+      //}
       .buttons {
         display: flex;
         flex-direction: row;
@@ -51,6 +54,53 @@
         align-items: center;
         gap: 20px;
         width: 100%;
+        height: 100%;
+        .plain {
+          width: 100%;
+          max-width: 40px;
+          .favorite {
+            path {
+              fill: #FB3C00;
+            }
+          }
+        }
+        .profile {
+          width: fit-content;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          align-items: center;
+          cursor: pointer;
+          .image_content {
+            border: solid 2px #2658CD;
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            margin: 0;
+            .image {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+          }
+          .plain {
+            width: fit-content;
+            background: none;
+            max-width: none;
+            .text {
+              font-weight: 700;
+              width: fit-content;
+            }
+            .chevron {
+              width: 40px;
+              transform: rotate(90deg);
+              path {
+                fill: #2658CD;
+              }
+            }
+          }
+        }
       }
     }
   }

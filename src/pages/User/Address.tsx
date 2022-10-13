@@ -120,13 +120,13 @@ const Address = () => {
   };
 
   useEffect(() => {
-    getAllProvince();
-    getAddresses();
+    getAllProvince().then();
+    getAddresses().then();
   }, []);
 
   useEffect(() => {
     if (province !== '') {
-      getCities();
+      getCities().then();
       setCity(province);
       setCityId(getCityId(province));
       setType(getCityType(province));
@@ -173,9 +173,9 @@ const Address = () => {
           sub_district: subDistrict,
           address,
         }),
-      );
+      ).then((r) => r);
       setShow(false);
-      getAddresses();
+      getAddresses().then();
       setChecked(true);
     } catch (err) {
       navigate('/user', { replace: true });
@@ -201,10 +201,10 @@ const Address = () => {
             address,
             user_id: userId,
           }),
-        );
+        ).then((r) => r);
         setShow(false);
         setPrevStateAID(addressId);
-        getAddresses();
+        getAddresses().then();
         setChecked(true);
       } catch (err) {
         navigate('/user', { replace: true });
@@ -234,7 +234,7 @@ const Address = () => {
           address: newAddress,
           user_id: Number(userId),
         }),
-      );
+      ).then((r) => r);
       setPrevStateNewAID(newAddressId);
       setShowEditModal(false);
     } catch (err) {
@@ -397,7 +397,7 @@ const Address = () => {
                         {mainAddress.address}
                       </div>
                       <div className="right-side col-2">
-                        <p role="button" onClick={() => setNewAddressId(mainAddress.id)}>
+                        <p role="presentation" onClick={() => setNewAddressId(mainAddress.id)}>
                           Edit
                         </p>
                       </div>
@@ -421,10 +421,10 @@ const Address = () => {
                                 {a.address}
                               </div>
                               <div className="right-side col-2">
-                                <p role="button" onClick={() => setAddressId(a.id)}>
+                                <p role="presentation" onClick={() => setAddressId(a.id)}>
                                   Jadikan utama
                                 </p>
-                                <p role="button" onClick={() => setNewAddressId(a.id)}>
+                                <p role="presentation" onClick={() => setNewAddressId(a.id)}>
                                   Edit
                                 </p>
                               </div>

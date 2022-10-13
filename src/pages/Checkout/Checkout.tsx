@@ -75,6 +75,7 @@ const Checkout = () => {
           && (
           <ModalPayment
               // masukin vouchers juga
+            isOpen={isModalOpen}
             orderItems={cartPerStore}
             handleCloseModal={() => setIsModalOpen(false)}
             total={subtotal + deliveryTotal}

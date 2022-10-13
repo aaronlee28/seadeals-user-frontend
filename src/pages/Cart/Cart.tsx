@@ -7,7 +7,6 @@ import './Cart.scss';
 import CardCartAll from '../../components/Cards/CardCart/CardCartAll';
 import Carts from '../../api/carts';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import useAuth from '../../hooks/useAuth';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([
