@@ -9,6 +9,8 @@ const CheckoutAddress:FC<any> = ({ selectedAddr, setSelectedAddr }) => {
   const [addrs, setAddrs] = useState<any[]>([]);
   const [collapse, setCollapse] = useState(true);
 
+  const hasAddress = () => addrs.length > 0;
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -24,7 +26,7 @@ const CheckoutAddress:FC<any> = ({ selectedAddr, setSelectedAddr }) => {
         const { data } = response.data;
         if (isMounted) {
           setAddrs(data);
-          setSelectedAddr(data[0]);
+          if (data.length > 0) setSelectedAddr(data[0]);
         }
       } catch (err) {
         toast.error('failed to fetch address data');
@@ -59,12 +61,16 @@ const CheckoutAddress:FC<any> = ({ selectedAddr, setSelectedAddr }) => {
           <p className="py-2 px-1">Kirim Ke Alamat</p>
         </div>
         <div className="ms-auto col-8 px-0 address_selector">
-          <p
-            className="fs-6 py-2 border rounded px-2 mb-2 address_main"
-            onClick={toggleAddressList}
-          >
-            {`${selectedAddr.address}, ${selectedAddr.province}, ${selectedAddr.sub_district}, ${selectedAddr.city}, ${selectedAddr.postal_code}`}
-          </p>
+          {hasAddress()
+            ? (
+              <p
+                className="fs-6 py-2 border rounded px-2 mb-2 address_main"
+                onClick={toggleAddressList}
+              >
+                {`${selectedAddr.address}, ${selectedAddr.province}, ${selectedAddr.sub_district}, ${selectedAddr.city}, ${selectedAddr.postal_code}`}
+              </p>
+            )
+            : <p className="fs-6 py-2 border rounded px-2 mb-2 address_main text-secondary text-center">Belum ada alamat tersimpan!</p>}
           <div className={`border rounded p-1 address_options ${collapse ? 'address_options_collapse' : 'address_options_open'}`}>
             {addrs.map((addr) => (
               <div

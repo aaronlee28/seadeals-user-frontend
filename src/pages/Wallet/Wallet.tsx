@@ -8,9 +8,11 @@ import WalletTrxItems from './WalletTrxItems';
 import './Wallet.scss';
 import nopin from '../../assets/svg/nopin.svg';
 import AccountInfo from './Home/AccountInfo';
+import useAuth from '../../hooks/useAuth';
 
 const Wallet = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
   const [walletInfo, setWalletInfo] = useState<any>(null);
   const [hasPin, setHasPin] = useState(false);
   const [SLPAccounts, setSLPAccounts] = useState([]);
@@ -76,7 +78,9 @@ const Wallet = () => {
           <div className="text-start">
             <p className="fw-bold fs-2">SeaDeals Wallet</p>
             <p className="text-secondary mb-2 fs-6">
-              Selamat datang kembali, Name Here
+              Selamat datang kembali,
+              {' '}
+              {auth?.user?.name}
             </p>
           </div>
           <div className="normal-link">
@@ -102,7 +106,7 @@ const Wallet = () => {
             <img alt="PIN not set" src={nopin} height="64px" />
             <p className="mb-0 fs-6 mt-1 mb-4">Amankan Wallet dengan mengatur PIN!</p>
             <div className="normal-link">
-              <Link to="/settings">
+              <Link to="/wallet/settings">
                 <small className="fw-bold fs-6 px-3 py-2 border bg-main text-backdrop rounded shadow-sm">Atur PIN</small>
               </Link>
             </div>

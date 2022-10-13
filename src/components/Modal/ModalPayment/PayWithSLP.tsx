@@ -59,6 +59,9 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
     setSLPAccounts(newList);
   };
 
+  const checkSLPAlreadyExists = (num:string) => !!SLPAccounts
+    .find((account) => account.account_number === num);
+
   const handleContinue = async () => {
     if (!selectedSLP) return;
 
@@ -75,9 +78,8 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
         PAYMENT_TYPE.SLP,
         '',
         selectedSLP.account_number,
-        parseInt(address.city_id, 10),
+        parseInt(address.id, 10),
       );
-      console.log(payload);
 
       toast.loading('Requesting Payment');
       const checkoutRes = await axiosPrivate.post(
@@ -126,7 +128,10 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
               : (
                 <>
                   <p className="fs-5 text-center mb-3">Register SeaLabs Pay Account</p>
-                  <RegisterSLP selectSLP={setSelectedSLP} />
+                  <RegisterSLP
+                    selectSLP={setSelectedSLP}
+                    checkSLPAlreadyExists={checkSLPAlreadyExists}
+                  />
                 </>
               )}
           </div>

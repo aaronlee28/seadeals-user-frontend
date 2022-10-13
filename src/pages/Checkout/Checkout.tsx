@@ -57,7 +57,13 @@ const Checkout = () => {
     };
   }, []);
 
+  const hasSelectedAddr = () => !!selectedAddr.id;
+
   const handleClickOrder = () => {
+    if (!hasSelectedAddr()) {
+      toast.error('Anda perlu menyimpan Alamat Kirim');
+      return;
+    }
     if (sellerProducts.length === 0) return;
 
     setIsModalOpen(true);
@@ -86,6 +92,7 @@ const Checkout = () => {
             subtotal={subtotal}
             deliveryTotal={deliveryTotal}
             handleClick={() => handleClickOrder()}
+            hasAddress={hasSelectedAddr()}
           />
         </div>
       </div>

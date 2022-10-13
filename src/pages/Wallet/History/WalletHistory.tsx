@@ -18,10 +18,6 @@ const WalletHistory = () => {
 
   const hasNext = () => page < totalPage;
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
-
   const lastTrxRef = useCallback((node:any) => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
