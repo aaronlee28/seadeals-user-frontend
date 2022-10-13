@@ -73,8 +73,6 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
         toast.success('Account Registered!');
       }
 
-      console.log(address);
-
       const payload = generateCheckoutPayload(
         orderItems,
         PAYMENT_TYPE.SLP,
@@ -82,7 +80,6 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
         selectedSLP.account_number,
         parseInt(address.id, 10),
       );
-      console.log(payload);
 
       toast.loading('Requesting Payment');
       const checkoutRes = await axiosPrivate.post(
