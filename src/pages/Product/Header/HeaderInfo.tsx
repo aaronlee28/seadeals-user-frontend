@@ -98,8 +98,15 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     const { value } = event.target;
     const maxQuantity = product.max_quantity;
     const minQuantity = product.min_quantity;
+    const stock = Object.keys(variantDetail).length <= 1
+      ? data.total_stock
+      : variantDetail.stock;
     if (maxQuantity !== 0 && minQuantity !== 0) {
-      if (value <= maxQuantity && value >= minQuantity) {
+      if (
+        value <= maxQuantity
+        && value >= minQuantity
+        && value <= stock
+      ) {
         setAmount(value);
       }
       if (value > maxQuantity) {
@@ -108,9 +115,12 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       if (value < minQuantity) {
         toast.error(`Minimum pembelian adalah ${minQuantity}`);
       }
+      if (value > stock) {
+        toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${stock}`);
+      }
     }
     if (maxQuantity === 0 && minQuantity === 0) {
-      if (value >= 1) {
+      if (value >= 1 && value <= stock) {
         setAmount(value);
       }
     }
@@ -330,9 +340,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const addToCart = () => {
     if (auth.user) {
       postToCart().then((cartId) => {
-        // if (cartId === '') {
-        //   toast.error('Barang gagal dimasukkan ke keranjang');
-        // }
         const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
         dispatch(addCartItem(cartItem));
       });
@@ -355,9 +362,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
               navigate('/cart', { state: { cartId: res } });
             }
           }
-          // if (res === '') {
-          //
-          // }
         });
     }
     if (!auth.user) {
