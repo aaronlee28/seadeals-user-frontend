@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
+
 import './CardCart.scss';
 import { formatPriceWithCurrency } from '../../../utils/product';
 import Button from '../../Button/Button';

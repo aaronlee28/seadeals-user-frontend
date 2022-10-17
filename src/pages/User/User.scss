@@ -97,6 +97,13 @@
 
         }
 
+        p.clickable {
+          cursor: pointer;
+          &:hover {
+            color: #1E46A2;
+          }
+        }
+
         .children {
           height: 100%;
 

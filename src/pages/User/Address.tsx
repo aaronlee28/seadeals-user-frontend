@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './User.scss';
-import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import Button from '../../components/Button/Button';
 import Cities from '../../api/cities';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import Modal from '../../components/Modal/Modal';
 
 const Address = () => {
   const uRL = '/user/profiles/addresses';
@@ -283,101 +283,109 @@ const Address = () => {
                 <Button buttonType="primary" text="Tambah alamat" handleClickedButton={handleShow} />
               </div>
             </div>
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Alamat Baru</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <form>
-                  <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
-                    {provinces.map((prov) => (
-                      <option
-                        key={prov.province_id}
-                        value={prov.province_name}
-                      >
-                        {prov.province_name}
-                      </option>
-                    ))}
-                  </select>
-                  {
-                      province && (
-                      <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
-                        {cities.map((ci) => (
-                          <option
-                            key={ci.city_id}
-                            value={ci.city_name}
-                          >
-                            {ci.city_name}
-                          </option>
-                        ))}
-                      </select>
-                      )
-                  }
-                  <input
-                    className="form-control mb-2"
-                    value={subDistrict}
-                    onChange={(event) => setSubDistrict(event.target.value)}
-                    id="sub-district"
-                    placeholder="Kecamatan"
-                    autoComplete="new-password"
-                    required
-                  />
-                  <input
-                    className="form-control mb-2"
-                    value={postalCode}
-                    onChange={(event) => setPostalCode(event.target.value)}
-                    id="postal-code"
-                    placeholder="Kode Pos"
-                    autoComplete="new-password"
-                    required
-                  />
-                  <textarea
-                    className="form-control mb-2"
-                    value={address}
-                    onChange={(event) => setAddress(event.target.value)}
-                    id="address"
-                    placeholder="Isi alamat lengkap"
-                    autoComplete="new-password"
-                    required
-                  />
-                </form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
-                <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
-              </Modal.Footer>
-            </Modal>
-            <Modal show={showEditModal} onHide={handleCloseEditModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Sunting Alamat</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <form>
-                  <input
-                    className="form-control mb-2"
-                    value={newPostalCode}
-                    onChange={(event) => setNewPostalCode(event.target.value)}
-                    id="postal-code"
-                    placeholder="Isi nomor kode pos baru"
-                    autoComplete="new-password"
-                    required
-                  />
-                  <textarea
-                    className="form-control mb-2"
-                    value={newAddress}
-                    onChange={(event) => setNewAddress(event.target.value)}
-                    id="address"
-                    placeholder="Isi alamat lengkap baru"
-                    autoComplete="new-password"
-                    required
-                  />
-                </form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleCloseEditModal} />
-                <Button buttonType="primary" text="Sunting alamat" handleClickedButton={handleSubmitEditForm} />
-              </Modal.Footer>
-            </Modal>
+            {
+              show && (
+                <Modal isOpen={show} cancel={handleClose}>
+                  <div className="d-flex flex-column p-4 w-75">
+                    <h5 className="mb-4 text-main">Alamat Baru</h5>
+                    <div>
+                      <form>
+                        <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
+                          {provinces.map((prov) => (
+                            <option
+                              key={prov.province_id}
+                              value={prov.province_name}
+                            >
+                              {prov.province_name}
+                            </option>
+                          ))}
+                        </select>
+                        {
+                          province && (
+                            <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
+                              {cities.map((ci) => (
+                                <option
+                                  key={ci.city_id}
+                                  value={ci.city_name}
+                                >
+                                  {ci.city_name}
+                                </option>
+                              ))}
+                            </select>
+                          )
+                        }
+                        <input
+                          className="form-control mb-2"
+                          value={subDistrict}
+                          onChange={(event) => setSubDistrict(event.target.value)}
+                          id="sub-district"
+                          placeholder="Kecamatan"
+                          autoComplete="new-password"
+                          required
+                        />
+                        <input
+                          className="form-control mb-2"
+                          value={postalCode}
+                          onChange={(event) => setPostalCode(event.target.value)}
+                          id="postal-code"
+                          placeholder="Kode Pos"
+                          autoComplete="new-password"
+                          required
+                        />
+                        <textarea
+                          className="form-control mb-2"
+                          value={address}
+                          onChange={(event) => setAddress(event.target.value)}
+                          id="address"
+                          placeholder="Isi alamat lengkap"
+                          autoComplete="new-password"
+                          required
+                        />
+                      </form>
+                    </div>
+                    <div className="d-flex justify-content-end gap-2 mt-4">
+                      <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
+                      <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
+                    </div>
+                  </div>
+                </Modal>
+              )
+            }
+            {
+              showEditModal && (
+                <Modal isOpen={showEditModal} cancel={handleCloseEditModal}>
+                  <div className="d-flex flex-column p-4 w-75">
+                    <h5 className="mb-4 text-main">Sunting Alamat</h5>
+                    <div>
+                      <form>
+                        <input
+                          className="form-control mb-2"
+                          value={newPostalCode}
+                          onChange={(event) => setNewPostalCode(event.target.value)}
+                          id="postal-code"
+                          placeholder="Isi nomor kode pos baru"
+                          autoComplete="new-password"
+                          required
+                        />
+                        <textarea
+                          className="form-control mb-2"
+                          value={newAddress}
+                          onChange={(event) => setNewAddress(event.target.value)}
+                          id="address"
+                          placeholder="Isi alamat lengkap baru"
+                          autoComplete="new-password"
+                          required
+                        />
+                      </form>
+                    </div>
+                    <div className="d-flex justify-content-end gap-2 mt-4">
+                      <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleCloseEditModal} />
+                      <Button buttonType="primary" text="Sunting alamat" handleClickedButton={handleSubmitEditForm} />
+                    </div>
+                  </div>
+                </Modal>
+              )
+            }
             {
                 mainAddress !== '' && (
                 <div className="children">
@@ -398,7 +406,7 @@ const Address = () => {
                         {mainAddress.address}
                       </div>
                       <div className="right-side col-2">
-                        <p role="presentation" onClick={() => setNewAddressId(mainAddress.id)}>
+                        <p role="presentation" className="clickable" onClick={() => setNewAddressId(mainAddress.id)}>
                           Edit
                         </p>
                       </div>
@@ -422,10 +430,10 @@ const Address = () => {
                                 {a.address}
                               </div>
                               <div className="right-side col-2">
-                                <p role="presentation" onClick={() => setAddressId(a.id)}>
+                                <p role="presentation" className="clickable" onClick={() => setAddressId(a.id)}>
                                   Jadikan utama
                                 </p>
-                                <p role="presentation" onClick={() => setNewAddressId(a.id)}>
+                                <p role="presentation" className="clickable" onClick={() => setNewAddressId(a.id)}>
                                   Edit
                                 </p>
                               </div>
