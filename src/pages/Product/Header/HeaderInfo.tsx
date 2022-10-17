@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addCartItem, checkCartItem } from '../../../features/cart/cartSlice';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
 import { formatPrice, formatSoldCount, validatePrice } from '../../../utils/product';
@@ -13,12 +15,14 @@ import './HeaderInfo.scss';
 import useAuth from '../../../hooks/useAuth';
 import Carts from '../../../api/carts';
 import Promotion from '../../../components/Promotion/Promotion';
+import { parseToCartItemState } from '../../../utils/CartCheckoutHelper';
 
 type HeaderInfoProps = {
   data: any,
 };
 
 const HeaderInfo = (props: HeaderInfoProps) => {
+  const dispatch = useDispatch();
   const { data } = props;
   const { product } = data;
   const minPrice = data.min_price;
@@ -324,7 +328,11 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const addToCart = () => {
     if (auth.user) {
-      postToCart().then();
+      postToCart().then((cartId) => {
+        if (cartId === '') return;
+        const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
+        dispatch(addCartItem(cartItem));
+      });
     }
     if (!auth.user) {
       navigate('/login', { state: { from: location } });
@@ -334,7 +342,13 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const buyNow = async () => {
     if (auth.user) {
-      const id = await postToCart().then((res) => res);
+      const id = await postToCart().then((res) => {
+        if (res === '') return '';
+        const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
+        dispatch(addCartItem(cartItem));
+        dispatch(checkCartItem(res));
+        return res;
+      });
       navigate('/cart', { state: { cartId: id } });
     }
     if (!auth.user) {
