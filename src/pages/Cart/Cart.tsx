@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeCartItem, checkCartItem, uncheckCartItem } from '../../features/cart/cartSlice';
 import Card from '../../components/Cards/Card';
 
 import './Cart.scss';
@@ -9,6 +11,9 @@ import Carts from '../../api/carts';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Cart = () => {
+  const dispatch = useDispatch();
+  const { checkedIDs } = useSelector((store:any) => store.cart);
+
   const [cartItems, setCartItems] = useState([
     {
       storeId: 0,
@@ -109,10 +114,15 @@ const Cart = () => {
       (storeData: any) => {
         if (storeData.storeId === storeId) {
           const newStoreData = storeData;
-          newStoreData.storeIsChecked = !newStoreData.storeIsChecked;
+          const checked = !newStoreData.storeIsChecked;
+          newStoreData.storeIsChecked = checked;
           newStoreData.storeItems.map(
             (item: any) => {
               const newItem = item;
+              if (newItem.isChecked !== checked) {
+                if (checked) dispatch(checkCartItem(item.id));
+                if (!checked) dispatch(uncheckCartItem(item.id));
+              }
               newItem.isChecked = newStoreData.storeIsChecked;
               return newItem;
             },
@@ -136,7 +146,10 @@ const Cart = () => {
           (item: any) => {
             if (item.id === id) {
               const newItem = item;
-              newItem.isChecked = !newItem.isChecked;
+              const checked = !newItem.isChecked;
+              newItem.isChecked = checked;
+              if (checked) dispatch(checkCartItem(id));
+              if (!checked) dispatch(uncheckCartItem(id));
               return newItem;
             }
             return item;
@@ -229,6 +242,8 @@ const Cart = () => {
       const isSellerExist = tempCart.find(
         (el: any) => el.storeId === items[i].seller_id,
       );
+      let isChecked = items[i].id === buyNow;
+      if (checkedIDs.includes(items[i].id)) { isChecked = true; }
       const newItem = {
         id: items[i].id,
         name: items[i].product_name,
@@ -246,7 +261,7 @@ const Cart = () => {
         maxQuantity: items[i].stock >= items[i].max_quantity
           ? items[i].max_quantity
           : items[i].stock,
-        isChecked: items[i].id === buyNow,
+        isChecked,
       };
       if (!isSellerExist) {
         const newSeller = {
@@ -302,7 +317,9 @@ const Cart = () => {
   };
 
   const handleDeleteItem = (storeId: number, id: number) => {
-    deleteItem(id).then();
+    deleteItem(id).then(() => {
+      dispatch(removeCartItem(id));
+    });
   };
 
   useEffect(() => {
