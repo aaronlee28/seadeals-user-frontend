@@ -65,6 +65,7 @@
               max-width: 100px;
               min-height: 100px;
               object-fit: cover;
+              cursor: pointer;
             }
             .description {
               width: 100%;
@@ -91,6 +92,7 @@
                 text-align: left;
                 min-height: 20px;
                 line-height: 20px;
+                cursor: pointer;
               }
               .variant {
                 font-size: 14px;

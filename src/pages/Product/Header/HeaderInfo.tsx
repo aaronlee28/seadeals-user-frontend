@@ -317,6 +317,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         })
         .catch(() => {
           toast.error('Barang gagal dimasukkan ke keranjang');
+          cartId = '';
         });
       return cartId;
     }
@@ -329,7 +330,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const addToCart = () => {
     if (auth.user) {
       postToCart().then((cartId) => {
-        if (cartId === '') return;
+        // if (cartId === '') {
+        //   toast.error('Barang gagal dimasukkan ke keranjang');
+        // }
         const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
         dispatch(addCartItem(cartItem));
       });
@@ -342,14 +345,20 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const buyNow = async () => {
     if (auth.user) {
-      const id = await postToCart().then((res) => {
-        if (res === '') return '';
-        const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
-        dispatch(addCartItem(cartItem));
-        dispatch(checkCartItem(res));
-        return res;
-      });
-      navigate('/cart', { state: { cartId: id } });
+      await postToCart()
+        .then((res) => {
+          if (res !== '') {
+            const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
+            dispatch(addCartItem(cartItem));
+            dispatch(checkCartItem(res));
+            if (checkSelectedVariant()) {
+              navigate('/cart', { state: { cartId: res } });
+            }
+          }
+          // if (res === '') {
+          //
+          // }
+        });
     }
     if (!auth.user) {
       navigate('/login', { state: { from: location } });

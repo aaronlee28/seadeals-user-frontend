@@ -14,29 +14,29 @@ const Cart = () => {
   const dispatch = useDispatch();
   const { checkedIDs } = useSelector((store:any) => store.cart);
 
-  const [cartItems, setCartItems] = useState([
-    {
-      storeId: 0,
-      storeName: '',
-      storeIsChecked: false,
-      storeItems: [
-        {
-          id: 0,
-          name: '',
-          slug: '',
-          variant: '',
-          imgUrl: '',
-          pricePromotion: 0,
-          priceBase: 0,
-          stock: 0,
-          discount: 0,
-          amount: 0,
-          minQuantity: 0,
-          maxQuantity: 0,
-          isChecked: false,
-        },
-      ],
-    },
+  const [cartItems, setCartItems] = useState<any>([
+    // {
+    //   storeId: 0,
+    //   storeName: '',
+    //   storeIsChecked: false,
+    //   storeItems: [
+    //     {
+    //       id: 0,
+    //       name: '',
+    //       slug: '',
+    //       variant: '',
+    //       imgUrl: '',
+    //       pricePromotion: 0,
+    //       priceBase: 0,
+    //       stock: 0,
+    //       discount: 0,
+    //       amount: 0,
+    //       minQuantity: 0,
+    //       maxQuantity: 0,
+    //       isChecked: false,
+    //     },
+    //   ],
+    // },
   ]);
   const [total, setTotal] = useState({
     totalPricePromotion: 0,
@@ -291,6 +291,7 @@ const Cart = () => {
     }
 
     setCartItems(tempCart);
+    setTotalCheck(tempCart);
   };
 
   const getCartItems = async () => {
@@ -343,7 +344,7 @@ const Cart = () => {
         <div className="cart_items">
           {
             cartItems.map(
-              (item) => (
+              (item: any) => (
                 <Card
                   key={`${item.storeId}-${item.storeName}`}
                   data={item}
