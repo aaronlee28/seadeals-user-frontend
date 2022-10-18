@@ -41,6 +41,10 @@ const cartSlice = createSlice({
       const checkedIDs = state.checkedIDs.filter((item) => item !== payload);
       return { ...state, checkedIDs };
     },
+    checkCartBuyNow: (state, { payload }) => {
+      const checkedIDs = [payload];
+      return { ...state, checkedIDs };
+    },
   },
   extraReducers: {
 
@@ -49,7 +53,7 @@ const cartSlice = createSlice({
 
 export const {
   addCartItem, removeCartItem,
-  checkCartItem, uncheckCartItem,
+  checkCartItem, uncheckCartItem, checkCartBuyNow,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

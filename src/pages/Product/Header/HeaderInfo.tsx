@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addCartItem, checkCartItem } from '../../../features/cart/cartSlice';
+import { addCartItem, checkCartBuyNow } from '../../../features/cart/cartSlice';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
 import { formatPrice, formatSoldCount, validatePrice } from '../../../utils/product';
@@ -357,7 +357,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
           if (res !== '') {
             const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
             dispatch(addCartItem(cartItem));
-            dispatch(checkCartItem(res));
+            dispatch(checkCartBuyNow(res));
             if (checkSelectedVariant()) {
               navigate('/cart');
             }
