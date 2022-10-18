@@ -92,10 +92,13 @@ const Cart = () => {
     const checkedStore = cartItems.map(
       (storeData: any) => {
         const newStoreData = storeData;
+        const checked = !newStoreData.storeIsChecked;
         newStoreData.storeIsChecked = !isAllProductsChecked;
         newStoreData.storeItems.map(
           (item: any) => {
             const newItem = item;
+            if (newItem.isChecked !== checked && checked) { dispatch(checkCartItem(item.id)); }
+            if (newItem.isChecked !== checked && !checked) { dispatch(uncheckCartItem(item.id)); }
             newItem.isChecked = !isAllProductsChecked;
             return newItem;
           },
@@ -237,6 +240,7 @@ const Cart = () => {
   };
 
   const splitCart = (items: any[]) => {
+    let allItemsChecked = true;
     let tempCart: any[] = [];
     for (let i = 0; i < items.length; i += 1) {
       const isSellerExist = tempCart.find(
@@ -244,6 +248,7 @@ const Cart = () => {
       );
       let isChecked = items[i].id === buyNow;
       if (checkedIDs.includes(items[i].id)) { isChecked = true; }
+      if (allItemsChecked && !isChecked) { allItemsChecked = false; }
       const newItem = {
         id: items[i].id,
         name: items[i].product_name,
@@ -290,6 +295,7 @@ const Cart = () => {
       }
     }
 
+    if (allItemsChecked) setIsAllProductsChecked(true);
     setCartItems(tempCart);
   };
 
