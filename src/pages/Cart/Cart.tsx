@@ -26,9 +26,9 @@ const Cart = () => {
   const location = useLocation();
   const buyNow = location?.state?.cartId || '';
 
-  const isAllChecked = () => {
-    for (let i = 0; i < cartItems.length; i += 1) {
-      if (!cartItems[i].storeIsChecked) {
+  const isAllChecked = (cart: any[]) => {
+    for (let i = 0; i < cart.length; i += 1) {
+      if (!cart[i].storeIsChecked) {
         return false;
       }
     }
@@ -82,7 +82,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -111,7 +111,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -138,7 +138,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedItem);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedItem));
     setTotalCheck(checkedItem);
   };
 
@@ -268,6 +268,7 @@ const Cart = () => {
     }
 
     setCartItems(tempCart);
+    setIsAllProductsChecked(isAllChecked(tempCart));
     setTotalCheck(tempCart);
   };
 
