@@ -22,6 +22,9 @@ const Address = () => {
   const [newPostalCode, setNewPostalCode] = useState('');
   const [newAddress, setNewAddress] = useState('');
 
+  const [addressId, setAddressId] = useState<any>('');
+  const [prevStateAID, setPrevStateAID] = useState<any>('');
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -120,11 +123,6 @@ const Address = () => {
   };
 
   useEffect(() => {
-    getAllProvince().then();
-    getAddresses().then();
-  }, []);
-
-  useEffect(() => {
     if (province !== '') {
       getCities().then();
       setCity(province);
@@ -142,22 +140,31 @@ const Address = () => {
     }
   }, [cities]);
 
-  const [addressId, setAddressId] = useState<any>(mainAddress.id);
-  const [prevStateAID, setPrevStateAID] = useState<any>(mainAddress.id);
-  const [checked, setChecked] = useState(false);
+  const [resetAddressStatus, setResetAddressStatus] = useState<any>(false);
 
-  const resetAddress = () => {
+  const resetMainAddress = () => {
     if (addresses.length > 0) {
       for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
         if (addresses[addressCount].is_main) {
           setMainAddress(addresses[addressCount]);
-          if (checked) {
-            window.location.reload();
-          }
+          setResetAddressStatus(false);
         }
       }
     }
   };
+
+  useEffect(() => {
+    getAllProvince().then();
+    getAddresses().then();
+  }, []);
+
+  useEffect(() => {
+    for (let addressCount = 0; addressCount < addresses.length; addressCount += 1) {
+      if (addresses[addressCount].is_main) {
+        setMainAddress(addresses[addressCount]);
+      }
+    }
+  }, [addresses]);
 
   const handleSubmit = () => {
     try {
@@ -175,16 +182,11 @@ const Address = () => {
         }),
       ).then((r) => r);
       setShow(false);
-      getAddresses().then();
-      setChecked(true);
+      setResetAddressStatus(true);
     } catch (err) {
       navigate('/user', { replace: true });
     }
   };
-
-  useEffect(() => {
-    resetAddress();
-  }, [addresses]);
 
   useEffect(() => {
     if (addressId !== prevStateAID) {
@@ -204,8 +206,7 @@ const Address = () => {
         ).then((r) => r);
         setShow(false);
         setPrevStateAID(addressId);
-        getAddresses().then();
-        setChecked(true);
+        setResetAddressStatus(true);
       } catch (err) {
         navigate('/user', { replace: true });
       }
@@ -237,11 +238,21 @@ const Address = () => {
       ).then((r) => r);
       setPrevStateNewAID(newAddressId);
       setShowEditModal(false);
+      setResetAddressStatus(true);
     } catch (err) {
       navigate('/user', { replace: true });
     }
-    window.location.reload();
+    setNewAddressId('');
+    setPrevStateNewAID('');
+    setNewAddress('');
+    setNewPostalCode('');
   };
+
+  useEffect(() => {
+    getAddresses().then();
+    resetMainAddress();
+    getAddresses().then();
+  }, [resetAddressStatus]);
 
   useEffect(() => {
     if (newAddressId !== prevStateNewAID) {
@@ -264,6 +275,7 @@ const Address = () => {
     <div className="user_container">
       <div className="whole_container row">
         <div className="side-bar_container col-4 col-md-2">
+          <h5 className="navigation-text mb-4">Navigasi</h5>
           <div className="mb-2">
             <a href="/user/profile">Profil</a>
           </div>
@@ -284,165 +296,165 @@ const Address = () => {
               </div>
             </div>
             {
-              show && (
-                <Modal isOpen={show} cancel={handleClose}>
-                  <div className="d-flex flex-column p-4 w-75">
-                    <h5 className="mb-4 text-main">Alamat Baru</h5>
-                    <div>
-                      <form>
-                        <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
-                          {provinces.map((prov) => (
-                            <option
-                              key={prov.province_id}
-                              value={prov.province_name}
-                            >
-                              {prov.province_name}
-                            </option>
-                          ))}
-                        </select>
-                        {
-                          province && (
-                            <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
-                              {cities.map((ci) => (
-                                <option
-                                  key={ci.city_id}
-                                  value={ci.city_name}
-                                >
-                                  {ci.city_name}
-                                </option>
-                              ))}
-                            </select>
-                          )
-                        }
-                        <input
-                          className="form-control mb-2"
-                          value={subDistrict}
-                          onChange={(event) => setSubDistrict(event.target.value)}
-                          id="sub-district"
-                          placeholder="Kecamatan"
-                          autoComplete="new-password"
-                          required
-                        />
-                        <input
-                          className="form-control mb-2"
-                          value={postalCode}
-                          onChange={(event) => setPostalCode(event.target.value)}
-                          id="postal-code"
-                          placeholder="Kode Pos"
-                          autoComplete="new-password"
-                          required
-                        />
-                        <textarea
-                          className="form-control mb-2"
-                          value={address}
-                          onChange={(event) => setAddress(event.target.value)}
-                          id="address"
-                          placeholder="Isi alamat lengkap"
-                          autoComplete="new-password"
-                          required
-                        />
-                      </form>
+                  show && (
+                  <Modal isOpen={show} cancel={handleClose}>
+                    <div className="d-flex flex-column p-4 w-75">
+                      <h5 className="mb-4 text-main">Alamat Baru</h5>
+                      <div>
+                        <form>
+                          <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
+                            {provinces.map((prov) => (
+                              <option
+                                key={prov.province_id}
+                                value={prov.province_name}
+                              >
+                                {prov.province_name}
+                              </option>
+                            ))}
+                          </select>
+                          {
+                                  province && (
+                                  <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
+                                    {cities.map((ci) => (
+                                      <option
+                                        key={ci.city_id}
+                                        value={ci.city_name}
+                                      >
+                                        {ci.city_name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  )
+                              }
+                          <input
+                            className="form-control mb-2"
+                            value={subDistrict}
+                            onChange={(event) => setSubDistrict(event.target.value)}
+                            id="sub-district"
+                            placeholder="Kecamatan"
+                            autoComplete="new-password"
+                            required
+                          />
+                          <input
+                            className="form-control mb-2"
+                            value={postalCode}
+                            onChange={(event) => setPostalCode(event.target.value)}
+                            id="postal-code"
+                            placeholder="Kode Pos"
+                            autoComplete="new-password"
+                            required
+                          />
+                          <textarea
+                            className="form-control mb-2"
+                            value={address}
+                            onChange={(event) => setAddress(event.target.value)}
+                            id="address"
+                            placeholder="Isi alamat lengkap"
+                            autoComplete="new-password"
+                            required
+                          />
+                        </form>
+                      </div>
+                      <div className="d-flex justify-content-end gap-2 mt-4">
+                        <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
+                        <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-end gap-2 mt-4">
-                      <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
-                      <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmit} />
-                    </div>
-                  </div>
-                </Modal>
-              )
-            }
+                  </Modal>
+                  )
+              }
             {
-              showEditModal && (
-                <Modal isOpen={showEditModal} cancel={handleCloseEditModal}>
-                  <div className="d-flex flex-column p-4 w-75">
-                    <h5 className="mb-4 text-main">Sunting Alamat</h5>
-                    <div>
-                      <form>
-                        <input
-                          className="form-control mb-2"
-                          value={newPostalCode}
-                          onChange={(event) => setNewPostalCode(event.target.value)}
-                          id="postal-code"
-                          placeholder="Isi nomor kode pos baru"
-                          autoComplete="new-password"
-                          required
-                        />
-                        <textarea
-                          className="form-control mb-2"
-                          value={newAddress}
-                          onChange={(event) => setNewAddress(event.target.value)}
-                          id="address"
-                          placeholder="Isi alamat lengkap baru"
-                          autoComplete="new-password"
-                          required
-                        />
-                      </form>
+                  showEditModal && (
+                  <Modal isOpen={showEditModal} cancel={handleCloseEditModal}>
+                    <div className="d-flex flex-column p-4 w-75">
+                      <h5 className="mb-4 text-main">Sunting Alamat</h5>
+                      <div>
+                        <form>
+                          <input
+                            className="form-control mb-2"
+                            value={newPostalCode}
+                            onChange={(event) => setNewPostalCode(event.target.value)}
+                            id="postal-code"
+                            placeholder="Isi nomor kode pos baru"
+                            autoComplete="new-password"
+                            required
+                          />
+                          <textarea
+                            className="form-control mb-2"
+                            value={newAddress}
+                            onChange={(event) => setNewAddress(event.target.value)}
+                            id="address"
+                            placeholder="Isi alamat lengkap baru"
+                            autoComplete="new-password"
+                            required
+                          />
+                        </form>
+                      </div>
+                      <div className="d-flex justify-content-end gap-2 mt-4">
+                        <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleCloseEditModal} />
+                        <Button buttonType="primary" text="Sunting alamat" handleClickedButton={handleSubmitEditForm} />
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-end gap-2 mt-4">
-                      <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleCloseEditModal} />
-                      <Button buttonType="primary" text="Sunting alamat" handleClickedButton={handleSubmitEditForm} />
-                    </div>
-                  </div>
-                </Modal>
-              )
-            }
+                  </Modal>
+                  )
+              }
             {
-                mainAddress !== '' && (
-                <div className="children">
-                  <div className="child row">
-                    <div className="contents row">
-                      <div className="order col-2">
-                        Alamat utama
-                      </div>
-                      <div className="left-side col-8">
-                        {mainAddress.province}
-                        {', '}
-                        {mainAddress.city}
-                        {', '}
-                        {mainAddress.sub_district}
-                        {', '}
-                        {mainAddress.postal_code}
-                        <br />
-                        {mainAddress.address}
-                      </div>
-                      <div className="right-side col-2">
-                        <p role="presentation" className="clickable" onClick={() => setNewAddressId(mainAddress.id)}>
-                          Edit
-                        </p>
+                  addresses.length > 0 && (
+                  <div className="children">
+                    <div className="child row">
+                      <div className="contents row">
+                        <div className="order col-2">
+                          Alamat utama
+                        </div>
+                        <div className="left-side col-8">
+                          {mainAddress.province}
+                          {', '}
+                          {mainAddress.city}
+                          {', '}
+                          {mainAddress.sub_district}
+                          {', '}
+                          {mainAddress.postal_code}
+                          <br />
+                          {mainAddress.address}
+                        </div>
+                        <div className="right-side col-2">
+                          <p role="presentation" className="clickable" onClick={() => setNewAddressId(mainAddress.id)}>
+                            Edit
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  { addresses.map((a:any) => (
-                    !a.is_main
-                          && (
-                          <div className="child row" key={a.id}>
-                            <div className="contents row">
-                              <div className="order col-2" />
-                              <div className="left-side col-8">
-                                {a.province}
-                                {', '}
-                                {a.city}
-                                {', '}
-                                {a.sub_district}
-                                {', '}
-                                {a.postal_code}
-                                <br />
-                                {a.address}
-                              </div>
-                              <div className="right-side col-2">
-                                <p role="presentation" className="clickable" onClick={() => setAddressId(a.id)}>
-                                  Jadikan utama
-                                </p>
-                                <p role="presentation" className="clickable" onClick={() => setNewAddressId(a.id)}>
-                                  Edit
-                                </p>
+                    { addresses.map((a:any) => (
+                      !a.is_main
+                            && (
+                            <div className="child row" key={a.id}>
+                              <div className="contents row">
+                                <div className="order col-2" />
+                                <div className="left-side col-8">
+                                  {a.province}
+                                  {', '}
+                                  {a.city}
+                                  {', '}
+                                  {a.sub_district}
+                                  {', '}
+                                  {a.postal_code}
+                                  <br />
+                                  {a.address}
+                                </div>
+                                <div className="right-side col-2">
+                                  <p role="presentation" className="clickable" onClick={() => setAddressId(a.id)}>
+                                    Jadikan utama
+                                  </p>
+                                  <p role="presentation" className="clickable" onClick={() => setNewAddressId(a.id)}>
+                                    Edit
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          ))) }
-                </div>
-                )
-            }
+                            ))) }
+                  </div>
+                  )
+              }
           </div>
         </div>
       </div>

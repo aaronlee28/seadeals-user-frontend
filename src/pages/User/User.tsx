@@ -18,7 +18,7 @@ const User = () => {
         <div className="side-bar_container col-4 col-md-2">
           <p className="mb-2" onClick={handleProfile}>Profil</p>
           <div className="mb-2">
-            <a className="mb-2" href="/user/addresses">Alamat</a>
+            <a className="mb-2" href="/user/addresses"><p role="presentation" className="user_side-bar_clickable">Alamat</p></a>
           </div>
           <p onClick={handleAccount}>Akun Sea Labs Pay</p>
         </div>
