@@ -26,7 +26,6 @@ const CardCartAll = (props: CardCartAllProps) => {
   const navigate = useNavigate();
 
   const goToCheckout = () => {
-    console.log('CHECKOUT');
     navigate('/checkout');
   };
 
