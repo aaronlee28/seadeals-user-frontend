@@ -275,6 +275,7 @@ const Address = () => {
     <div className="user_container">
       <div className="whole_container row">
         <div className="side-bar_container col-4 col-md-2">
+          <h5 className="navigation-text mb-4">Navigasi</h5>
           <div className="mb-2">
             <a href="/user/profile">Profil</a>
           </div>

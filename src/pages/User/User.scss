@@ -11,16 +11,34 @@
     font-size: 15px;
   }
 
+
   .whole_container {
     justify-content: center;
 
     .side-bar_container {
-      p {
+      background-color: #FFFFFF;
+      height: fit-content;
+      padding: 16px;
+      margin: 0 8px 0 8px;
+      border-radius: 8px;
+
+      .navigation-text {
+        font-weight: bold;
+        color: #1E46A2;
+      }
+
+      p.user_side-bar_clickable {
         cursor: pointer;
+        width: fit-content;
+        color: #1E46A2;
+        &:hover {
+          color: #FB3C00;
+        }
       }
 
       a {
-        color: #000000
+        color: #000000;
+        width: fit-content;
       }
 
       a:link {
@@ -33,6 +51,7 @@
 
       a:hover {
         text-decoration: none;
+        color: #FB3C00;
       }
 
       a:active {
