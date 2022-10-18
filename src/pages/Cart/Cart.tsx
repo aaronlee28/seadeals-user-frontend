@@ -240,6 +240,9 @@ const Cart = () => {
   };
 
   const splitCart = (items: any[]) => {
+    let totalPricePromotion = 0;
+    let totalPriceBase = 0;
+    let totalProduct = 0;
     let allItemsChecked = true;
     let tempCart: any[] = [];
     for (let i = 0; i < items.length; i += 1) {
@@ -247,7 +250,12 @@ const Cart = () => {
         (el: any) => el.storeId === items[i].seller_id,
       );
       let isChecked = items[i].id === buyNow;
-      if (checkedIDs.includes(items[i].id)) { isChecked = true; }
+      if (checkedIDs.includes(items[i].id)) {
+        isChecked = true;
+        totalPriceBase += items[i].price_before_discount;
+        totalProduct += 1;
+        totalPricePromotion += items[i].price_per_item;
+      }
       if (allItemsChecked && !isChecked) { allItemsChecked = false; }
       const newItem = {
         id: items[i].id,
@@ -297,6 +305,7 @@ const Cart = () => {
 
     if (allItemsChecked) setIsAllProductsChecked(true);
     setCartItems(tempCart);
+    setTotal({ totalPriceBase, totalProduct, totalPricePromotion });
   };
 
   const getCartItems = async () => {

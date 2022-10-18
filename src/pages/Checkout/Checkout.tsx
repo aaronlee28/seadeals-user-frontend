@@ -59,7 +59,7 @@ const Checkout = () => {
           setSubtotal(calculateSubtotal(cartItems));
         }
       } catch (err:any) {
-        toast.error('failed to fetch checkout data');
+        toast.error('Gagal memuat data pesanan');
       }
     };
     getCartItems();
