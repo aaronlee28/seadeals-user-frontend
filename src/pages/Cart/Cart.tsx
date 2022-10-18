@@ -229,9 +229,9 @@ const Cart = () => {
       let isChecked = items[i].id === buyNow;
       if (checkedIDs.includes(items[i].id)) {
         isChecked = true;
-        totalPriceBase += items[i].price_before_discount;
-        totalProduct += 1;
-        totalPricePromotion += items[i].price_per_item;
+        totalPriceBase += items[i].price_before_discount * items[i].quantity;
+        totalProduct += items[i].quantity;
+        totalPricePromotion += items[i].price_per_item * items[i].quantity;
       }
       if (allItemsChecked && !isChecked) { allItemsChecked = false; }
       const newItem = {
