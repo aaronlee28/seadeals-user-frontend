@@ -359,7 +359,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             dispatch(addCartItem(cartItem));
             dispatch(checkCartItem(res));
             if (checkSelectedVariant()) {
-              navigate('/cart', { state: { cartId: res } });
+              navigate('/cart');
             }
           }
         });
