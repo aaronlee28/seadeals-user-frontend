@@ -3,7 +3,12 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import { calculateSubtotal, groupBySeller, parseCartItemsToPayload } from '../../utils/CartCheckoutHelper';
+import {
+  calculateSubtotal,
+  groupBySeller, orderIsIncomplete,
+  parseCartItemsToPayload,
+  setCourierOptionToStore,
+} from '../../utils/CartCheckoutHelper';
 import CardCheckout from '../../components/Cards/CardCheckout/CardCheckout';
 import CheckoutAddress from './CheckoutAddress';
 import CheckoutVoucher from './CheckoutVoucher';
@@ -77,10 +82,23 @@ const Checkout = () => {
       toast.error('Anda perlu menyimpan Alamat Kirim');
       return;
     }
+    if (orderIsIncomplete(cartPerStore)) {
+      toast.error('Anda perlu memilih Jasa Kurir');
+      return;
+    }
     if (sellerProducts.length === 0) return;
 
     setIsModalOpen(true);
   };
+
+  const updateOrderDelivery = (courierID:number, sellerID:number) => {
+    const newCartPerStore = setCourierOptionToStore(courierID, sellerID, cartPerStore);
+    setCartPerStore(newCartPerStore);
+  };
+
+  useEffect(() => {
+    console.log(cartPerStore);
+  }, [cartPerStore]);
 
   return (
     <>
@@ -99,7 +117,11 @@ const Checkout = () => {
         <div className="px-4 mx-auto mt-3">
           <CheckoutAddress selectedAddr={selectedAddr} setSelectedAddr={setSelectedAddr} />
           {sellerProducts.map((sellerProduct:any) => (
-            <CardCheckout key={sellerProduct.storeID} data={sellerProduct} />
+            <CardCheckout
+              key={sellerProduct.storeID}
+              data={sellerProduct}
+              updateDelivery={updateOrderDelivery}
+            />
           ))}
           <CheckoutVoucher />
           <CheckoutSummary

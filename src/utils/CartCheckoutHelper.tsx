@@ -17,7 +17,7 @@ const groupBySeller = (cartItems:any) => {
 
 const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((sellerProduct) => {
   const storeCart = {
-    seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '', courier_id: 1,
+    seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '', courier_id: 0,
   };
   storeCart.cart_item_id = sellerProduct.storeItems.map((item: any) => item.id);
   return storeCart;
@@ -30,6 +30,17 @@ const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((se
 //   }
 //   return cartStore;
 // });
+
+const setCourierOptionToStore = (
+  courierID:number,
+  sellerID:number,
+  cartPerStore:any[],
+) => cartPerStore.map((cartStore) => {
+  if (cartStore.seller_id === sellerID) {
+    return { ...cartStore, courier_id: courierID };
+  }
+  return cartStore;
+});
 
 const generateCheckoutPayload = (
   cartPerStore:any[],
@@ -66,7 +77,15 @@ const parseToCartItemState = (id:number | undefined, product:any, variant:any) =
   };
 };
 
+const orderIsIncomplete = (cartPerStore:any[]) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const storeCart of cartPerStore) {
+    if (storeCart.courier_id === 0) return true;
+  }
+  return false;
+};
+
 export {
   groupBySeller, calculateSubtotal, parseCartItemsToPayload,
-  generateCheckoutPayload, parseToCartItemState,
+  generateCheckoutPayload, parseToCartItemState, setCourierOptionToStore, orderIsIncomplete,
 };
