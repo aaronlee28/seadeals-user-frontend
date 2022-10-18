@@ -99,8 +99,10 @@
 
         p.clickable {
           cursor: pointer;
+          width: fit-content;
+          color: #1E46A2;
           &:hover {
-            color: #1E46A2;
+            color: #FB3C00;
           }
         }
 
