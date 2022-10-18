@@ -98,8 +98,15 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     const { value } = event.target;
     const maxQuantity = product.max_quantity;
     const minQuantity = product.min_quantity;
+    const stock = Object.keys(variantDetail).length <= 1
+      ? data.total_stock
+      : variantDetail.stock;
     if (maxQuantity !== 0 && minQuantity !== 0) {
-      if (value <= maxQuantity && value >= minQuantity) {
+      if (
+        value <= maxQuantity
+        && value >= minQuantity
+        && value <= stock
+      ) {
         setAmount(value);
       }
       if (value > maxQuantity) {
@@ -108,9 +115,12 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       if (value < minQuantity) {
         toast.error(`Minimum pembelian adalah ${minQuantity}`);
       }
+      if (value > stock) {
+        toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${stock}`);
+      }
     }
     if (maxQuantity === 0 && minQuantity === 0) {
-      if (value >= 1) {
+      if (value >= 1 && value <= stock) {
         setAmount(value);
       }
     }
@@ -317,6 +327,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         })
         .catch(() => {
           toast.error('Barang gagal dimasukkan ke keranjang');
+          cartId = '';
         });
       return cartId;
     }
@@ -329,7 +340,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const addToCart = () => {
     if (auth.user) {
       postToCart().then((cartId) => {
-        if (cartId === '') return;
         const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
         dispatch(addCartItem(cartItem));
       });
@@ -342,14 +352,17 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   const buyNow = async () => {
     if (auth.user) {
-      await postToCart().then((res) => {
-        if (res === '') return '';
-        const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
-        dispatch(addCartItem(cartItem));
-        dispatch(checkCartBuyNow(res));
-        return res;
-      });
-      navigate('/cart');
+      await postToCart()
+        .then((res) => {
+          if (res !== '') {
+            const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
+            dispatch(addCartItem(cartItem));
+            dispatch(checkCartBuyNow(res));
+            if (checkSelectedVariant()) {
+              navigate('/cart');
+            }
+          }
+        });
     }
     if (!auth.user) {
       navigate('/login', { state: { from: location } });

@@ -14,30 +14,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const { checkedIDs } = useSelector((store:any) => store.cart);
 
-  const [cartItems, setCartItems] = useState([
-    {
-      storeId: 0,
-      storeName: '',
-      storeIsChecked: false,
-      storeItems: [
-        {
-          id: 0,
-          name: '',
-          slug: '',
-          variant: '',
-          imgUrl: '',
-          pricePromotion: 0,
-          priceBase: 0,
-          stock: 0,
-          discount: 0,
-          amount: 0,
-          minQuantity: 0,
-          maxQuantity: 0,
-          isChecked: false,
-        },
-      ],
-    },
-  ]);
+  const [cartItems, setCartItems] = useState<any>([]);
   const [total, setTotal] = useState({
     totalPricePromotion: 0,
     totalPriceBase: 0,
@@ -49,9 +26,9 @@ const Cart = () => {
   const location = useLocation();
   const buyNow = location?.state?.cartId || '';
 
-  const isAllChecked = () => {
-    for (let i = 0; i < cartItems.length; i += 1) {
-      if (!cartItems[i].storeIsChecked) {
+  const isAllChecked = (cart: any[]) => {
+    for (let i = 0; i < cart.length; i += 1) {
+      if (!cart[i].storeIsChecked) {
         return false;
       }
     }
@@ -108,7 +85,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -137,7 +114,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -164,7 +141,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedItem);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedItem));
     setTotalCheck(checkedItem);
   };
 
@@ -211,7 +188,7 @@ const Cart = () => {
                     toast.error(`Minimum pembelian adalah ${item.minQuantity}`);
                   }
                   if (newAmount > item.stock) {
-                    toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${item.stock}.`);
+                    toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${item.stock}`);
                   }
                 }
                 if (
@@ -305,6 +282,8 @@ const Cart = () => {
 
     if (allItemsChecked) setIsAllProductsChecked(true);
     setCartItems(tempCart);
+    setIsAllProductsChecked(isAllChecked(tempCart));
+    setTotalCheck(tempCart);
     setTotal({ totalPriceBase, totalProduct, totalPricePromotion });
   };
 
@@ -358,7 +337,7 @@ const Cart = () => {
         <div className="cart_items">
           {
             cartItems.map(
-              (item) => (
+              (item: any) => (
                 <Card
                   key={`${item.storeId}-${item.storeName}`}
                   data={item}
