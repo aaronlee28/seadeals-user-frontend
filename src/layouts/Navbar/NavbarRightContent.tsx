@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/Button/Button';
 import useAuth from '../../hooks/useAuth';
 import { ReactComponent as IconHeart } from '../../assets/svg/icon_heart.svg';
 import { ReactComponent as IconChevron } from '../../assets/svg/icon_chevron_right.svg';
+import { setAvatarURL } from '../../features/navbarProfile/navbarProfileSlice';
+import useFavoriteCount from '../../hooks/useFavoriteCount';
 
 const NavbarRightContent = () => {
+  const dispatch = useDispatch();
   const { auth } = useAuth();
   const navigate = useNavigate();
-
-  console.log(auth);
+  const navbarProfileSlice = useSelector((state:any) => state.navbarProfile);
+  const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/avatars%2Fuser%2Fanonym.jpeg?alt=media&token=66dbb36a-2ac1-4b1f-ad67-b2834eefdcef';
 
   const goToRegisterPage = () => {
     navigate('/register');
@@ -24,6 +28,19 @@ const NavbarRightContent = () => {
     console.log('OPEN DROPDOWN');
     navigate('/user/addresses');
   };
+
+  // DATA FAVORITE COUNT EXAMPLE USAGE, IT MEANS THAT THIS FAVORITE CHANGE EVERY TIME AUTH CHANGE
+  const { loadingFavorite, favoriteCount } = useFavoriteCount(auth);
+  useEffect(() => {
+    console.log('IT IS NOW', (loadingFavorite ? 'LOADING' : 'DONE LOADING'));
+    console.log('AND FAVORITE COUNT IS', favoriteCount);
+  }, [favoriteCount]);
+
+  useEffect(() => {
+    if (auth?.user?.avatar_url) {
+      dispatch(setAvatarURL(auth.user.avatar_url));
+    }
+  }, [auth?.user?.avatar_url]);
 
   return (
     <div className="right_content">
@@ -48,6 +65,7 @@ const NavbarRightContent = () => {
         auth.user
         && (
           <div className="buttons auth">
+            {/* FAVORITE COUNT AND ITS LOADING IS USING useFavoriteCount HOOKS */}
             <Button
               buttonType="plain"
               iconUrl={IconHeart}
@@ -58,7 +76,7 @@ const NavbarRightContent = () => {
               <div className="image_content">
                 <img
                   className="image"
-                  src="https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/avatars%2Fuser%2FA%2FAhn_Jae-Hyeon-p02.jpg?alt=media&token=70a5de1d-6f62-4563-90a6-ffea4017b843"
+                  src={navbarProfileSlice.avatarURL || defaultPic}
                   alt={auth.user.username}
                 />
               </div>

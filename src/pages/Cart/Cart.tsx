@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeCartItem, checkCartItem, uncheckCartItem } from '../../features/cart/cartSlice';
 import Card from '../../components/Cards/Card';
 
 import './Cart.scss';
@@ -9,30 +11,10 @@ import Carts from '../../api/carts';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      storeId: 0,
-      storeName: '',
-      storeIsChecked: false,
-      storeItems: [
-        {
-          id: 0,
-          name: '',
-          slug: '',
-          variant: '',
-          imgUrl: '',
-          pricePromotion: 0,
-          priceBase: 0,
-          stock: 0,
-          discount: 0,
-          amount: 0,
-          minQuantity: 0,
-          maxQuantity: 0,
-          isChecked: false,
-        },
-      ],
-    },
-  ]);
+  const dispatch = useDispatch();
+  const { checkedIDs } = useSelector((store:any) => store.cart);
+
+  const [cartItems, setCartItems] = useState<any>([]);
   const [total, setTotal] = useState({
     totalPricePromotion: 0,
     totalPriceBase: 0,
@@ -44,9 +26,9 @@ const Cart = () => {
   const location = useLocation();
   const buyNow = location?.state?.cartId || '';
 
-  const isAllChecked = () => {
-    for (let i = 0; i < cartItems.length; i += 1) {
-      if (!cartItems[i].storeIsChecked) {
+  const isAllChecked = (cart: any[]) => {
+    for (let i = 0; i < cart.length; i += 1) {
+      if (!cart[i].storeIsChecked) {
         return false;
       }
     }
@@ -87,10 +69,13 @@ const Cart = () => {
     const checkedStore = cartItems.map(
       (storeData: any) => {
         const newStoreData = storeData;
+        const checked = !newStoreData.storeIsChecked;
         newStoreData.storeIsChecked = !isAllProductsChecked;
         newStoreData.storeItems.map(
           (item: any) => {
             const newItem = item;
+            if (newItem.isChecked !== checked && checked) { dispatch(checkCartItem(item.id)); }
+            if (newItem.isChecked !== checked && !checked) { dispatch(uncheckCartItem(item.id)); }
             newItem.isChecked = !isAllProductsChecked;
             return newItem;
           },
@@ -100,7 +85,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -109,10 +94,15 @@ const Cart = () => {
       (storeData: any) => {
         if (storeData.storeId === storeId) {
           const newStoreData = storeData;
-          newStoreData.storeIsChecked = !newStoreData.storeIsChecked;
+          const checked = !newStoreData.storeIsChecked;
+          newStoreData.storeIsChecked = checked;
           newStoreData.storeItems.map(
             (item: any) => {
               const newItem = item;
+              if (newItem.isChecked !== checked) {
+                if (checked) dispatch(checkCartItem(item.id));
+                if (!checked) dispatch(uncheckCartItem(item.id));
+              }
               newItem.isChecked = newStoreData.storeIsChecked;
               return newItem;
             },
@@ -124,7 +114,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedStore);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedStore));
     setTotalCheck(checkedStore);
   };
 
@@ -136,7 +126,10 @@ const Cart = () => {
           (item: any) => {
             if (item.id === id) {
               const newItem = item;
-              newItem.isChecked = !newItem.isChecked;
+              const checked = !newItem.isChecked;
+              newItem.isChecked = checked;
+              if (checked) dispatch(checkCartItem(id));
+              if (!checked) dispatch(uncheckCartItem(id));
               return newItem;
             }
             return item;
@@ -148,7 +141,7 @@ const Cart = () => {
     );
 
     setCartItems(checkedItem);
-    setIsAllProductsChecked(isAllChecked);
+    setIsAllProductsChecked(isAllChecked(checkedItem));
     setTotalCheck(checkedItem);
   };
 
@@ -195,7 +188,7 @@ const Cart = () => {
                     toast.error(`Minimum pembelian adalah ${item.minQuantity}`);
                   }
                   if (newAmount > item.stock) {
-                    toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${item.stock}.`);
+                    toast.error(`Tidak boleh melebihi stok. Stok tersisa adalah ${item.stock}`);
                   }
                 }
                 if (
@@ -224,11 +217,23 @@ const Cart = () => {
   };
 
   const splitCart = (items: any[]) => {
+    let totalPricePromotion = 0;
+    let totalPriceBase = 0;
+    let totalProduct = 0;
+    let allItemsChecked = true;
     let tempCart: any[] = [];
     for (let i = 0; i < items.length; i += 1) {
       const isSellerExist = tempCart.find(
         (el: any) => el.storeId === items[i].seller_id,
       );
+      let isChecked = items[i].id === buyNow;
+      if (checkedIDs.includes(items[i].id)) {
+        isChecked = true;
+        totalPriceBase += items[i].price_before_discount * items[i].quantity;
+        totalProduct += items[i].quantity;
+        totalPricePromotion += items[i].price_per_item * items[i].quantity;
+      }
+      if (allItemsChecked && !isChecked) { allItemsChecked = false; }
       const newItem = {
         id: items[i].id,
         name: items[i].product_name,
@@ -246,7 +251,7 @@ const Cart = () => {
         maxQuantity: items[i].stock >= items[i].max_quantity
           ? items[i].max_quantity
           : items[i].stock,
-        isChecked: items[i].id === buyNow,
+        isChecked,
       };
       if (!isSellerExist) {
         const newSeller = {
@@ -275,7 +280,11 @@ const Cart = () => {
       }
     }
 
+    if (allItemsChecked) setIsAllProductsChecked(true);
     setCartItems(tempCart);
+    setIsAllProductsChecked(isAllChecked(tempCart));
+    setTotalCheck(tempCart);
+    setTotal({ totalPriceBase, totalProduct, totalPricePromotion });
   };
 
   const getCartItems = async () => {
@@ -302,7 +311,9 @@ const Cart = () => {
   };
 
   const handleDeleteItem = (storeId: number, id: number) => {
-    deleteItem(id).then();
+    deleteItem(id).then(() => {
+      dispatch(removeCartItem(id));
+    });
   };
 
   useEffect(() => {
@@ -326,7 +337,7 @@ const Cart = () => {
         <div className="cart_items">
           {
             cartItems.map(
-              (item) => (
+              (item: any) => (
                 <Card
                   key={`${item.storeId}-${item.storeName}`}
                   data={item}

@@ -56,6 +56,17 @@ const calculateSubtotal = (cartItems:any) => cartItems.reduce((
   a:any,
 ) => sum + a.subtotal, 0);
 
+const parseToCartItemState = (id:number | undefined, product:any, variant:any) => {
+  const name = `${product.name} ${variant.variant1_value || ''} ${variant.variant2_value || ''}`.trim();
+  return {
+    cartItemID: id,
+    name,
+    thumbnail: product.product_photos[0].photo_url,
+    price: variant.price,
+  };
+};
+
 export {
-  groupBySeller, calculateSubtotal, parseCartItemsToPayload, generateCheckoutPayload,
+  groupBySeller, calculateSubtotal, parseCartItemsToPayload,
+  generateCheckoutPayload, parseToCartItemState,
 };

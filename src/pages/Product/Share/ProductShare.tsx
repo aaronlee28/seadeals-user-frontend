@@ -35,7 +35,7 @@ const ProductShare:FC<any> = ({ url, text = 'Cek produk ini yuk!' }) => (
       >
         <TwitterIcon size={28} round />
       </TwitterShareButton>
-      <ClickToCopy text={`${text} ${url}`}>
+      <ClickToCopy text={url}>
         <img src={link} alt="share" className="mx-auto" style={{ height: '75%', width: '75%' }} />
       </ClickToCopy>
     </div>

@@ -1,10 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
 
 import './CardCart.scss';
 import { formatPriceWithCurrency } from '../../../utils/product';
 import Button from '../../Button/Button';
-import { useNavigate } from 'react-router-dom';
 
 type CardCartAllProps = {
   totalProduct: number;
@@ -26,7 +26,6 @@ const CardCartAll = (props: CardCartAllProps) => {
   const navigate = useNavigate();
 
   const goToCheckout = () => {
-    console.log('CHECKOUT');
     navigate('/checkout');
   };
 

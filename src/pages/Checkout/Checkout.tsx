@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { calculateSubtotal, groupBySeller, parseCartItemsToPayload } from '../../utils/CartCheckoutHelper';
 import CardCheckout from '../../components/Cards/CardCheckout/CardCheckout';
@@ -13,6 +14,7 @@ import ModalPayment from '../../components/Modal/ModalPayment/ModalPayment';
 const Checkout = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const { checkedIDs } = useSelector((store:any) => store.cart);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [sellerProducts, setSellerProducts] = useState([]);
@@ -36,17 +38,28 @@ const Checkout = () => {
         );
         const { data } = response.data;
 
-        if (data.cart_items.length === 0) navigate('/cart');
+        if (data.cart_items.length === 0) {
+          toast.error('Anda belum memasukkan barang di keranjang!');
+          navigate('/cart');
+          return;
+        }
 
         if (isMounted) {
-          const groupedBySeller = groupBySeller(data.cart_items);
+          const cartItems = data.cart_items.filter((item:any) => checkedIDs.includes(item.id));
+          const groupedBySeller = groupBySeller(cartItems);
+
+          if (cartItems.length === 0) {
+            toast.error('Anda belum memilih barang!');
+            navigate('/cart');
+            return;
+          }
+
           setSellerProducts(groupedBySeller);
           setCartPerStore(parseCartItemsToPayload(groupedBySeller));
-
-          setSubtotal(calculateSubtotal(data.cart_items));
+          setSubtotal(calculateSubtotal(cartItems));
         }
-      } catch (err) {
-        toast.error('failed to fetch checkout data');
+      } catch (err:any) {
+        toast.error('Gagal memuat data pesanan');
       }
     };
     getCartItems();
