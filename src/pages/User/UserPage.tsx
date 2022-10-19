@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './User.scss';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const [focus, setFocus] = useState('profile');
+  const navigate = useNavigate();
 
   const handleProfile = () => {
     setFocus('profile');
@@ -10,6 +12,11 @@ const User = () => {
 
   const handleAccount = () => {
     setFocus('payment-account');
+  };
+
+  const goToOrderHistory = () => {
+    setFocus('order-history');
+    navigate('/user/order-history');
   };
 
   return (
@@ -21,6 +28,7 @@ const User = () => {
             <a className="mb-2" href="/user/addresses"><p role="presentation" className="user_side-bar_clickable">Alamat</p></a>
           </div>
           <p onClick={handleAccount}>Akun Sea Labs Pay</p>
+          <p onClick={goToOrderHistory}>Pesanan Saya</p>
         </div>
         <div className="main-side_container col-8 col-md-8">
           {
