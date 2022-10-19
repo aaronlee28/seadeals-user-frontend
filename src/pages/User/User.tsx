@@ -21,6 +21,8 @@ const User = () => {
             <a className="mb-2" href="/user/addresses">Alamat</a>
           </div>
           <p onClick={handleAccount}>Akun Sea Labs Pay</p>
+          <p onClick={handleAccount}>Review Page Dummy</p>
+
         </div>
         <div className="main-side_container col-8 col-md-8">
           {
