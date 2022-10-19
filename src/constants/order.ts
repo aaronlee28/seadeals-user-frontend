@@ -9,26 +9,24 @@ const ORDER_STATUS = [
   },
   {
     onDatabase: 'on delivery',
-    display: 'Menunggu Pembayaran',
+    display: 'Dikirim',
   },
   {
     onDatabase: 'delivered',
-    display: 'Menunggu Pembayaran',
+    display: 'Diterima',
   },
   {
     onDatabase: 'complained',
-    display: 'Menunggu Pembayaran',
+    display: 'Dikomplain',
   },
   {
     onDatabase: 'refunded',
-    display: 'Menunggu Pembayaran',
+    display: 'Dibatalkan',
   },
   {
     onDatabase: 'done',
-    display: 'Menunggu Pembayaran',
+    display: 'Selesai',
   },
 ];
 
-export {
-  ORDER_STATUS,
-};
+export default ORDER_STATUS;
