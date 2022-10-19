@@ -6,7 +6,7 @@ import Login from '../pages/Login/Login';
 import Home from '../pages/Home/Home';
 import RequireAuth from '../RequireAuth';
 import SellerHome from '../pages/Seller/SellerHome';
-import User from '../pages/User/User';
+import UserPage from '../pages/User/UserPage';
 import SellerLayout from '../layouts/SellerLayout';
 import UserLayout from '../layouts/UserLayout';
 import SellerRegister from '../pages/Seller/SellerRegister';
@@ -29,6 +29,7 @@ import Checkout from '../pages/Checkout/Checkout';
 import TrxPage from '../pages/Transaction/TrxPage';
 import Address from '../pages/User/Address';
 import SimilarPage from '../pages/Similar/SimilarPage';
+import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
 
 const AppRoutes = () => (
   <Routes>
@@ -49,9 +50,9 @@ const AppRoutes = () => (
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="cart" element={<Cart />} />
-            <Route path="/user">
-              <Route path="" element={<User />} />
+            <Route path="user/" element={<UserPage />}>
               <Route path="addresses" element={<Address />} />
+              <Route path="order-history" element={<OrderHistory />} />
             </Route>
 
             <Route path="/wallet">
