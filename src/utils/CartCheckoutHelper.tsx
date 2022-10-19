@@ -1,4 +1,5 @@
 import PAYMENT_TYPE from '../constants/payment';
+import { formatPrice } from './product';
 
 const groupBySeller = (cartItems:any) => {
   const sellerProducts:any = [];
@@ -38,6 +39,17 @@ const setCourierOptionToStore = (
 ) => cartPerStore.map((cartStore) => {
   if (cartStore.seller_id === sellerID) {
     return { ...cartStore, courier_id: courierID };
+  }
+  return cartStore;
+});
+
+const setVoucherToStore = (
+  code:string,
+  sellerID:number,
+  cartPerStore:any[],
+) => cartPerStore.map((cartStore) => {
+  if (cartStore.seller_id === sellerID) {
+    return { ...cartStore, voucher_code: code };
   }
   return cartStore;
 });
@@ -85,7 +97,29 @@ const orderIsIncomplete = (cartPerStore:any[]) => {
   return false;
 };
 
+const parseDiscountAmount = (voucher:any, storeTotal:number) => {
+  if (voucher?.amount_type === 'percentage') {
+    return `- Rp ${formatPrice((voucher.amount * storeTotal) / 100)} (${voucher.amount}% OFF)`;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return `- Rp ${voucher.amount}`;
+  }
+  return '- Rp 0';
+};
+
+const getDiscountNominal = (voucher:any, storeTotal:number) => {
+  if (voucher?.amount_type === 'percentage') {
+    return (voucher.amount * storeTotal) / 100;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return voucher.amount;
+  }
+  return 0;
+};
+
 export {
   groupBySeller, calculateSubtotal, parseCartItemsToPayload,
-  generateCheckoutPayload, parseToCartItemState, setCourierOptionToStore, orderIsIncomplete,
+  parseDiscountAmount, getDiscountNominal,
+  generateCheckoutPayload, parseToCartItemState,
+  setCourierOptionToStore, orderIsIncomplete, setVoucherToStore,
 };

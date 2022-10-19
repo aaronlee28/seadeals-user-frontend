@@ -7,7 +7,7 @@ import {
   calculateSubtotal,
   groupBySeller, orderIsIncomplete,
   parseCartItemsToPayload,
-  setCourierOptionToStore,
+  setCourierOptionToStore, setVoucherToStore,
 } from '../../utils/CartCheckoutHelper';
 import CardCheckout from '../../components/Cards/CardCheckout/CardCheckout';
 import CheckoutAddress from './CheckoutAddress';
@@ -96,16 +96,16 @@ const Checkout = () => {
     setCartPerStore(newCartPerStore);
   };
 
-  useEffect(() => {
-    console.log(cartPerStore);
-  }, [cartPerStore]);
+  const updateOrderVoucher = (code:string, sellerID: number) => {
+    const newCartPerStore = setVoucherToStore(code, sellerID, cartPerStore);
+    setCartPerStore(newCartPerStore);
+  };
 
   return (
     <>
       {isModalOpen
           && (
           <ModalPayment
-              // masukin vouchers juga
             isOpen={isModalOpen}
             orderItems={cartPerStore}
             handleCloseModal={() => setIsModalOpen(false)}
@@ -121,6 +121,7 @@ const Checkout = () => {
               key={sellerProduct.storeID}
               data={sellerProduct}
               updateDelivery={updateOrderDelivery}
+              updateVoucher={updateOrderVoucher}
             />
           ))}
           <CheckoutVoucher />
