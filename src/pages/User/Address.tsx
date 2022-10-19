@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './User.scss';
+import './UserPage.scss';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import Button from '../../components/Button/Button';
@@ -274,17 +274,6 @@ const Address = () => {
   return (
     <div className="user_container">
       <div className="whole_container row">
-        <div className="side-bar_container col-4 col-md-2">
-          <h5 className="navigation-text mb-4">Navigasi</h5>
-          <div className="mb-2">
-            <a href="/user/profile">Profil</a>
-          </div>
-          <div className="mb-2">
-            <a className="mb-2" href="/user/addresses">Alamat</a>
-          </div>
-          <a href="/wallet">Akun Sea Labs Pay</a>
-          {/* <a href="/user/accounts/slp">Akun Sea Labs Pay</a> */}
-        </div>
         <div className="main-side_container col-8 col-md-8">
           <div className="address_container">
             <div className="header row">
