@@ -13,6 +13,7 @@ type ModalPaymentProps = {
   total: number,
   address: any,
   isOpen: boolean,
+  globalVoucher: any,
 };
 
 const ModalPayment = (props: ModalPaymentProps) => {
@@ -22,6 +23,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
     total,
     address,
     isOpen,
+    globalVoucher,
   } = props;
 
   const [open, setOpen] = useState(isOpen);
@@ -39,6 +41,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
             orderItems={orderItems}
             closeModal={handleClose}
             address={address}
+            globalVoucher={globalVoucher}
           />
         );
       case PAYMENT_TYPE.WALLET:
@@ -47,6 +50,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
             orderItems={orderItems}
             closeModal={handleClose}
             address={address}
+            globalVoucher={globalVoucher}
           />
         );
       default:

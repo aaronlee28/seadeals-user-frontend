@@ -157,8 +157,9 @@ const Checkout = () => {
             isOpen={isModalOpen}
             orderItems={cartPerStore}
             handleCloseModal={() => setIsModalOpen(false)}
-            total={subtotal + deliveryTotal}
+            total={predictedTotal}
             address={selectedAddr}
+            globalVoucher={selectedGlobalVoucher}
           />
           )}
       <div className="w-75 mx-auto">

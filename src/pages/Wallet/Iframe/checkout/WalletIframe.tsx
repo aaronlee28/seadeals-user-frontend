@@ -13,11 +13,12 @@ const PINDefault = new Array(6).fill('');
 
 interface WalletIframeProps {
   orderItems: any[],
-  address: any
+  address: any,
   closeModal: ()=>void,
+  globalVoucher: any,
 }
 
-const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal }) => {
+const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal, globalVoucher }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -51,7 +52,7 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal })
       const payload = generateCheckoutPayload(
         orderItems,
         PAYMENT_TYPE.WALLET,
-        '',
+        globalVoucher?.code || '',
         '',
         parseInt(address.id, 10),
       );

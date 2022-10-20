@@ -95,6 +95,8 @@ const CardCheckout = (props: CardCheckoutProps) => {
 
   const onChangeVoucherCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVoucherCode(e.target.value);
+
+    if (voucher === null) return;
     setVoucher(null);
     updateVoucher('', storeID);
   };
