@@ -27,6 +27,7 @@ const Checkout = () => {
   const [sellerProducts, setSellerProducts] = useState([]);
   const [cartPerStore, setCartPerStore] = useState<any[]>([]);
   const [selectedAddr, setSelectedAddr] = useState<any>({});
+  const [selectedGlobalVoucher, setSelectedGlobalVoucher] = useState<any>({});
 
   const [subtotal, setSubtotal] = useState(0);
   const [deliveryTotal, setDeliveryTotal] = useState(0);
@@ -42,26 +43,34 @@ const Checkout = () => {
       toast.dismiss();
       toast.loading('Menghitung Total');
       setLoadingPredict(true);
-      const response = await axiosPrivate.post(
-        '/predicted-price',
-        JSON.stringify(generateCheckoutPayload(
-          cartPerStore,
-          PAYMENT_TYPE.WALLET,
-          '',
-          '',
-          selectedAddr.id,
-        )),
-      );
-      const { data } = response.data;
-      setPredictedPrices(data.predicted_prices || []);
-      setPredictedTotal(data.total_predicted_price);
-      setSubtotal(calculateSubtotalTrx(data.predicted_prices || []));
-      setDeliveryTotal(calculateDeliveryTotalTrx(data.predicted_prices || []));
-      toast.dismiss();
-      setLoadingPredict(false);
+
+      const globalVoucher = selectedGlobalVoucher?.code || '';
+
+      try {
+        const response = await axiosPrivate.post(
+          '/predicted-price',
+          JSON.stringify(generateCheckoutPayload(
+            cartPerStore,
+            PAYMENT_TYPE.WALLET,
+            globalVoucher,
+            '',
+            selectedAddr.id,
+          )),
+        );
+        const { data } = response.data;
+        setPredictedPrices(data.predicted_prices || []);
+        setPredictedTotal(data.total_predicted_price);
+        setSubtotal(calculateSubtotalTrx(data.predicted_prices || []));
+        setDeliveryTotal(calculateDeliveryTotalTrx(data.predicted_prices || []));
+        toast.dismiss();
+        setLoadingPredict(false);
+      } catch (e:any) {
+        toast.dismiss();
+        toast.error(e.response);
+      }
     };
     predictPrice();
-  }, [cartPerStore]);
+  }, [cartPerStore, selectedAddr, selectedGlobalVoucher]);
 
   useEffect(() => {
     let isMounted = true;
@@ -164,12 +173,17 @@ const Checkout = () => {
               />
             );
           })}
-          <CheckoutVoucher />
+          <CheckoutVoucher
+            selectedGlobalVoucher={selectedGlobalVoucher}
+            updateGlobalVoucher={setSelectedGlobalVoucher}
+            subtotal={subtotal}
+          />
           <CheckoutSummary
             loadingPredict={loadingPredict}
             fullTotal={predictedTotal}
             subtotal={subtotal}
             deliveryTotal={deliveryTotal}
+            globalVoucher={selectedGlobalVoucher}
             handleClick={() => handleClickOrder()}
             hasAddress={hasSelectedAddr()}
           />

@@ -74,11 +74,6 @@ const generateCheckoutPayload = (
   };
 };
 
-const calculateSubtotal = (cartItems:any) => cartItems.reduce((
-  sum:any,
-  a:any,
-) => sum + a.subtotal, 0);
-
 const parseToCartItemState = (id:number | undefined, product:any, variant:any) => {
   const name = `${product.name} ${variant.variant1_value || ''} ${variant.variant2_value || ''}`.trim();
   return {
@@ -108,6 +103,16 @@ const parseDiscountAmount = (voucher:any, storeTotal:number) => {
   return '- Rp 0';
 };
 
+const getDiscountDisplay = (voucher:any) => {
+  if (voucher?.amount_type === 'percentage') {
+    return `(${voucher.amount}% OFF)`;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return `Rp ${voucher.amount}`;
+  }
+  return 'Rp 0';
+};
+
 const getDiscountNominal = (voucher:any, storeTotal:number) => {
   if (voucher?.amount_type === 'percentage') {
     return (voucher.amount * storeTotal) / 100;
@@ -129,8 +134,8 @@ const calculateDeliveryTotalTrx = (predictedPrices:any[]) => predictedPrices.red
 ) => sum + a.delivery_price, 0);
 
 export {
-  groupBySeller, calculateSubtotal, parseCartItemsToPayload,
-  parseDiscountAmount, getDiscountNominal,
+  groupBySeller, parseCartItemsToPayload,
+  parseDiscountAmount, getDiscountNominal, getDiscountDisplay,
   generateCheckoutPayload, parseToCartItemState,
   setCourierOptionToStore, orderIsIncomplete, setVoucherToStore,
   calculateSubtotalTrx, calculateDeliveryTotalTrx,
