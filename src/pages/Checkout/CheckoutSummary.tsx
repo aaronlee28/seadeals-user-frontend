@@ -9,14 +9,14 @@ interface Props {
   subtotal: number,
   deliveryTotal: number,
   handleClick: ()=>void,
-  hasAddress: boolean,
   loadingPredict: boolean,
   globalVoucher: any,
+  checkoutDisabled: boolean,
 }
 
 const CheckoutSummary:FC<Props> = ({
   fullTotal, subtotal = 0, deliveryTotal = 0,
-  handleClick, hasAddress, loadingPredict, globalVoucher,
+  handleClick, checkoutDisabled, loadingPredict, globalVoucher,
 }) => (
   <div className="bg-white shadow-sm mb-3 fw-bold">
     <div className="p-4 border-bottom-dashed border-top text-secondary">
@@ -55,7 +55,7 @@ const CheckoutSummary:FC<Props> = ({
     </div>
     <div className="p-4 d-flex justify-content-end bg-light">
       <Button
-        buttonType={`secondary ${!hasAddress && 'disabled'}`}
+        buttonType={`secondary ${checkoutDisabled && 'disabled'}`}
         text="Buat Pesanan"
         handleClickedButton={handleClick}
       />

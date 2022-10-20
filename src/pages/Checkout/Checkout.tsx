@@ -36,6 +36,8 @@ const Checkout = () => {
   const [predictedTotal, setPredictedTotal] = useState(0);
   const [loadingPredict, setLoadingPredict] = useState(false);
 
+  const [checkoutDisabled, setCheckoutDisabled] = useState(true);
+
   useEffect(() => {
     if (orderIsIncomplete(cartPerStore)) return;
 
@@ -119,6 +121,10 @@ const Checkout = () => {
 
   const hasSelectedAddr = () => !!selectedAddr.id;
 
+  useEffect(() => {
+    setCheckoutDisabled(!hasSelectedAddr() || loadingPredict || orderIsIncomplete(cartPerStore));
+  }, [selectedAddr, loadingPredict, cartPerStore]);
+
   const handleClickOrder = () => {
     if (loadingPredict) return;
 
@@ -185,7 +191,7 @@ const Checkout = () => {
             deliveryTotal={deliveryTotal}
             globalVoucher={selectedGlobalVoucher}
             handleClick={() => handleClickOrder()}
-            hasAddress={hasSelectedAddr()}
+            checkoutDisabled={checkoutDisabled}
           />
         </div>
       </div>
