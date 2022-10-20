@@ -12,9 +12,10 @@ interface PayWithSLPProps {
   orderItems: any[],
   address: any,
   closeModal: ()=>void,
+  globalVoucher: any
 }
 
-const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => {
+const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal, globalVoucher }) => {
   const axiosPrivate = useAxiosPrivate();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
@@ -76,7 +77,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal }) => 
       const payload = generateCheckoutPayload(
         orderItems,
         PAYMENT_TYPE.SLP,
-        '',
+        globalVoucher?.code || '',
         selectedSLP.account_number,
         parseInt(address.id, 10),
       );
