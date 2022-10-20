@@ -11,7 +11,7 @@ const USER_SIDEBAR = [
   },
   {
     name: 'Akun Sea Labs Pay',
-    link: '/user/addresse',
+    link: '/wallet',
   },
   {
     name: 'Pesanan Saya',
