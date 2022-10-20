@@ -19,7 +19,11 @@ const SelectVoucher:FC<SelectVoucherProps> = ({
   const { loadingVouchers, vouchers } = useSellerVouchers(sellerID);
 
   return (
-    <Modal cancel={() => setShow(false)} isOpen={show}>
+    <Modal
+      modalType="select-voucher"
+      cancel={() => setShow(false)}
+      isOpen={show}
+    >
       <div
         className="w-100 px-4 text-end hover-click"
         role="presentation"
