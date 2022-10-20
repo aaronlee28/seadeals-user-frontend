@@ -2,11 +2,10 @@ import React from 'react';
 import './UserPage.scss';
 import { useLocation } from 'react-router-dom';
 import UserSidebar from './UserSidebar/UserSidebar';
-import Address from './Address';
+import Address from './Address/Address';
 import OrderHistory from './OrderHistory/OrderHistory';
 
 const UserPage = () => {
-  // const navigate = useNavigate();
   const location = useLocation();
   console.log(location.pathname);
 

@@ -7,6 +7,7 @@ import './CardOrderHistory.scss';
 import Button from '../../Button/Button';
 import Orders from '../../../api/orders';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import ModalReview from '../../Modal/ModalReview/ModalReview';
 
 type CardOrderHistoryProps = {
   data: {
@@ -19,10 +20,14 @@ type CardOrderHistoryProps = {
     totalPriceBase: number,
     storeItems: any[],
   },
+  handleReview: () => void,
 };
 
 const CardOrderHistory = (props: CardOrderHistoryProps) => {
-  const { data } = props;
+  const {
+    data,
+    // handleReview,
+  } = props;
   const {
     orderId,
     // storeId,
@@ -34,6 +39,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
     storeItems,
   } = data;
 
+  const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const axiosPrivate = useAxiosPrivate();
 
@@ -60,12 +66,23 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
     console.log('Complaint');
   };
 
-  const goToReview = () => {
-    console.log('Review');
-  };
+  // const goToReview = () => {
+  //   console.log('Review');
+  //   handleReview();
+  // };
 
   const addToCart = () => {
     console.log('Add To Cart');
+  };
+
+  const openModalReview = () => {
+    setIsModalReviewOpen(true);
+  };
+
+  const closeModalReview = () => {
+    setTimeout(() => {
+      setIsModalReviewOpen(false);
+    }, 500);
   };
 
   console.log(status);
@@ -157,7 +174,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
                   <Button
                     buttonType="secondary"
                     text="Review"
-                    handleClickedButton={goToReview}
+                    handleClickedButton={openModalReview}
                   />
                   <Button
                     buttonType="secondary alt"
@@ -170,6 +187,20 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
           </div>
         </div>
       </div>
+      {
+        isModalReviewOpen
+        && (
+          <ModalReview
+            data={data}
+            title="APA"
+            formType="INI"
+            isOpen={isModalReviewOpen}
+            handleInput={() => console.log('Input')}
+            handleDelete={() => console.log('Input')}
+            handleCloseModal={closeModalReview}
+          />
+        )
+      }
     </div>
   );
 };

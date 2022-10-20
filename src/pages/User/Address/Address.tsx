@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import './UserPage.scss';
+import '../UserPage.scss';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import Button from '../../components/Button/Button';
-import Cities from '../../api/cities';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import Modal from '../../components/Modal/Modal';
+import Button from '../../../components/Button/Button';
+import Cities from '../../../api/cities';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import Modal from '../../../components/Modal/Modal';
 
-import './UserPage.scss';
+import './Address.scss';
 
 const Address = () => {
   const uRL = '/user/profiles/addresses';
@@ -134,7 +134,6 @@ const Address = () => {
   }, [province]);
 
   useEffect(() => {
-    // @ts-ignore
     if (cities.length > 0) {
       setCity(cities[0].city_name);
       setCityId(cities[0].city_id);
