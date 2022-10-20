@@ -7,7 +7,6 @@ import CardOrderHistory from '../../../../components/Cards/CardOrderHistory/Card
 
 import './OrderHistoryItems.scss';
 import ORDER_STATUS from '../../../../constants/order';
-// import ModalReview from '../../../../components/Modal/ModalReview/ModalReview';
 
 const OrderHistoryItems = () => {
   const [orders, setOrders] = useState<any>([]);
@@ -15,7 +14,6 @@ const OrderHistoryItems = () => {
     page: 1,
     totalPage: 1,
   });
-  // const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
 
   const [params, setParams] = useSearchParams();
   const getTypeParams = params.get('type');
@@ -126,16 +124,6 @@ const OrderHistoryItems = () => {
     params.set('page', String(newPage));
     setParams(params);
   };
-
-  // const openModalReview = () => {
-  //   setIsModalReviewOpen(true);
-  // };
-
-  // const closeModalReview = () => {
-  //   setTimeout(() => {
-  //     setIsModalReviewOpen(false);
-  //   }, 500);
-  // };
 
   useEffect(() => {
     params.set('page', String(pagination.page));
