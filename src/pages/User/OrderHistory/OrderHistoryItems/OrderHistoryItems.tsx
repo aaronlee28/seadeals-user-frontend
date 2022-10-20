@@ -48,7 +48,7 @@ const OrderHistoryItems = () => {
               slug,
               priceBase: price,
               pricePromotion: price,
-              // promotion,
+              variantId: item.product_variant_detail_id,
               variant,
               quantity: item.quantity,
             };

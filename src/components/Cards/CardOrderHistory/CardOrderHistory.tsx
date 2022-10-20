@@ -68,22 +68,24 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   };
 
   const addToCart = async () => {
-    const val = {
-      product_variant_detail_id: 0,
-      quantity: 1,
-    };
-    await Carts.PostCartItem(axiosPrivate, val)
-      .then(() => {
-        toast.success('Barang berhasil dimasukkan ke keranjang');
-      })
-      .catch(() => {
-        toast.error('Barang gagal dimasukkan ke keranjang');
-      });
+    for (let i = 0; i < storeItems.length; i += 1) {
+      const val = {
+        product_variant_detail_id: storeItems[i].variantId,
+        quantity: 1,
+      };
+      await Carts.PostCartItem(axiosPrivate, val)
+        .then(() => {
+          toast.success('Barang berhasil dimasukkan ke keranjang');
+          navigate('/cart');
+        })
+        .catch(() => {
+          toast.error('Barang gagal dimasukkan ke keranjang');
+        });
+    }
   };
 
   const goToCart = () => {
     addToCart().then();
-    navigate('/cart');
   };
 
   const openModalReview = () => {
