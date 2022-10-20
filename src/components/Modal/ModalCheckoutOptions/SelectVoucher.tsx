@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import Modal from '../../../components/Modal/Modal';
+import Modal from '../Modal';
 import useSellerVouchers from '../../../hooks/useSellerVouchers';
-import LoadingPlain from '../../../components/Loading/LoadingPlain';
+import LoadingPlain from '../../Loading/LoadingPlain';
 import VoucherOptions from './VoucherOptions';
 
 interface SelectVoucherProps {

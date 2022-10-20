@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import Modal from '../../../components/Modal/Modal';
-import LoadingPlain from '../../../components/Loading/LoadingPlain';
+import Modal from '../Modal';
+import LoadingPlain from '../../Loading/LoadingPlain';
 import VoucherOptions from './VoucherOptions';
 import useGlobalVouchers from '../../../hooks/useGlobalVouchers';
 

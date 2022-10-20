@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import Button from '../../components/Button/Button';
-import SelectGlobalVoucher from './Modal/SelectGlobalVoucher';
+import SelectGlobalVoucher from '../../components/Modal/ModalCheckoutOptions/SelectGlobalVoucher';
 
 interface CheckoutVoucherProps {
   selectedGlobalVoucher: any,

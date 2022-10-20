@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import Modal from '../../../components/Modal/Modal';
+import Modal from '../Modal';
 import CourierOptions from './CourierOptions';
-import LoadingPlain from '../../../components/Loading/LoadingPlain';
+import LoadingPlain from '../../Loading/LoadingPlain';
 import formatTitle from '../../../utils/titleFormatter';
 
 interface SelectCourierProps {
