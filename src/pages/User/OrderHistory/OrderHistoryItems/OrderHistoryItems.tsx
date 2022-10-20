@@ -42,7 +42,7 @@ const OrderHistoryItems = () => {
             } = productDetails;
 
             return {
-              id: item.id,
+              id: productDetails.id,
               imgUrl: productDetails.photo_url,
               name,
               slug,
@@ -64,11 +64,12 @@ const OrderHistoryItems = () => {
           storeId: order.seller_id,
           storeName: seller.name,
           status: tempStatus?.display,
+          reviewed: order.has_reviewed_all_item,
           transaction,
           voucher,
           updatedAt: order.updated_at,
-          totalPricePromotion: order.total_order_price_after_disc,
-          totalPriceBase: order.total_order_price,
+          totalPricePromotion: order.total_order_price_after_disc + order.total_delivery,
+          totalPriceBase: order.total_order_price + order.total_delivery,
           storeItems: tempItem,
         };
       },

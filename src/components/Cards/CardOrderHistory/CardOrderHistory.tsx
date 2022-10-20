@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { formatPriceWithCurrency } from '../../../utils/product';
 import CardOrderHistoryItem from './CardOrderHistoryItem';
 
@@ -8,13 +9,14 @@ import Button from '../../Button/Button';
 import Orders from '../../../api/orders';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import ModalReview from '../../Modal/ModalReview/ModalReview';
+import Carts from '../../../api/carts';
 
 type CardOrderHistoryProps = {
   data: {
     orderId: number,
-    storeId: number,
     storeName: string,
     status: string,
+    reviewed: boolean,
     updatedAt: string,
     totalPricePromotion: number,
     totalPriceBase: number,
@@ -26,13 +28,12 @@ type CardOrderHistoryProps = {
 const CardOrderHistory = (props: CardOrderHistoryProps) => {
   const {
     data,
-    // handleReview,
   } = props;
   const {
     orderId,
-    // storeId,
     storeName,
     status,
+    reviewed,
     updatedAt,
     totalPricePromotion,
     totalPriceBase,
@@ -42,6 +43,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const finishOrder = async () => {
     const val = {
@@ -58,7 +60,6 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   };
 
   const moveToDone = () => {
-    console.log('Done');
     finishOrder().then();
   };
 
@@ -66,13 +67,23 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
     console.log('Complaint');
   };
 
-  // const goToReview = () => {
-  //   console.log('Review');
-  //   handleReview();
-  // };
+  const addToCart = async () => {
+    const val = {
+      product_variant_detail_id: 0,
+      quantity: 1,
+    };
+    await Carts.PostCartItem(axiosPrivate, val)
+      .then(() => {
+        toast.success('Barang berhasil dimasukkan ke keranjang');
+      })
+      .catch(() => {
+        toast.error('Barang gagal dimasukkan ke keranjang');
+      });
+  };
 
-  const addToCart = () => {
-    console.log('Add To Cart');
+  const goToCart = () => {
+    addToCart().then();
+    navigate('/cart');
   };
 
   const openModalReview = () => {
@@ -80,12 +91,11 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   };
 
   const closeModalReview = () => {
+    setRefresh(!refresh);
     setTimeout(() => {
       setIsModalReviewOpen(false);
     }, 500);
   };
-
-  console.log(status);
 
   return (
     <div className="card-order-history_container">
@@ -110,15 +120,6 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
           }
         </div>
         <div className="bottom_content">
-          <div className="price">
-            {
-              totalPriceBase !== totalPricePromotion
-              && (
-                <p className="base">{ formatPriceWithCurrency(totalPriceBase) }</p>
-              )
-            }
-            <p className="total-price">{ formatPriceWithCurrency(totalPricePromotion) }</p>
-          </div>
           <div className="delivery">
             {
               status === 'Menunggu Pembayaran'
@@ -171,19 +172,33 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
               status === 'Selesai'
               && (
                 <div className="buttons">
-                  <Button
-                    buttonType="secondary"
-                    text="Review"
-                    handleClickedButton={openModalReview}
-                  />
+                  {
+                    !reviewed
+                    && (
+                      <Button
+                        buttonType="secondary"
+                        text="Review"
+                        handleClickedButton={openModalReview}
+                      />
+                    )
+                  }
                   <Button
                     buttonType="secondary alt"
                     text="Beli Lagi"
-                    handleClickedButton={addToCart}
+                    handleClickedButton={goToCart}
                   />
                 </div>
               )
             }
+          </div>
+          <div className="price">
+            {
+              totalPriceBase !== totalPricePromotion
+              && (
+                <p className="base">{ formatPriceWithCurrency(totalPriceBase) }</p>
+              )
+            }
+            <p className="total-price">{ formatPriceWithCurrency(totalPricePromotion) }</p>
           </div>
         </div>
       </div>

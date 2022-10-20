@@ -15,13 +15,7 @@ import Reviews from '../../../api/reviews';
 
 type ModalReviewProps = {
   data: {
-    orderId: number,
-    storeId: number,
     storeName: string,
-    status: string,
-    updatedAt: string,
-    totalPricePromotion: number,
-    totalPriceBase: number,
     storeItems: any[],
   },
   title: string,
