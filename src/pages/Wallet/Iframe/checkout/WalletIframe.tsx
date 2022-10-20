@@ -1,21 +1,25 @@
 import React, { FC, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import InputPINField from '../../PIN/InputPINField';
 import Button from '../../../../components/Button/Button';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import { generateCheckoutPayload } from '../../../../utils/CartCheckoutHelper';
 import PAYMENT_TYPE, { WALLET_BLOCKED } from '../../../../constants/payment';
+import { clearChecked } from '../../../../features/cart/cartSlice';
 
 const PINDefault = new Array(6).fill('');
 
 interface WalletIframeProps {
   orderItems: any[],
-  address: any
+  address: any,
   closeModal: ()=>void,
+  globalVoucher: any,
 }
 
-const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal }) => {
+const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal, globalVoucher }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [PIN, setPIN] = useState<string[]>(PINDefault);
@@ -48,7 +52,7 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal })
       const payload = generateCheckoutPayload(
         orderItems,
         PAYMENT_TYPE.WALLET,
-        '',
+        globalVoucher?.code || '',
         '',
         parseInt(address.id, 10),
       );
@@ -65,11 +69,11 @@ const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal })
       const { transaction } = paymentRes.data.data;
       toast.dismiss();
       toast.success('Transaction Paid Successfully!');
+      dispatch(clearChecked());
       closeModal();
 
       navigate(`/transactions/${transaction.transaction_id}`);
     } catch (err:any) {
-      console.log(err);
       const { message } = err.response.data;
       toast.dismiss();
       toast.error(message);

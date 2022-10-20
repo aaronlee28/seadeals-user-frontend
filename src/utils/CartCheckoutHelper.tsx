@@ -1,4 +1,5 @@
 import PAYMENT_TYPE from '../constants/payment';
+import { formatPrice } from './product';
 
 const groupBySeller = (cartItems:any) => {
   const sellerProducts:any = [];
@@ -17,7 +18,7 @@ const groupBySeller = (cartItems:any) => {
 
 const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((sellerProduct) => {
   const storeCart = {
-    seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '', courier_id: 1,
+    seller_id: sellerProduct.storeID, cart_item_id: [], voucher_code: '', courier_id: 0,
   };
   storeCart.cart_item_id = sellerProduct.storeItems.map((item: any) => item.id);
   return storeCart;
@@ -30,6 +31,28 @@ const parseCartItemsToPayload = (sellerProducts:any[]) => sellerProducts.map((se
 //   }
 //   return cartStore;
 // });
+
+const setCourierOptionToStore = (
+  courierID:number,
+  sellerID:number,
+  cartPerStore:any[],
+) => cartPerStore.map((cartStore) => {
+  if (cartStore.seller_id === sellerID) {
+    return { ...cartStore, courier_id: courierID };
+  }
+  return cartStore;
+});
+
+const setVoucherToStore = (
+  code:string,
+  sellerID:number,
+  cartPerStore:any[],
+) => cartPerStore.map((cartStore) => {
+  if (cartStore.seller_id === sellerID) {
+    return { ...cartStore, voucher_code: code };
+  }
+  return cartStore;
+});
 
 const generateCheckoutPayload = (
   cartPerStore:any[],
@@ -51,11 +74,6 @@ const generateCheckoutPayload = (
   };
 };
 
-const calculateSubtotal = (cartItems:any) => cartItems.reduce((
-  sum:any,
-  a:any,
-) => sum + a.subtotal, 0);
-
 const parseToCartItemState = (id:number | undefined, product:any, variant:any) => {
   const name = `${product.name} ${variant.variant1_value || ''} ${variant.variant2_value || ''}`.trim();
   return {
@@ -66,7 +84,59 @@ const parseToCartItemState = (id:number | undefined, product:any, variant:any) =
   };
 };
 
+const orderIsIncomplete = (cartPerStore:any[]) => {
+  if (cartPerStore.length === 0) return true;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const storeCart of cartPerStore) {
+    if (storeCart?.courier_id === 0) return true;
+  }
+  return false;
+};
+
+const parseDiscountAmount = (voucher:any, storeTotal:number) => {
+  if (voucher?.amount_type === 'percentage') {
+    return `- Rp ${formatPrice((voucher.amount * storeTotal) / 100)} (${voucher.amount}% OFF)`;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return `- Rp ${voucher.amount}`;
+  }
+  return '- Rp 0';
+};
+
+const getDiscountDisplay = (voucher:any) => {
+  if (voucher?.amount_type === 'percentage') {
+    return `(${voucher.amount}% OFF)`;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return `Rp ${voucher.amount}`;
+  }
+  return 'Rp 0';
+};
+
+const getDiscountNominal = (voucher:any, storeTotal:number) => {
+  if (voucher?.amount_type === 'percentage') {
+    return (voucher.amount * storeTotal) / 100;
+  }
+  if (voucher?.amount_type === 'nominal') {
+    return voucher.amount;
+  }
+  return 0;
+};
+
+const calculateSubtotalTrx = (predictedPrices:any[]) => predictedPrices.reduce((
+  sum:any,
+  a:any,
+) => sum + a.total_order, 0);
+
+const calculateDeliveryTotalTrx = (predictedPrices:any[]) => predictedPrices.reduce((
+  sum:any,
+  a:any,
+) => sum + a.delivery_price, 0);
+
 export {
-  groupBySeller, calculateSubtotal, parseCartItemsToPayload,
+  groupBySeller, parseCartItemsToPayload,
+  parseDiscountAmount, getDiscountNominal, getDiscountDisplay,
   generateCheckoutPayload, parseToCartItemState,
+  setCourierOptionToStore, orderIsIncomplete, setVoucherToStore,
+  calculateSubtotalTrx, calculateDeliveryTotalTrx,
 };
