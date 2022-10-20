@@ -7,6 +7,8 @@ import Cities from '../../api/cities';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Modal from '../../components/Modal/Modal';
 
+import './UserPage.scss';
+
 const Address = () => {
   const uRL = '/user/profiles/addresses';
   const axiosPrivate = useAxiosPrivate();
@@ -286,7 +288,7 @@ const Address = () => {
             </div>
             {
                   show && (
-                  <Modal isOpen={show} cancel={handleClose}>
+                  <Modal modalType="" isOpen={show} cancel={handleClose}>
                     <div className="d-flex flex-column p-4 w-75">
                       <h5 className="mb-4 text-main">Alamat Baru</h5>
                       <div>
@@ -354,7 +356,7 @@ const Address = () => {
               }
             {
                   showEditModal && (
-                  <Modal isOpen={showEditModal} cancel={handleCloseEditModal}>
+                  <Modal modalType="" isOpen={showEditModal} cancel={handleCloseEditModal}>
                     <div className="d-flex flex-column p-4 w-75">
                       <h5 className="mb-4 text-main">Sunting Alamat</h5>
                       <div>
