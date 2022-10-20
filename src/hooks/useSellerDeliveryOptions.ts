@@ -5,7 +5,7 @@ import useAxiosPrivate from './useAxiosPrivate';
 export default function useSellerDeliveryOptions(sellerID:number) {
   const axiosPrivate = useAxiosPrivate();
   const [loadingCouriers, setLoadingCouriers] = useState(true);
-  const [couriers, setCouriers] = useState([]);
+  const [couriers, setCouriers] = useState<any[]>([]);
 
   useEffect(() => {
     let isMounted = true;

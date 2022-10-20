@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {
-  calculateSubtotal,
+  calculateDeliveryTotalTrx,
+  calculateSubtotalTrx, generateCheckoutPayload,
   groupBySeller, orderIsIncomplete,
   parseCartItemsToPayload,
   setCourierOptionToStore, setVoucherToStore,
@@ -15,6 +16,7 @@ import CheckoutVoucher from './CheckoutVoucher';
 import './Checkout.scss';
 import CheckoutSummary from './CheckoutSummary';
 import ModalPayment from '../../components/Modal/ModalPayment/ModalPayment';
+import PAYMENT_TYPE from '../../constants/payment';
 
 const Checkout = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -27,7 +29,39 @@ const Checkout = () => {
   const [selectedAddr, setSelectedAddr] = useState<any>({});
 
   const [subtotal, setSubtotal] = useState(0);
-  const [deliveryTotal] = useState(0);
+  const [deliveryTotal, setDeliveryTotal] = useState(0);
+
+  const [predictedPrices, setPredictedPrices] = useState<any[]>([]);
+  const [predictedTotal, setPredictedTotal] = useState(0);
+  const [loadingPredict, setLoadingPredict] = useState(false);
+
+  useEffect(() => {
+    if (orderIsIncomplete(cartPerStore)) return;
+
+    const predictPrice = async () => {
+      toast.dismiss();
+      toast.loading('Menghitung Total');
+      setLoadingPredict(true);
+      const response = await axiosPrivate.post(
+        '/predicted-price',
+        JSON.stringify(generateCheckoutPayload(
+          cartPerStore,
+          PAYMENT_TYPE.WALLET,
+          '',
+          '',
+          selectedAddr.id,
+        )),
+      );
+      const { data } = response.data;
+      setPredictedPrices(data.predicted_prices || []);
+      setPredictedTotal(data.total_predicted_price);
+      setSubtotal(calculateSubtotalTrx(data.predicted_prices || []));
+      setDeliveryTotal(calculateDeliveryTotalTrx(data.predicted_prices || []));
+      toast.dismiss();
+      setLoadingPredict(false);
+    };
+    predictPrice();
+  }, [cartPerStore]);
 
   useEffect(() => {
     let isMounted = true;
@@ -61,7 +95,6 @@ const Checkout = () => {
 
           setSellerProducts(groupedBySeller);
           setCartPerStore(parseCartItemsToPayload(groupedBySeller));
-          setSubtotal(calculateSubtotal(cartItems));
         }
       } catch (err:any) {
         toast.error('Gagal memuat data pesanan');
@@ -78,6 +111,8 @@ const Checkout = () => {
   const hasSelectedAddr = () => !!selectedAddr.id;
 
   const handleClickOrder = () => {
+    if (loadingPredict) return;
+
     if (!hasSelectedAddr()) {
       toast.error('Anda perlu menyimpan Alamat Kirim');
       return;
@@ -92,13 +127,11 @@ const Checkout = () => {
   };
 
   const updateOrderDelivery = (courierID:number, sellerID:number) => {
-    const newCartPerStore = setCourierOptionToStore(courierID, sellerID, cartPerStore);
-    setCartPerStore(newCartPerStore);
+    setCartPerStore((prevState) => setCourierOptionToStore(courierID, sellerID, prevState));
   };
 
   const updateOrderVoucher = (code:string, sellerID: number) => {
-    const newCartPerStore = setVoucherToStore(code, sellerID, cartPerStore);
-    setCartPerStore(newCartPerStore);
+    setCartPerStore((prevState) => setVoucherToStore(code, sellerID, prevState));
   };
 
   return (
@@ -116,16 +149,25 @@ const Checkout = () => {
       <div className="w-75 mx-auto">
         <div className="px-4 mx-auto mt-3">
           <CheckoutAddress selectedAddr={selectedAddr} setSelectedAddr={setSelectedAddr} />
-          {sellerProducts.map((sellerProduct:any) => (
-            <CardCheckout
-              key={sellerProduct.storeID}
-              data={sellerProduct}
-              updateDelivery={updateOrderDelivery}
-              updateVoucher={updateOrderVoucher}
-            />
-          ))}
+          {sellerProducts.map((sellerProduct:any) => {
+            const predictedStore = predictedPrices.find(
+              (prediction) => prediction.seller_id === sellerProduct.storeID,
+            );
+            return (
+              <CardCheckout
+                loadingPredict={loadingPredict}
+                predictedStore={predictedStore}
+                key={sellerProduct.storeID}
+                data={sellerProduct}
+                updateDelivery={updateOrderDelivery}
+                updateVoucher={updateOrderVoucher}
+              />
+            );
+          })}
           <CheckoutVoucher />
           <CheckoutSummary
+            loadingPredict={loadingPredict}
+            fullTotal={predictedTotal}
             subtotal={subtotal}
             deliveryTotal={deliveryTotal}
             handleClick={() => handleClickOrder()}

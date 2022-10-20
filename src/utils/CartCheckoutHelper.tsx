@@ -90,9 +90,10 @@ const parseToCartItemState = (id:number | undefined, product:any, variant:any) =
 };
 
 const orderIsIncomplete = (cartPerStore:any[]) => {
+  if (cartPerStore.length === 0) return true;
   // eslint-disable-next-line no-restricted-syntax
   for (const storeCart of cartPerStore) {
-    if (storeCart.courier_id === 0) return true;
+    if (storeCart?.courier_id === 0) return true;
   }
   return false;
 };
@@ -117,9 +118,20 @@ const getDiscountNominal = (voucher:any, storeTotal:number) => {
   return 0;
 };
 
+const calculateSubtotalTrx = (predictedPrices:any[]) => predictedPrices.reduce((
+  sum:any,
+  a:any,
+) => sum + a.total_order, 0);
+
+const calculateDeliveryTotalTrx = (predictedPrices:any[]) => predictedPrices.reduce((
+  sum:any,
+  a:any,
+) => sum + a.delivery_price, 0);
+
 export {
   groupBySeller, calculateSubtotal, parseCartItemsToPayload,
   parseDiscountAmount, getDiscountNominal,
   generateCheckoutPayload, parseToCartItemState,
   setCourierOptionToStore, orderIsIncomplete, setVoucherToStore,
+  calculateSubtotalTrx, calculateDeliveryTotalTrx,
 };

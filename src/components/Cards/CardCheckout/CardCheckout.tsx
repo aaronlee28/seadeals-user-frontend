@@ -10,6 +10,8 @@ import formatTitle from '../../../utils/titleFormatter';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { getDiscountNominal, parseDiscountAmount } from '../../../utils/CartCheckoutHelper';
 import { formatPrice } from '../../../utils/product';
+import useSellerDeliveryOptions from '../../../hooks/useSellerDeliveryOptions';
+import LoadingAmount from '../../../pages/Checkout/LoadingAmount';
 
 type CardCheckoutProps = {
   data: {
@@ -19,13 +21,15 @@ type CardCheckoutProps = {
   },
   updateDelivery: (courierID:number, sellerID:number) => void,
   updateVoucher: (code: string, sellerID: number) => void,
+  loadingPredict: boolean,
+  predictedStore: any;
 };
 
 const CardCheckout = (props: CardCheckoutProps) => {
   const axiosPrivate = useAxiosPrivate();
 
   const {
-    data, updateDelivery, updateVoucher,
+    data, updateDelivery, updateVoucher, loadingPredict, predictedStore,
   } = props;
 
   const {
@@ -34,6 +38,8 @@ const CardCheckout = (props: CardCheckoutProps) => {
     storeItems,
   } = data;
 
+  const { loadingCouriers, couriers } = useSellerDeliveryOptions(storeID);
+
   const [storeTotal, setStoreTotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
   // const [deliveryCost, setDeliveryCost] = useState(20000);
@@ -41,9 +47,18 @@ const CardCheckout = (props: CardCheckoutProps) => {
   const [showVoucher, setShowVoucher] = useState(false);
   const [showCouriers, setShowCouriers] = useState(false);
 
+  // selected voucher & courier
   const [voucher, setVoucher] = useState<any>(null);
   const [voucherCode, setVoucherCode] = useState('');
   const [courier, setCourier] = useState<any>(null);
+
+  useEffect(() => { // set first available courier as default
+    if (couriers.length > 0) {
+      const firstCourier = couriers[0].courier;
+      setCourier(firstCourier);
+      updateDelivery(firstCourier.id, storeID);
+    }
+  }, [couriers]);
 
   useEffect(() => {
     const total = storeItems.reduce(
@@ -118,11 +133,12 @@ const CardCheckout = (props: CardCheckoutProps) => {
       )}
       {showCouriers && (
       <SelectCourier
-        sellerID={storeID}
+        couriers={couriers}
+        loadingCouriers={loadingCouriers}
         show={showCouriers}
         setShow={setShowCouriers}
         selectedID={courier?.id || 0}
-        setCourier={handleChangeCourier}
+        selectCourier={handleChangeCourier}
       />
       )}
       <div className="card_cart_content">
@@ -152,7 +168,9 @@ const CardCheckout = (props: CardCheckoutProps) => {
             <div className="col-2 d-flex justify-content-center">
               <Button text="Ubah" buttonType="plain w-auto p-2 text-secondary-blue" handleClickedButton={() => setShowCouriers(true)} />
             </div>
-            <p className="col-4 text-end">Rp 0</p>
+            <div className="col-4 text-end">
+              {loadingPredict ? <LoadingAmount /> : `Rp ${formatPrice(predictedStore?.delivery_price || 0)}`}
+            </div>
           </div>
         </div>
         <div className="store_options items_content border-top-dashed d-flex justify-content-between align-items-center">
@@ -173,16 +191,15 @@ const CardCheckout = (props: CardCheckoutProps) => {
                 handleClickedButton={() => setShowVoucher(true)}
               />
             </div>
-            <p className="ms-auto col-auto text-end text-break">{parseDiscountAmount(voucher, storeTotal)}</p>
+            <div className="ms-auto col-auto text-end text-break">
+              {loadingPredict ? <LoadingAmount /> : parseDiscountAmount(voucher, storeTotal)}
+            </div>
           </div>
         </div>
         <div className="store_options items_content border-top-dashed d-flex justify-content-end gap-5">
           <p>Total Pesanan:</p>
-          <div className="">
-            <p className="fw-bold">
-              Rp
-              {formatPrice(finalTotal)}
-            </p>
+          <div className="fw-bold">
+            {loadingPredict ? <LoadingAmount /> : `Rp ${formatPrice(predictedStore?.predicted_price || 0)}`}
           </div>
         </div>
       </div>
