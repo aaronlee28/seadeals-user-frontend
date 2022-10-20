@@ -3,7 +3,7 @@ import './Modal.scss';
 import Button from '../Button/Button';
 
 type ModalRequiredProps = {
-  // modalType: string;
+  modalType: string;
   // data: any;
   // accept: () => void;
   isOpen: boolean,
@@ -25,6 +25,7 @@ const defaultProps: ModalOptionalProps = {
 
 const Modal = (props: ModalProps) => {
   const {
+    modalType,
     cancel,
     isHaveCloseButton,
     isOpen,
@@ -47,7 +48,7 @@ const Modal = (props: ModalProps) => {
 
   return (
     <div
-      className={`modal_container ${open ? 'open' : 'close'}`}
+      className={`modal_container ${modalType} ${open ? 'open' : 'close'}`}
       onClick={handleCancel}
       role="presentation"
     >

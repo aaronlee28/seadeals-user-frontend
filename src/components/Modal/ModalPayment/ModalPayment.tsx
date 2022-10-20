@@ -83,6 +83,7 @@ const ModalPayment = (props: ModalPaymentProps) => {
 
   return (
     <Modal
+      modalType="payment"
       cancel={handleCloseModal}
       isOpen={open}
     >
