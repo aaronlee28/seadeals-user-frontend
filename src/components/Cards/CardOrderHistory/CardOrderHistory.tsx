@@ -10,6 +10,8 @@ import Orders from '../../../api/orders';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import ModalReview from '../../Modal/ModalReview/ModalReview';
 import Carts from '../../../api/carts';
+import { checkCartBuyNow } from '../../../features/cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
 type CardOrderHistoryProps = {
   data: {
@@ -26,6 +28,7 @@ type CardOrderHistoryProps = {
 };
 
 const CardOrderHistory = (props: CardOrderHistoryProps) => {
+  const dispatch = useDispatch();
   const {
     data,
   } = props;
@@ -74,8 +77,10 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
         quantity: 1,
       };
       await Carts.PostCartItem(axiosPrivate, val)
-        .then(() => {
+        .then((res:any) => {
           toast.success('Barang berhasil dimasukkan ke keranjang');
+          const cartID = res?.data?.data?.id;
+          if (cartID) dispatch(checkCartBuyNow(res.data.data.id));
           navigate('/cart');
         })
         .catch(() => {
