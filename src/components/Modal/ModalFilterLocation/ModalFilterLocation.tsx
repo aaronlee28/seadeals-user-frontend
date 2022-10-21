@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-// import ReactTooltip from 'react-tooltip';
 import { ReactComponent as IconCheck } from '../../../assets/svg/icon_check.svg';
 import Button from '../../Button/Button';
 import Modal from '../Modal';
-// import { LETTER } from '../../constants/filter';
 
 import './ModalFilterLocation.scss';
 
@@ -97,6 +95,7 @@ const ModalFilterLocation = (props: ModalFilterLocationProps) => {
 
   return (
     <Modal
+      modalType="filter-location"
       cancel={handleCloseModal}
       isOpen={open}
     >

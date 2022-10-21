@@ -18,7 +18,11 @@ const SelectGlobalVoucher:FC<SelectVoucherProps> = ({
   const { loadingVouchers, vouchers } = useGlobalVouchers();
 
   return (
-    <Modal cancel={() => setShow(false)} isOpen={show}>
+    <Modal
+      modalType="select-global-voucher"
+      cancel={() => setShow(false)}
+      isOpen={show}
+    >
       <div
         className="w-100 px-4 text-end hover-click"
         role="presentation"

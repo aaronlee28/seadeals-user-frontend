@@ -32,6 +32,7 @@ const ModalPhotoZoom = (props: ModalPhotoZoomProps) => {
 
   return (
     <Modal
+      modalType="photo-zoom"
       cancel={handleCloseModal}
       isHaveCloseButton
       isOpen={isOpen}

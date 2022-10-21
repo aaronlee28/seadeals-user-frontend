@@ -1,5 +1,9 @@
 .recommendation_container {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   .recommendation_content {
     width: 100%;
     display: flex;
@@ -25,7 +29,7 @@
     .items_content {
       display: flex;
       flex-direction: row;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       flex-wrap: wrap;
       gap: 24px;

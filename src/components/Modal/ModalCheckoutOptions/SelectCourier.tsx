@@ -16,7 +16,11 @@ interface SelectCourierProps {
 const SelectCourier:FC<SelectCourierProps> = ({
   couriers, loadingCouriers, show, setShow, selectedID, selectCourier,
 }) => (
-  <Modal cancel={() => setShow(false)} isOpen={show}>
+  <Modal
+    modalType="select-courier"
+    cancel={() => setShow(false)}
+    isOpen={show}
+  >
     <div
       className="w-100 px-4 text-end hover-click"
       role="presentation"

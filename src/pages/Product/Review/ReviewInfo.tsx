@@ -9,7 +9,7 @@ import { REVIEW_FILTER_ITEMS } from '../../../constants/product';
 import Pagination from '../../../components/Pagination/Pagination';
 import Sort from '../../../components/Sort/Sort';
 import { SORT_REVIEWS } from '../../../constants/sort';
-import PHOTO_DEFAULT from '../../../constants/user';
+import { PHOTO_DEFAULT } from '../../../constants/user';
 
 type ReviewInfoProps = {
   productId: number,
