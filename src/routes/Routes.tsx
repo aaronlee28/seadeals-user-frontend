@@ -30,6 +30,7 @@ import TrxPage from '../pages/Transaction/TrxPage';
 import Address from '../pages/User/Address/Address';
 import SimilarPage from '../pages/Similar/SimilarPage';
 import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
+import UserOrder from '../pages/User/Order/UserOrder';
 
 const AppRoutes = () => (
   <Routes>
@@ -53,6 +54,7 @@ const AppRoutes = () => (
             <Route path="user/" element={<UserPage />}>
               <Route path="addresses" element={<Address />} />
               <Route path="order-history" element={<OrderHistory />} />
+              <Route path="order/:id" element={<UserOrder />} />
             </Route>
 
             <Route path="/wallet">

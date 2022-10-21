@@ -153,7 +153,7 @@ const Login = () => {
                       required
                     />
                     {/* eslint-disable-next-line max-len */}
-                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus */}
+                    {/* jsx-a11y/interactive-supports-focus */}
                     <div className="input-group-append" role="button" onClick={handleReveal}>
                       <span className="input-group-text">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
