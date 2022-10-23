@@ -64,7 +64,7 @@ const UserOrder = () => {
     <div className="d-flex my-4 col-8">
       <PDFDownloadLink document={<ReceiptDocument data={data}/> } fileName="receipt.pdf">
           {({ loading }) =>
-            loading ? 'Loading...' : 'Donwload'
+            (loading || receiptLoading) ? 'Loading...' : 'Donwload'
           }
       </PDFDownloadLink>
     </div>
