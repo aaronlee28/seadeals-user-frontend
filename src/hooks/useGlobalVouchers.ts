@@ -13,7 +13,7 @@ export default function useGlobalVouchers() {
 
     const getGlobalVouchers = async () => {
       try {
-        const response = await axiosPrivate.get('/global-vouchers', {
+        const response = await axiosPrivate.get('global-vouchers', {
           signal: controller.signal,
         });
         const { data } = response.data;
