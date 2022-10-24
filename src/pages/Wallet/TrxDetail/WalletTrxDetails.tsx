@@ -5,7 +5,7 @@ import WalletTrxDetailsRows from './WalletTrxDetailsRows';
 const WalletTrxDetails = () => (
   <div className="">
     <div className="mini-w-screen mx-auto">
-      <div className="mx-auto my-4 rounded bg-light shadow-sm rounded py-3">
+      <div className="mx-auto my-4 rounded bg-white shadow-sm rounded py-3">
         <div className="px-4">
           <div className="mb-4">
             <div className="d-flex align-items-center gap-3">

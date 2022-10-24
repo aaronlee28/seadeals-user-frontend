@@ -67,7 +67,7 @@ const WalletHistory = () => {
 
   return (
     <div className="mini-w-screen mx-auto">
-      <div className="mx-auto my-4 rounded bg-light shadow-sm rounded py-3 pb-1 wallet__history">
+      <div className="mx-auto my-4 rounded bg-white shadow-sm rounded py-3 pb-1 wallet__history">
         <div className="px-4 mb-4 d-flex align-items-center gap-3">
           <div className="normal-link mb-2">
             <Link to="/wallet">

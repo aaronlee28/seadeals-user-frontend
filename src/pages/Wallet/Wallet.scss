@@ -36,3 +36,7 @@
      border: 2px solid #1E46A2 !important;
      border-radius: 25%;
  }
+
+.wallet_accounts_item:not(:last-child){
+    margin-bottom: 0.6rem!important;
+}
