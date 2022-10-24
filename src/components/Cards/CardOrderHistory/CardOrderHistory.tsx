@@ -12,6 +12,7 @@ import ModalReview from '../../Modal/ModalReview/ModalReview';
 import Carts from '../../../api/carts';
 import { checkCartBuyNow } from '../../../features/cart/cartSlice';
 import { useDispatch } from 'react-redux';
+import ModalComplaint from '../../Modal/ComplaintModal/ComplaintModal';
 
 type CardOrderHistoryProps = {
   data: {
@@ -22,6 +23,7 @@ type CardOrderHistoryProps = {
     updatedAt: string,
     totalPricePromotion: number,
     totalPriceBase: number,
+    transaction: any,
     storeItems: any[],
   },
   handleReview: () => void,
@@ -44,6 +46,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   } = data;
 
   const [isModalReviewOpen, setIsModalReviewOpen] = useState(false);
+  const [isModalComplaintOpen, setIsModalComplaintOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -67,7 +70,14 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   };
 
   const moveToComplaint = () => {
-    console.log('Complaint');
+    setIsModalComplaintOpen(true);
+  };
+
+  const closeModalComplaint = () => {
+    setRefresh(!refresh);
+    setTimeout(() => {
+      setIsModalComplaintOpen(false);
+    }, 500);
   };
 
   const addToCart = async () => {
@@ -104,6 +114,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
     }, 500);
   };
 
+  console.log('data:', data);
   return (
     <div className="card-order-history_container">
       <div className="card-order-history_content">
@@ -220,6 +231,20 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
             handleInput={() => console.log('Input')}
             handleDelete={() => console.log('Input')}
             handleCloseModal={closeModalReview}
+          />
+        )
+      }
+      {
+        isModalComplaintOpen
+        && (
+          <ModalComplaint
+            data={data}
+            title="Komplain Pesanan"
+            formType="CREATE"
+            isOpen={isModalComplaintOpen}
+            handleInput={() => console.log('Input')}
+            handleDelete={() => console.log('Input')}
+            handleCloseModal={closeModalComplaint}
           />
         )
       }
