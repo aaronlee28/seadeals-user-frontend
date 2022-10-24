@@ -8,12 +8,16 @@ import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage
 import { storage } from '../../../firebase/firebase';
 
 import './ComplaintModal.scss';
+import '../../Cards/CardOrderHistory/CardOrderHistory.scss';
 import Orders from '../../../api/orders';
+import CardOrderHistoryItem from '../../Cards/CardOrderHistory/CardOrderHistoryItem';
+import { formatPrice } from '../../../utils/product';
 
 type ModalComplaintProps = {
   data: {
     orderId: number,
     storeName: string,
+    transaction:any,
     storeItems: any[],
   },
   title: string,
@@ -122,88 +126,100 @@ const ModalComplaint = (props: ModalComplaintProps) => {
       {
         storeItems.map(
           (item: any) => (
-            <div
-              key={`${item.id}-${item.name}`}
-              className="item"
-            >
-              <div className="product_content">
-                <div className="image_content">
-                  <img
-                    className="image"
-                    src={item.imgUrl}
-                    alt={item.name}
+            <div className="item card-order-history_container" key={`${item.id}-${item.name}`}>
+              <div className="card-order-history_content">
+                <div className="center_content">
+                  <CardOrderHistoryItem
+                    data={item}
                   />
                 </div>
-                <p className="name">{ item.name }</p>
-              </div>
-              <div className="form_content">
-                <form onSubmit={(e) => e.preventDefault()}>
-                  <div className="description_content">
-                    <label className="label" htmlFor="name">Deskripsi</label>
-                    <textarea
-                      name="description"
-                      className="description"
-                      maxLength={200}
-                      placeholder="Masukkan komplain"
-                      onChange={handleDescription}
-                    />
-                  </div>
-                  <div className="photo_content">
-                    <label className="label" htmlFor="image">Foto</label>
-                    <div className="">
-                      {complaintPhoto.map(
-                        (el:any, i:any) => (
-                          <button className="input__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
-                            <div className="d-flex flex-column justify-content-center input__image__filter">
-                              <div>
-                                X
-                              </div>
-                            </div>
-                            <img className="img-fit input__image" alt={i.toString()} src={el.photo_url} />
-                          </button>
-                        ),
-                      )}
-                      {complaintPhoto.length < 5 && (
-                        <button className="input__add-image-button" type="button" onClick={() => { imageInputRef.current.click(); }}>
-                          <div>
-                            +
-                          </div>
-                        </button>
-                      )}
-                      <input
-                        name="image"
-                        className="col-9 border rounded p-2 input__add-image"
-                        type="file"
-                        onInput={handleImageChange}
-                        ref={imageInputRef}
-                      />
-                    </div>
-                  </div>
-                </form>
               </div>
             </div>
           ),
         )
       }
-      <div className="buttons">
-        <Button
-          buttonType="primary alt"
-          text="Batalkan"
-          handleClickedButton={handleClose}
-        />
-        <Button
-          isSubmit
-          buttonType="primary"
-          handleClickedButton={handleSubmit}
-          text="Simpan"
-        />
+      <div className="item p-2">
+        <div className="d-flex flex-column border rounded w-100 p-2">
+          <div className="d-flex flex-column p-2">
+            <span>Jumlah pengembalian dana</span>
+            <h5 className="p-2"><b>Rp{formatPrice(data.transaction.total)}</b></h5>
+          </div>
+          <div className="d-flex justify-content-between pt-2 border-top">
+            <span>Pembayaran menggunakan</span>
+            <span>{data.transaction.payment_method}</span>
+          </div>
+        </div>
+      </div>
+      <div className="item">
+        <div className="form_content">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit().then();
+          }}>
+            <div className="description_content">
+              <label className="label" htmlFor="name">Deskripsi</label>
+              <textarea
+                name="description"
+                className="description"
+                maxLength={200}
+                required
+                placeholder="Masukkan komplain"
+                onChange={handleDescription}
+              />
+            </div>
+            <div className="photo_content">
+              <label className="label" htmlFor="image">Foto</label>
+              <div className="">
+                {complaintPhoto.map(
+                  (el:any, i:any) => (
+                    <button className="input__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
+                      <div className="d-flex flex-column justify-content-center input__image__filter">
+                        <div>
+                          X
+                        </div>
+                      </div>
+                      <img className="img-fit input__image" alt={i.toString()} src={el.photo_url} />
+                    </button>
+                  ),
+                )}
+                {complaintPhoto.length < 5 && (
+                  <button className="input__add-image-button" type="button" onClick={() => { imageInputRef.current.click(); }}>
+                    <div>
+                      +
+                    </div>
+                  </button>
+                )}
+                <input
+                  name="image"
+                  className="col-9 border rounded p-2 input__add-image"
+                  type="file"
+                  onInput={handleImageChange}
+                  ref={imageInputRef}
+                />
+              </div>
+            </div>
+            <div className="buttons">
+              <Button
+                buttonType="primary alt"
+                text="Batalkan"
+                handleClickedButton={handleClose}
+              />
+              <Button
+                isSubmit
+                buttonType="primary"
+                handleClickedButton={() => {}}
+                text="Simpan"
+              />
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 
   return (
     <Modal
-      modalType="complaint"
+      modalType="complaint p-4"
       cancel={handleCloseModal}
       isOpen={open}
     >

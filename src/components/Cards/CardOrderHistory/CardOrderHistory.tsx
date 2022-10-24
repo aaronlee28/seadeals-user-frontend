@@ -23,6 +23,7 @@ type CardOrderHistoryProps = {
     updatedAt: string,
     totalPricePromotion: number,
     totalPriceBase: number,
+    transaction: any,
     storeItems: any[],
   },
   handleReview: () => void,

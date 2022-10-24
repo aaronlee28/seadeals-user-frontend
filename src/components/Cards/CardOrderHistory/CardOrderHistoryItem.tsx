@@ -1,6 +1,7 @@
 import React from 'react';
 import Promotion from '../../Promotion/Promotion';
 import { formatPrice, formatPriceWithCurrency } from '../../../utils/product';
+import './CardOrderHistory.scss';
 
 type CardOrderHistoryItemProps = {
   data: {
