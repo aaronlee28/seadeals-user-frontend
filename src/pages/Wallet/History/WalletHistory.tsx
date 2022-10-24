@@ -2,13 +2,18 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import WalletHistoryRows from './WalletHistoryRows';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Loading from '../../../components/Loading/Loading';
+import ModalWalletTrxDetails from '../../../components/Modal/ModalWalletTrxDetails/ModalWalletTrxDetails';
 
 const WalletHistory = () => {
   const axiosPrivate = useAxiosPrivate();
   const observer = useRef<any>();
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTrx, setSelectedTrx] = useState<any>(null);
 
   const [trxs, setTrxs] = useState<any>([]);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -52,7 +57,7 @@ const WalletHistory = () => {
         }
         if (initialLoading) setInitialLoading(false);
       } catch (err) {
-        console.error(err);
+        toast.error('Gagal memuat transaksi');
       } finally {
         setLoading(false);
       }
@@ -65,8 +70,20 @@ const WalletHistory = () => {
     };
   }, [page]);
 
+  const selectTrx = (trx:any) => {
+    setSelectedTrx(trx);
+    setShowModal(true);
+  };
+
   return (
     <div className="mini-w-screen mx-auto">
+      {showModal && (
+        <ModalWalletTrxDetails
+          show={showModal}
+          setShow={setShowModal}
+          trx={selectedTrx}
+        />
+      )}
       <div className="mx-auto my-4 rounded bg-white shadow-sm rounded py-3 pb-1 wallet__history">
         <div className="px-4 mb-4 d-flex align-items-center gap-3">
           <div className="normal-link mb-2">
@@ -83,7 +100,14 @@ const WalletHistory = () => {
               ? (
                 <Loading height={64} />
               )
-              : <WalletHistoryRows trxs={trxs} loading={loading} innerRef={lastTrxRef} />
+              : (
+                <WalletHistoryRows
+                  trxs={trxs}
+                  loading={loading}
+                  innerRef={lastTrxRef}
+                  selectTrx={selectTrx}
+                />
+              )
           }
         </div>
       </div>

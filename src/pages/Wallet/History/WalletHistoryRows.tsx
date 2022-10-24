@@ -1,7 +1,16 @@
 import React, { FC } from 'react';
 import WalletHistoryItem from './WalletHistoryItem';
 
-const WalletHistoryRows:FC<any> = ({ trxs, loading, innerRef }) => (
+interface Props {
+  trxs: any[],
+  loading: boolean,
+  innerRef:any,
+  selectTrx:(trx:any)=>void
+}
+
+const WalletHistoryRows:FC<Props> = ({
+  trxs, loading, innerRef, selectTrx,
+}) => (
   <>
     {
       trxs.length > 0
@@ -9,9 +18,23 @@ const WalletHistoryRows:FC<any> = ({ trxs, loading, innerRef }) => (
           <div className="border-bottom mb-3">
             {trxs.map((trx:any, idx:number) => {
               if (trxs.length === idx + 1) {
-                return <WalletHistoryItem key={trx.id} trx={trx} innerRef={innerRef} />;
+                return (
+                  <WalletHistoryItem
+                    key={trx.id}
+                    trx={trx}
+                    innerRef={innerRef}
+                    setTrx={selectTrx}
+                  />
+                );
               }
-              return <WalletHistoryItem key={trx.id} trx={trx} />;
+              return (
+                <WalletHistoryItem
+                  key={trx.id}
+                  innerRef={null}
+                  trx={trx}
+                  setTrx={selectTrx}
+                />
+              );
             })}
           </div>
         )
