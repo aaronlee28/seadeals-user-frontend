@@ -152,7 +152,7 @@ const Login = () => {
                       autoComplete="new-password"
                       required
                     />
-                    <div className="input-group-append" role="button" onClick={handleReveal}>
+                    <div className="input-group-append" role="presentation" onClick={handleReveal}>
                       <span className="input-group-text">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
                       </span>
