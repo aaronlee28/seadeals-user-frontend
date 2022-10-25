@@ -34,7 +34,7 @@ const WalletTrxItems:FC<any> = () => {
   }, []);
 
   return (
-    <div className="mx-auto my-4 rounded bg-light shadow-sm rounded">
+    <div className="mx-auto my-4 rounded bg-white shadow-sm rounded">
       <div className="px-4 py-3">
         <div className="d-flex justify-content-between">
           <h5 className="mb-0 fw-bold">Riwayat Transaksi</h5>
