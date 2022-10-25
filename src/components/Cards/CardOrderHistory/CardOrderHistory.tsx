@@ -87,7 +87,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
         product_variant_detail_id: storeItems[i].variantId,
         quantity: 1,
       };
-      //use promise all thanks!
+      // use promise all thanks!
       // eslint-disable-next-line no-await-in-loop
       await Carts.PostCartItem(axiosPrivate, val)
         .then((res:any) => {
@@ -231,11 +231,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
         && (
           <ModalReview
             data={data}
-            title="APA"
-            formType="INI"
             isOpen={isModalReviewOpen}
-            handleInput={() => console.log('Input')}
-            handleDelete={() => console.log('Input')}
             handleCloseModal={closeModalReview}
           />
         )
@@ -246,10 +242,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
           <ModalComplaint
             data={data}
             title="Komplain Pesanan"
-            formType="CREATE"
             isOpen={isModalComplaintOpen}
-            handleInput={() => console.log('Input')}
-            handleDelete={() => console.log('Input')}
             handleCloseModal={closeModalComplaint}
           />
         )

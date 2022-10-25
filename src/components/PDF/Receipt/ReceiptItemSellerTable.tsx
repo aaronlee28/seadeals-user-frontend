@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text } from '@react-pdf/renderer';
-import { OrderPayment } from './ReceiptDocument';
+import { OrderPayment } from '../PDFConstant/PDFConstant';
 
 const styles = StyleSheet.create({
   row: {
@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
 });
 
 const ReceiptItemSellerTable = ({ orderPayments }:{ orderPayments:Array<OrderPayment> }) => {
-  const rows = orderPayments?.map( item =>
-        <View style={styles.row} key={item.seller_name.toString()}>
-            <Text style={styles.seller_info}>{item.seller_name}</Text>
-            <Text style={styles.price}>{item.total_order}</Text>
-        </View>,
-  );
-  return (<Fragment>{rows}</Fragment> );
+  const rows = orderPayments?.map((item) => (
+    <View style={styles.row} key={item.seller_name.toString()}>
+      <Text style={styles.seller_info}>{item.seller_name}</Text>
+      <Text style={styles.price}>{item.total_order}</Text>
+    </View>
+  ));
+  return (<div>{rows}</div>);
 };
 
 export default ReceiptItemSellerTable;

@@ -20,12 +20,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const ReceiptHeaderSellerTable = () => {
-  return (
-        <View style={styles.container}>
-            <Text style={styles.seller_info}>Detail Pembayaran</Text>
-        </View>
-  );
-};
+const ReceiptHeaderSellerTable = () => (
+  <View style={styles.container}>
+    <Text style={styles.seller_info}>Detail Pembayaran</Text>
+  </View>
+);
 
 export default ReceiptHeaderSellerTable;

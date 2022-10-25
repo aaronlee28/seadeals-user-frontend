@@ -15,7 +15,9 @@ interface PayWithSLPProps {
   globalVoucher: any
 }
 
-const PayWithSLP:FC<PayWithSLPProps> = ({ orderItems, address, closeModal, globalVoucher }) => {
+const PayWithSLP:FC<PayWithSLPProps> = ({
+  orderItems, address, closeModal, globalVoucher,
+}) => {
   const axiosPrivate = useAxiosPrivate();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);

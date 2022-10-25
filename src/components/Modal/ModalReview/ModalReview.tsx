@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Modal from '../Modal';
-import Button from '../../Button/Button';
 import { useParams } from 'react-router-dom';
-import useAuth from '../../../hooks/useAuth';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../../../firebase/firebase';
+import Modal from '../Modal';
+import Button from '../../Button/Button';
+import useAuth from '../../../hooks/useAuth';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import storage from '../../../firebase/firebase';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 
 import './ModalReview.scss';
@@ -18,11 +18,7 @@ type ModalReviewProps = {
     storeName: string,
     storeItems: any[],
   },
-  title: string,
-  formType: string,
   isOpen: boolean,
-  handleInput: () => void;
-  handleDelete: () => void;
   handleCloseModal: () => void;
 };
 
@@ -53,7 +49,8 @@ const ModalReview = (props: ModalReviewProps) => {
 
   const checkExistingReview = async () => {
     try {
-      const response = await axiosPrivate.post('user/existing-review',
+      const response = await axiosPrivate.post(
+        'user/existing-review',
         JSON.stringify({ product_id: Number(productID) }),
       );
       const { val } = response.data;
@@ -68,21 +65,19 @@ const ModalReview = (props: ModalReviewProps) => {
 
   const setReviewObject = () => {
     const tempReview = storeItems.map(
-      (item: any) => {
-        return {
-          userId: userID,
-          productId: item.id,
-          rating: -1,
-          description: '',
-          imageUrl: '',
-          imageName: '',
-        };
-      },
+      (item: any) => ({
+        userId: userID,
+        productId: item.id,
+        rating: -1,
+        description: '',
+        imageUrl: '',
+        imageName: '',
+      }),
     );
     setReview(tempReview);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     checkExistingReview().then();
     setReviewObject();
   }, []);
@@ -95,6 +90,7 @@ const ModalReview = (props: ModalReviewProps) => {
           tempItem.description = e.target.value;
           return tempItem;
         }
+        return item;
       },
     );
     setReview(tempReview);
@@ -114,6 +110,7 @@ const ModalReview = (props: ModalReviewProps) => {
               tempItem.imageName = imageUpload.name;
               return tempItem;
             }
+            return item;
           },
         );
         setReview(tempReview);
@@ -130,6 +127,7 @@ const ModalReview = (props: ModalReviewProps) => {
         image_url: String(review[i].imageUrl),
         image_name: review[i].imageName,
       };
+      // eslint-disable-next-line no-await-in-loop
       await Reviews.PostReview(axiosPrivate, val)
         .then(() => {
           toast.success('Review berhasil dikirimkan');
@@ -141,9 +139,7 @@ const ModalReview = (props: ModalReviewProps) => {
     }
   };
 
-  const getReview = (id: number) => {
-    return review.find((el: any) => el.productId === id);
-  };
+  const getReview = (id: number) => review.find((el: any) => el.productId === id);
 
   const localUpload = (event: any, id: number) => {
     const reader = new FileReader();
@@ -159,6 +155,7 @@ const ModalReview = (props: ModalReviewProps) => {
           tempItem.rating = rate !== item.rating ? rate : 0;
           return tempItem;
         }
+        return item;
       },
     );
     setReview(tempReview);
@@ -166,9 +163,7 @@ const ModalReview = (props: ModalReviewProps) => {
 
   const addPhoto = (event: any) => {
     event.stopPropagation();
-    console.log('1');
     if (addingPhoto.current) {
-      console.log('2');
       addingPhoto.current.click();
     }
   };
@@ -225,7 +220,7 @@ const ModalReview = (props: ModalReviewProps) => {
                       maxLength={100}
                       placeholder="Masukkan deskripsi review"
                       value={getReview(item.id)?.description}
-                      onChange={() => handleDescription(event, item.id)}
+                      onChange={(event) => handleDescription(event, item.id)}
                     />
                   </div>
                   <div className="photo_content">
@@ -258,9 +253,9 @@ const ModalReview = (props: ModalReviewProps) => {
                         className="photo_input"
                         maxLength={100}
                         type="file"
-                        accept='image/*'
+                        accept="image/*"
                         ref={addingPhoto}
-                        onChange={(event=> localUpload(event, item.id))}
+                        onChange={((event) => localUpload(event, item.id))}
                       />
                     </div>
                     {
@@ -269,7 +264,7 @@ const ModalReview = (props: ModalReviewProps) => {
                         <Button
                           buttonType="secondary alt change"
                           text="Ubah Foto"
-                          handleClickedButton={() => addPhoto(event)}
+                          handleClickedButton={() => addPhoto}
                         />
                       )
                     }
