@@ -18,7 +18,9 @@ interface WalletIframeProps {
   globalVoucher: any,
 }
 
-const WalletIframe:FC<WalletIframeProps> = ({ orderItems, address, closeModal, globalVoucher }) => {
+const WalletIframe:FC<WalletIframeProps> = ({
+  orderItems, address, closeModal, globalVoucher,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();

@@ -1,5 +1,5 @@
-import useAuth from './useAuth';
 import { useEffect } from 'react';
+import useAuth from './useAuth';
 import { axiosPrivate } from '../api/axios';
 
 const useAxiosPrivateWithoutNavigate = () => {
@@ -18,9 +18,7 @@ const useAxiosPrivateWithoutNavigate = () => {
 
     const responseIntercept = axiosPrivate.interceptors.response.use(
       (response) => response,
-      async (error) => {
-        return Promise.reject(error);
-      },
+      async (error) => Promise.reject(error),
     );
 
     return () => {

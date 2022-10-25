@@ -36,15 +36,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const ReceiptHeaderProductTable = () => {
-  return (
-      <View style={styles.container}>
-          <Text style={styles.product_info}>Info Produk</Text>
-          <Text style={styles.qty}>Jumlah</Text>
-          <Text style={styles.price_per_item}>Harga Satuan</Text>
-          <Text style={styles.total}>Total Harga</Text>
-      </View>
-  );
-};
+const ReceiptHeaderProductTable = () => (
+  <View style={styles.container}>
+    <Text style={styles.product_info}>Info Produk</Text>
+    <Text style={styles.qty}>Jumlah</Text>
+    <Text style={styles.price_per_item}>Harga Satuan</Text>
+    <Text style={styles.total}>Total Harga</Text>
+  </View>
+);
 
 export default ReceiptHeaderProductTable;

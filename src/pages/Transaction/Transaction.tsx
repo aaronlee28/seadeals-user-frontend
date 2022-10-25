@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import Transactions from '../../api/transactions';
-import toast from 'react-hot-toast';
 import './Transaction.scss';
 import Loading from '../../components/Loading/Loading';
 import { formatPriceWithCurrency } from '../../utils/product';
@@ -44,11 +44,11 @@ const Transaction = () => {
               <p>{trxDetails.created_at}</p>
             </div>
             <div className="trx__content">
-              {/*{*/}
-              {/*  trxDetails.orders.map((order:any) => {*/}
-              {/*    <Order*/}
-              {/*  })*/}
-              {/*}*/}
+              {/* { */}
+              {/*  trxDetails.orders.map((order:any) => { */}
+              {/*    <Order */}
+              {/*  }) */}
+              {/* } */}
               <div className="trx__payment">
                 <div className="trx__item-full">
                   <span>Pembayaran dengan</span>

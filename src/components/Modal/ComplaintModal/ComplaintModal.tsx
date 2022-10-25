@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { v4 } from 'uuid';
+import {
+  deleteObject, getDownloadURL, ref, uploadBytes,
+} from 'firebase/storage';
 import Modal from '../Modal';
 import Button from '../../Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import toast from 'react-hot-toast';
-import { v4 } from 'uuid';
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../../../firebase/firebase';
+import storage from '../../../firebase/firebase';
 
 import './ComplaintModal.scss';
 import '../../Cards/CardOrderHistory/CardOrderHistory.scss';
@@ -21,10 +23,7 @@ type ModalComplaintProps = {
     storeItems: any[],
   },
   title: string,
-  formType: string,
   isOpen: boolean,
-  handleInput: () => void;
-  handleDelete: () => void;
   handleCloseModal: () => void;
 };
 
@@ -142,7 +141,12 @@ const ModalComplaint = (props: ModalComplaintProps) => {
         <div className="d-flex flex-column border rounded w-100 p-2">
           <div className="d-flex flex-column p-2">
             <span>Jumlah pengembalian dana</span>
-            <h5 className="p-2"><b>Rp{formatPrice(data.transaction.total)}</b></h5>
+            <h5 className="p-2">
+              <b>
+                Rp
+                {formatPrice(data.transaction.total)}
+              </b>
+            </h5>
           </div>
           <div className="d-flex justify-content-between pt-2 border-top">
             <span>Pembayaran menggunakan</span>
@@ -155,7 +159,8 @@ const ModalComplaint = (props: ModalComplaintProps) => {
           <form onSubmit={(e) => {
             e.preventDefault();
             handleSubmit().then();
-          }}>
+          }}
+          >
             <div className="description_content">
               <label className="label" htmlFor="name">Deskripsi</label>
               <textarea
