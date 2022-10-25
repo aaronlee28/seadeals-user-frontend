@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import ReceiptDocument, { Receipt } from '../../../components/PDF/Receipt/ReceiptDocument';
 import useAxiosPrivateWithoutNavigate from '../../../hooks/useAxiosPrivateWithoutNavigate';
-import toast from 'react-hot-toast';
+import UserOrderShipping from './UserOrderShipping';
+import UserOrderDetails from './UserOrderDetails';
+import './UserOrder.scss';
 
 const UserOrder = () => {
   const { id } = useParams();
+
+  const [receiptLoading, setReceiptLoading] = useState<boolean>(true);
+  const [loadingOrder, setLoadingOrder] = useState(true);
 
   const [data, setData] = useState<Receipt>({
     buyer: { address: '', bought_date: '', name: '' },
@@ -14,7 +20,9 @@ const UserOrder = () => {
     order_detail: {
       delivery_price: 0,
       order_items: [],
-      shop_voucher: { amount: 0, name: '', total_reduce: 0, type: '' },
+      shop_voucher: {
+        amount: 0, name: '', total_reduce: 0, type: '',
+      },
       total: 0,
       total_order: 0,
       total_quantity: 0,
@@ -22,13 +30,15 @@ const UserOrder = () => {
     payment_method: '',
     seller_name: '',
     transaction: {
-      global_discount: [{ amount: 0, name: '', seller_name: '', total_reduced: 0, type: '' }],
+      global_discount: [{
+        amount: 0, name: '', seller_name: '', total_reduced: 0, type: '',
+      }],
       order_payments: [],
       total: 0,
       total_transaction: 0,
     },
   });
-  const [receiptLoading, setReceiptLoading] = useState<boolean>(true);
+  const [order, setOrder] = useState<any>(null);
 
   const axiosPrivate = useAxiosPrivateWithoutNavigate();
 
@@ -50,7 +60,22 @@ const UserOrder = () => {
         toast.error('Gagal Memuat Receipt Order');
       }
     };
+    const getOrder = async () => {
+      try {
+        const response = await axiosPrivate.get(`user/order/${id}`, {
+          signal: controller.signal,
+        });
+        const result = response.data;
+        if (isMounted) {
+          setLoadingOrder(false);
+          setOrder(result.data);
+        }
+      } catch (err) {
+        toast.error('Gagal Memuat Order');
+      }
+    };
     getReceipt().then();
+    getOrder().then();
 
     return () => {
       isMounted = false;
@@ -58,14 +83,14 @@ const UserOrder = () => {
     };
   }, []);
 
-  if (receiptLoading) return <div>Loading...</div>;
+  if (receiptLoading || loadingOrder) return <div>Loading...</div>;
 
   return (
-    <div className="d-flex my-4 col-8">
-      <PDFDownloadLink document={<ReceiptDocument data={data}/> } fileName="receipt.pdf">
-          {({ loading }) =>
-            (loading || receiptLoading) ? 'Loading...' : 'Donwload'
-          }
+    <div className="w-100">
+      <UserOrderShipping order={order} />
+      <UserOrderDetails order={order} />
+      <PDFDownloadLink document={<ReceiptDocument data={data} />} fileName="receipt.pdf">
+        {({ loading }) => ((loading || receiptLoading) ? 'Loading...' : 'Donwload')}
       </PDFDownloadLink>
     </div>
   );

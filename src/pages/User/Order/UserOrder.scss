@@ -1,0 +1,15 @@
+.user_order_item:not(:last-child){
+    border-bottom: 1px solid #dee2e6!important;
+}
+
+.user_order_item_image {
+    min-width: 80px;
+    max-width: 80px;
+    height: 80px;
+}
+
+.user_order_item_image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
