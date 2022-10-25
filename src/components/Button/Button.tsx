@@ -41,7 +41,7 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button
-      type={isSubmit?"submit":"button"}
+      type={isSubmit ? 'submit' : 'button'}
       className={`button ${buttonType} ${isDisabled ? 'disabled' : ''}`}
       onClick={handleClickedButton}
       disabled={isDisabled}

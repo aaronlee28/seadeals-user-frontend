@@ -73,7 +73,15 @@ const Wallet = () => {
 
   return (
     <div className="mini-w-screen mx-auto">
-      <div className="mx-auto my-4 rounded bg-light shadow-sm rounded py-5">
+      <div className="px-4 py-2 bg-white rounded shadow-sm mb-4 d-flex align-items-center gap-3">
+        <div className="normal-link mb-2">
+          <Link to="/">
+            <h3>&#8249;</h3>
+          </Link>
+        </div>
+        <p className="mb-1 fs-5">Kembali</p>
+      </div>
+      <div className="mx-auto my-4 rounded bg-white shadow-sm rounded py-4">
         <div className="px-4 mb-4 d-flex justify-content-between">
           <div className="text-start">
             <p className="fw-bold fs-2">SeaDeals Wallet</p>
@@ -91,18 +99,15 @@ const Wallet = () => {
             </Link>
           </div>
         </div>
-        <div className="px-4 mb-4">
+        <div className="px-4">
           <AccountInfo balance={walletInfo?.balance || 0} hasPin={hasPin} mainSLPNum={mainSLP?.account_number || ''} />
         </div>
-        <div className="px-4 pt-1 text-start">
-          <h6 className="mb-2">Akun SeaLabsPay</h6>
-          <WalletAccounts accounts={SLPAccounts} />
-        </div>
       </div>
+      <WalletAccounts accounts={SLPAccounts} />
       {isWalletPINSet(walletInfo?.status)
         ? <WalletTrxItems />
         : (
-          <div className="text-center mx-auto my-4 py-5 border border-2 rounded bg-light shadow-sm">
+          <div className="text-center mx-auto my-4 py-5 border border-2 rounded bg-white shadow-sm">
             <img alt="PIN not set" src={nopin} height="64px" />
             <p className="mb-0 fs-6 mt-1 mb-4">Amankan Wallet dengan mengatur PIN!</p>
             <div className="normal-link">

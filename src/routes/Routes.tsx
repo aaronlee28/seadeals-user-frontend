@@ -19,7 +19,6 @@ import Cart from '../pages/Cart/Cart';
 import Wallet from '../pages/Wallet/Wallet';
 import WalletPIN from '../pages/Wallet/WalletPIN';
 import WalletHistory from '../pages/Wallet/History/WalletHistory';
-import WalletTrxDetails from '../pages/Wallet/TrxDetail/WalletTrxDetails';
 import WalletTopup from '../pages/Wallet/Topup/WalletTopup';
 import CategoryPage from '../pages/Category/CategoryPage';
 import RecommendationPage from '../pages/Recommendation/RecommendationPage';
@@ -30,6 +29,7 @@ import TrxPage from '../pages/Transaction/TrxPage';
 import Address from '../pages/User/Address/Address';
 import SimilarPage from '../pages/Similar/SimilarPage';
 import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
+import UserOrder from '../pages/User/Order/UserOrder';
 
 const AppRoutes = () => (
   <Routes>
@@ -53,18 +53,19 @@ const AppRoutes = () => (
             <Route path="user/" element={<UserPage />}>
               <Route path="addresses" element={<Address />} />
               <Route path="order-history" element={<OrderHistory />} />
+              <Route path="order/:id" element={<UserOrder />} />
             </Route>
 
             <Route path="/wallet">
               <Route path="" element={<Wallet />} />
               <Route path="settings" element={<WalletPIN />} />
               <Route path="history" element={<WalletHistory />} />
-              <Route path="history/:id" element={<WalletTrxDetails />} />
+              {/* <Route path="history/:id" element={<WalletTrxDetails />} /> */}
               <Route path="topup" element={<WalletTopup />} />
             </Route>
 
             <Route path="/checkout" element={<Checkout />} />
-            {/*<Route path="/review/:productID" element={<Review formType="create"/>} />*/}
+            {/* <Route path="/review/:productID" element={<Review formType="create"/>} /> */}
 
             <Route path="/transactions/:trxID" element={<TrxPage />} />
           </Route>

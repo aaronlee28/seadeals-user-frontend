@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
 import formatTitle from '../../../utils/titleFormatter';
 import formatDate from '../../../utils/dateFormatter';
 import { formatPrice } from '../../../utils/product';
+import Button from '../../../components/Button/Button';
 
-const WalletHistoryItem:FC<any> = ({ trx, innerRef }) => (
+interface Props {
+  trx: any,
+  innerRef: any,
+  setTrx: (trx:any) => void,
+}
+
+const WalletHistoryItem:FC<Props> = ({ trx, innerRef, setTrx }) => (
   <div ref={innerRef} className="border-top text-start py-3">
     <div className="d-flex justify-content-between">
       <div>
@@ -31,13 +37,8 @@ const WalletHistoryItem:FC<any> = ({ trx, innerRef }) => (
             </b>
           </span>
         </div>
-        <div className="mt-auto normal-link">
-          <Link to={`/wallet/history/${trx.id}`}>
-            <small className="px-1">
-              view &nbsp;
-              <b>&#8250;</b>
-            </small>
-          </Link>
+        <div className="mt-auto normal-link ms-auto">
+          <Button buttonType="plain" handleClickedButton={() => setTrx(trx)} text="view &#8250;" />
         </div>
       </div>
     </div>

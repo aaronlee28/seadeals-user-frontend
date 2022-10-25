@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatPriceWithCurrency } from '../../../utils/product';
 import CardOrderHistoryItem from './CardOrderHistoryItem';
 
@@ -11,7 +12,6 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import ModalReview from '../../Modal/ModalReview/ModalReview';
 import Carts from '../../../api/carts';
 import { checkCartBuyNow } from '../../../features/cart/cartSlice';
-import { useDispatch } from 'react-redux';
 import ModalComplaint from '../../Modal/ComplaintModal/ComplaintModal';
 
 type CardOrderHistoryProps = {
@@ -26,6 +26,7 @@ type CardOrderHistoryProps = {
     transaction: any,
     storeItems: any[],
   },
+  // eslint-disable-next-line react/no-unused-prop-types
   handleReview: () => void,
 };
 
@@ -86,6 +87,8 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
         product_variant_detail_id: storeItems[i].variantId,
         quantity: 1,
       };
+      //use promise all thanks!
+      // eslint-disable-next-line no-await-in-loop
       await Carts.PostCartItem(axiosPrivate, val)
         .then((res:any) => {
           toast.success('Barang berhasil dimasukkan ke keranjang');
@@ -114,12 +117,15 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
     }, 500);
   };
 
-  console.log('data:', data);
   return (
     <div className="card-order-history_container">
       <div className="card-order-history_content">
         <div className="top_content">
-          <p className="name">{ storeName }</p>
+          <div className="normal-link w-100">
+            <Link to={`/user/order/${orderId}`}>
+              <p className="name">{ storeName }</p>
+            </Link>
+          </div>
           <div className="status_content">
             <p className="status">{ status }</p>
             <p className="update">{ updatedAt }</p>
