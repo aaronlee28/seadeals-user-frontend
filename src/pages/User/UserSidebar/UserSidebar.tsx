@@ -12,7 +12,7 @@ const UserSidebar = () => {
   const { auth } = useAuth();
 
   const avatar = auth.user.avatar_url;
-  const name = auth.user.name;
+  const { name } = auth.user;
 
   const goToLink = (link: string) => {
     navigate(link);

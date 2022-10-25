@@ -179,7 +179,7 @@ const Register = () => {
                       required
                     />
                     {/* eslint-disable-next-line max-len */}
-                    <div className="input-group-append" role="button" onClick={handleReveal}>
+                    <div className="input-group-append" role="presentation" onClick={handleReveal}>
                       <span className="input-group-text">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
                       </span>
@@ -205,7 +205,7 @@ const Register = () => {
                       required
                     />
                     {/* eslint-disable-next-line max-len */}
-                    <div className="input-group-append" role="button" onClick={handleCPVis}>
+                    <div className="input-group-append" role="presentation" onClick={handleCPVis}>
                       <span className="input-group-text">
                         { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
                       </span>
@@ -327,7 +327,7 @@ const Register = () => {
                       required
                     />
                     {/* eslint-disable-next-line max-len */}
-                    <div className="input-group-append" role="button" onClick={handleReveal}>
+                    <div className="input-group-append" role="presentation" onClick={handleReveal}>
                       <span className="input-group-text">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
                       </span>
@@ -353,7 +353,7 @@ const Register = () => {
                       required
                     />
                     {/* eslint-disable-next-line max-len */}
-                    <div className="input-group-append" role="button" onClick={handleCPVis}>
+                    <div className="input-group-append" role="presentation" onClick={handleCPVis}>
                       <span className="input-group-text">
                         { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
                       </span>

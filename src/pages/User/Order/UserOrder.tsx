@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import ReceiptDocument, { Receipt } from '../../../components/PDF/Receipt/ReceiptDocument';
+import ReceiptDocument from '../../../components/PDF/Receipt/ReceiptDocument';
 import useAxiosPrivateWithoutNavigate from '../../../hooks/useAxiosPrivateWithoutNavigate';
 import UserOrderShipping from './UserOrderShipping';
 import UserOrderDetails from './UserOrderDetails';
 import './UserOrder.scss';
+import { Receipt } from '../../../components/PDF/PDFConstant/PDFConstant';
 
 const UserOrder = () => {
   const { id } = useParams();

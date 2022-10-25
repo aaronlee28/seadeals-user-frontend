@@ -25,7 +25,7 @@ import RecommendationPage from '../pages/Recommendation/RecommendationPage';
 import PostTrxSLP from '../pages/PostSLP/PostTrxSLP';
 import PostTopupSLP from '../pages/PostSLP/PostTopupSLP';
 import Checkout from '../pages/Checkout/Checkout';
-import TrxPage from '../pages/Transaction/TrxPage';
+import Transaction from '../pages/Transaction/Transaction';
 import Address from '../pages/User/Address/Address';
 import SimilarPage from '../pages/Similar/SimilarPage';
 import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
@@ -67,7 +67,7 @@ const AppRoutes = () => (
             <Route path="/checkout" element={<Checkout />} />
             {/* <Route path="/review/:productID" element={<Review formType="create"/>} /> */}
 
-            <Route path="/transactions/:trxID" element={<TrxPage />} />
+            <Route path="/transactions/:trxID" element={<Transaction />} />
           </Route>
 
           <Route path="/toko/">

@@ -36,7 +36,7 @@ const CardOrderHistoryItem = (props: CardOrderHistoryItemProps) => {
       <div className="card-order-history-item_content">
         <div className="left_content">
           <img
-            className="image"
+            className="image-100px"
             src={imgUrl}
             alt={name}
           />
