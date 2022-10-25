@@ -6,6 +6,10 @@ class Orders {
   static PostFinishOrder(ax: any, data: any) {
     return ax.post('/user/finish/orders', data);
   }
+
+  static PostComplaintOrder(ax: any, data:any) {
+    return ax.post('/request-refund/orders', data);
+  }
 }
 
 export default Orders;
