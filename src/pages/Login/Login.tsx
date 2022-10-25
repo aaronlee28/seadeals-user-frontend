@@ -152,8 +152,6 @@ const Login = () => {
                       autoComplete="new-password"
                       required
                     />
-                    {/* eslint-disable-next-line max-len */}
-                    {/* jsx-a11y/interactive-supports-focus */}
                     <div className="input-group-append" role="button" onClick={handleReveal}>
                       <span className="input-group-text">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
