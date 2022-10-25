@@ -179,6 +179,10 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
           </View>
         </View>
 
+        <View style={{ marginTop: '24px', width: '100%' }}>
+          <Text> </Text>
+        </View>
+
         <View style={styles.content}>
           <View style={styles.content_row}>
             <View style={styles.content_column}>
