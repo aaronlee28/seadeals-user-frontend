@@ -1,12 +1,15 @@
 import React, { FC } from 'react';
 import formatTime from '../../../utils/dateFormatter';
+import UserOrderReceiptDownload from './UserOrderReceiptDownload';
+import { Receipt } from '../../../constants/orderItem';
 
 interface Props {
   order: any,
+  receipt: Receipt,
 }
 
-const UserOrderShipping:FC<Props> = ({ order }) => (
-  <div className="bg-white w-100 p-4 mb-4 rounded shadow-sm">
+const UserOrderShipping:FC<Props> = ({ order, receipt }) => (
+  <div className="bg-white w-100 p-4 pb-3 mb-4 rounded shadow-sm">
     <div className="d-flex align-items-start justify-content-between mb-4">
       <p className="fs-4 fw-bold">Alamat Pengiriman</p>
       <div className="text-end text-secondary">
@@ -31,6 +34,9 @@ const UserOrderShipping:FC<Props> = ({ order }) => (
           </div>
         ))}
       </div>
+    </div>
+    <div className="d-flex justify-content-end">
+      <UserOrderReceiptDownload data={receipt} />
     </div>
   </div>
 );

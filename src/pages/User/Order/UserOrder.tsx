@@ -6,6 +6,7 @@ import useAxiosPrivateWithoutNavigate from '../../../hooks/useAxiosPrivateWithou
 import UserOrderShipping from './UserOrderShipping';
 import UserOrderDetails from './UserOrderDetails';
 import './UserOrder.scss';
+import UserOrderHeader from './UserOrderHeader';
 
 const UserOrder = () => {
   const { id } = useParams();
@@ -86,8 +87,9 @@ const UserOrder = () => {
 
   return (
     <div className="w-100">
-      <UserOrderShipping order={order} />
-      <UserOrderDetails order={order} receipt={receipt} />
+      <UserOrderHeader trxID={order?.transaction_id} />
+      <UserOrderShipping order={order} receipt={receipt} />
+      <UserOrderDetails order={order} />
     </div>
   );
 };

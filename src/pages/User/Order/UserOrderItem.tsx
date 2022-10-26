@@ -23,7 +23,7 @@ interface OrderItem {
 }
 
 const UserOrderItem:FC<OrderItem> = ({ orderItem }) => (
-  <div className="row py-3 pe-3 user_order_item normal-link">
+  <div className="row py-3 user_order_item normal-link">
     <div className="col-auto">
       <Link to={`/product/${orderItem?.product_detail?.slug}`}>
         <div className="user_order_item_image">

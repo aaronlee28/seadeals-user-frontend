@@ -18,9 +18,9 @@ const style = StyleSheet.create({
 const UserOrderReceiptDownload = ({ data }:{ data:Receipt }) => (
   <PDFDownloadLink style={style.button} document={<ReceiptDocument data={data} />} fileName="invoice.pdf">
     {({ loading }) => ((loading) ? (
-      <Button text="Lihat Detail" buttonType="secondary disabled" handleClickedButton={() => {}} />
+      <Button text="Lihat Tagihan" buttonType="secondary disabled" handleClickedButton={() => {}} />
     ) : (
-      <Button text="Lihat Detail" buttonType="primary" handleClickedButton={() => {}} />
+      <Button text="Lihat Tagihan" buttonType="primary" handleClickedButton={() => {}} />
     ))}
   </PDFDownloadLink>
 );

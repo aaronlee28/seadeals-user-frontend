@@ -8,7 +8,13 @@ interface Props {
 }
 
 const UserOrderSummary:FC<Props> = ({ order }) => (
-  <div className="border-top text-end pe-3">
+  <div className="border-top text-end">
+    <UserOrderSummaryItem
+      keyName="Metode Pembayaran"
+      keyClass=""
+      value={formatTitle(order?.transaction?.payment_method)}
+      valueClass=""
+    />
     <UserOrderSummaryItem
       keyName="Subtotal Produk"
       keyClass=""
@@ -31,15 +37,9 @@ const UserOrderSummary:FC<Props> = ({ order }) => (
       />
       )}
     <UserOrderSummaryItem
-      keyName="Metode Pembayaran"
-      keyClass=""
-      value={formatTitle(order?.transaction?.payment_method)}
-      valueClass=""
-    />
-    <UserOrderSummaryItem
       keyName="Total Pesanan"
       keyClass="fw-bold fs-5"
-      value={`Rp ${formatPrice(order?.total_order_price_after_disc)}`}
+      value={`Rp ${formatPrice((order.total_order_price_after_disc + order.total_delivery) || 0)}`}
       valueClass="fw-bold fs-5 text-accent"
     />
   </div>
