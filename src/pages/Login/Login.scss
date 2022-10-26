@@ -8,6 +8,8 @@
   background-color: #FFFFFF;
   border-radius: 20px;
   position: relative;
+  margin: 0 auto;
+  max-width: 1000px;
 
   .logo {
     text-align: center;
@@ -41,18 +43,6 @@
     text-align: center;
     margin-top: 0;
     color: #2658CD;
-  }
-
-  .login-button {
-    background-color: #F69113;
-    color: #FFFFFF;
-    border: 3rem;
-    border-radius: 5px;
-    width: 100%;
-    height: 35px;
-    font-size: 15px;
-    text-align: center !important;
-    display: inline-block;
   }
 }
 

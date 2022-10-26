@@ -7,6 +7,7 @@ import axios from '../../api/axios';
 import logo_xs from '../../assets/images/logo_xs.png';
 import logo from '../../assets/images/logo.png';
 import './Login.scss';
+import Button from '../../components/Button/Button';
 
 const LOGIN_URL = '/sign-in';
 
@@ -70,13 +71,15 @@ const Login = () => {
     /* global google */
     // @ts-ignore
     google.accounts.id.initialize({
-      client_id: '751840690856-m92j6st0agj7bgbuv3ok4t5j6sr7e8cm.apps.googleusercontent.com',
+      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCallbackResponse,
     });
     // @ts-ignore
     google.accounts.id.renderButton(
       document.getElementById('signInDiv'),
-      { theme: 'outline', size: 'large', width: '400' },
+      {
+        theme: 'outline', size: 'large', shape: 'circle', width: '300',
+      },
     );
   }, []);
 
@@ -113,7 +116,7 @@ const Login = () => {
 
   return (
     <div className="login_container">
-      <div className="login_cards_container mx-5">
+      <div className="login_cards_container col-10 col-xl-8">
         <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
@@ -121,14 +124,14 @@ const Login = () => {
           <div className="logo center d-none d-md-block col-12 col-md-6 p-5">
             <img alt="" className="img-fluid" src={logo} />
           </div>
-          <div className="center col-12 col-md-6 mx-auto my-3 px-2 d-none d-lg-block">
+          <div className="center col-12 col-md-6 mx-auto">
             <div>
-              <h1 className="header my-4">
+              <h1 className="header text-middle my-4">
                 <b>
                   Masuk
                 </b>
               </h1>
-              <div className="justify-content-center row">
+              <div className="d-flex justify-content-center row my-4">
                 <form className="col-md-10">
                   <input
                     className="form-control mb-4"
@@ -159,20 +162,20 @@ const Login = () => {
                     </div>
                   </div>
                   <div className="center">
-                    <button className="login-button" type="button" onClick={handleSubmit}><b>Masuk</b></button>
-                  </div>
-                  <div className="hr-sect my-4"><b>ATAU</b></div>
-                  <div className="d-flex justify-content-center">
-                    <div className="mb-4" id="signInDiv" />
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <p id="daftar-text">
-                      Belum punya akun SeaDeals?
-                      {' '}
-                      <a href="/register" id="daftar-link"><b>Daftar</b></a>
-                    </p>
+                    <Button buttonType="primary w-100" isSubmit handleClickedButton={handleSubmit} text="Masuk" />
                   </div>
                 </form>
+                <div className="hr-sect my-4"><b>ATAU</b></div>
+                <div className="d-flex justify-content-center">
+                  <div className="mb-4" id="signInDiv" />
+                </div>
+                <div className="d-flex justify-content-center">
+                  <p id="daftar-text">
+                    Belum punya akun SeaDeals?
+                    {' '}
+                    <a href="/register" id="daftar-link"><b>Daftar</b></a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
