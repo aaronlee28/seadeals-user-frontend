@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from '@react-pdf/renderer';
+import { OrderPayment } from '../../../constants/orderItem';
 import ReceiptItemSellerTable from './ReceiptItemSellerTable';
 import ReceiptHeaderSellerTable from './ReceiptHeaderSellerTable';
-import { OrderPayment } from '../PDFConstant/PDFConstant';
 
 const styles = StyleSheet.create({
   tableContainer: {
