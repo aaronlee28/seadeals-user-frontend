@@ -35,8 +35,8 @@ const WalletTrxDetails:FC<Props> = ({ trx, closeModal }) => (
         {trx.transaction_id && (
         <div className="pb-3 d-flex justify-content-between">
           <p className="mb-0 fs-5 fw-bold">{`Transaction ID: ${trx.transaction_id}`}</p>
-          <Link to={`/transactions/${trx.transaction_id}`}>
-            <small>Lihat Transaksi</small>
+          <Link to="/user/order-history">
+            <small>Lihat Pesanan</small>
           </Link>
         </div>
         )}
