@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addCartItem, checkCartBuyNow } from '../../../features/cart/cartSlice';
+import { addCartItem, checkCartBuyNow, getCartItems } from '../../../features/cart/cartSlice';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
 import { formatPrice, formatSoldCount, validatePrice } from '../../../utils/product';
@@ -16,6 +16,7 @@ import useAuth from '../../../hooks/useAuth';
 import Carts from '../../../api/carts';
 import Promotion from '../../../components/Promotion/Promotion';
 import { parseToCartItemState } from '../../../utils/CartCheckoutHelper';
+import { AppDispatch } from '../../../app/store';
 
 type HeaderInfoProps = {
   data: any,
@@ -24,7 +25,7 @@ type HeaderInfoProps = {
 
 const HeaderInfo = (props: HeaderInfoProps) => {
   const { auth } = useAuth();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { data, sellerUserID } = props;
   const { product } = data;
   const isOwnProduct = sellerUserID === auth.user.user_id;
@@ -344,6 +345,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       postToCart().then((cartId) => {
         const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
         dispatch(addCartItem(cartItem));
+        dispatch(getCartItems());
       });
     }
     if (!auth.user) {
@@ -360,6 +362,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
             dispatch(addCartItem(cartItem));
             dispatch(checkCartBuyNow(res));
+            dispatch(getCartItems());
             if (checkSelectedVariant()) {
               navigate('/cart');
             }

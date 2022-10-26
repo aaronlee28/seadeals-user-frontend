@@ -20,12 +20,12 @@ const CartDropdown:FC<Props> = ({
       className="cart_dropdown mt-5"
       onMouseEnter={() => setShowCart()}
     >
-      <div className="cart_dropdown_content">
+      <div className="cart_dropdown_content shadow">
         {loadingCart
           ? <div className="text-center"><LoadingPlain height={56} /></div>
           : (
             <>
-              {cartItems.length <= 0 && <small className="text-secondary fw-bold">Belum Ada Barang</small>}
+              {cartItems.length <= 0 && <small className="text-secondary fw-bold d-block text-center">Belum Ada Barang</small>}
               {cartItems.length > 0
                 && (
                 <>

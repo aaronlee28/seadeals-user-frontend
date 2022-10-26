@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import Button from '../../Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import SelectSLP from './SelectSLP';
@@ -7,6 +8,8 @@ import RegisterSLP from './RegisterSLP';
 import { generateCheckoutPayload } from '../../../utils/CartCheckoutHelper';
 import PAYMENT_TYPE from '../../../constants/payment';
 import SLPIframeFull from '../../../pages/Wallet/Iframe/checkout/SLPIframeFull';
+import { AppDispatch } from '../../../app/store';
+import { getCartItems } from '../../../features/cart/cartSlice';
 
 interface PayWithSLPProps {
   orderItems: any[],
@@ -19,6 +22,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({
   orderItems, address, closeModal, globalVoucher,
 }) => {
   const axiosPrivate = useAxiosPrivate();
+  const dispatch = useDispatch<AppDispatch>();
   const [selectedSLP, setSelectedSLP] = useState<any>(null);
   const [SLPAccounts, setSLPAccounts] = useState<any[]>([]);
   const [isSelecting, setIsSelecting] = useState(true);
@@ -93,6 +97,7 @@ const PayWithSLP:FC<PayWithSLPProps> = ({
 
       const { data } = checkoutRes.data;
       setPaymentLink(data.redirect_url);
+      dispatch(getCartItems());
     } catch (err:any) {
       toast.dismiss();
       const { message } = err.response.data;
