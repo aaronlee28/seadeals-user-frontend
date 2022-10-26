@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import ReceiptDocument from '../../../components/PDF/Receipt/ReceiptDocument';
+import { Receipt } from '../../../constants/orderItem';
 import useAxiosPrivateWithoutNavigate from '../../../hooks/useAxiosPrivateWithoutNavigate';
 import UserOrderShipping from './UserOrderShipping';
 import UserOrderDetails from './UserOrderDetails';
 import './UserOrder.scss';
-import { Receipt } from '../../../components/PDF/PDFConstant/PDFConstant';
 
 const UserOrder = () => {
   const { id } = useParams();
@@ -15,7 +13,7 @@ const UserOrder = () => {
   const [receiptLoading, setReceiptLoading] = useState<boolean>(true);
   const [loadingOrder, setLoadingOrder] = useState(true);
 
-  const [data, setData] = useState<Receipt>({
+  const [receipt, setReceipt] = useState<Receipt>({
     buyer: { address: '', bought_date: '', name: '' },
     courier: { name: '', service: '' },
     order_detail: {
@@ -55,7 +53,7 @@ const UserOrder = () => {
         const result = response.data;
         if (isMounted) {
           setReceiptLoading(false);
-          setData(result.data);
+          setReceipt(result.data);
         }
       } catch (err) {
         toast.error('Gagal Memuat Receipt Order');
@@ -89,10 +87,7 @@ const UserOrder = () => {
   return (
     <div className="w-100">
       <UserOrderShipping order={order} />
-      <UserOrderDetails order={order} />
-      <PDFDownloadLink document={<ReceiptDocument data={data} />} fileName="receipt.pdf">
-        {({ loading }) => ((loading || receiptLoading) ? 'Loading...' : 'Donwload')}
-      </PDFDownloadLink>
+      <UserOrderDetails order={order} receipt={receipt} />
     </div>
   );
 };
