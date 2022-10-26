@@ -1,0 +1,20 @@
+.profile__container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  background: white;
+  padding: 32px;
+  border-radius: 8px;
+  .profile__image{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 16px auto;
+  }
+}
+
+.caption-input{
+  font-size: 0.8em;
+}

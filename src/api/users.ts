@@ -1,8 +1,6 @@
-import axios from './axios';
-
 class Users {
-  static GetUserProfile() {
-    return axios.get('/user/profiles');
+  static GetProfiles(ax: any) {
+    return ax.get('/user/profiles');
   }
 }
 
