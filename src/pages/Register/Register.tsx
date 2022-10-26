@@ -156,7 +156,12 @@ const Register = () => {
                 </b>
               </h1>
               <div className="justify-content-center">
-                <form className="col-12">
+                <form
+                  className="col-12"
+                  onSubmit={(e) => {
+                    handleSubmit(e).then();
+                  }}
+                >
                   <input
                     className="form-control mb-2"
                     value={email}
@@ -283,7 +288,7 @@ const Register = () => {
                     required
                   />
                   <div>
-                    <Button buttonType="primary w-100" handleClickedButton={() => handleSubmit} isSubmit text="Daftar" />
+                    <Button buttonType="primary w-100" handleClickedButton={() => {}} isSubmit text="Daftar" />
                   </div>
                 </form>
               </div>

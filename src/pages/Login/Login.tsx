@@ -132,7 +132,13 @@ const Login = () => {
                 </b>
               </h1>
               <div className="d-flex justify-content-center row my-4">
-                <form className="col-md-10">
+                <form
+                  className="col-md-10"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit().then();
+                  }}
+                >
                   <input
                     className="form-control mb-4"
                     value={email}
@@ -140,7 +146,6 @@ const Login = () => {
                     type="email"
                     id="email"
                     placeholder="Email"
-                    autoComplete="new-password"
                     required
                   />
                   <div className="input-group mb-4">
@@ -152,7 +157,6 @@ const Login = () => {
                       id="password"
                       className="form-control"
                       placeholder="Kata sandi"
-                      autoComplete="new-password"
                       required
                     />
                     <div className="input-group-append" role="presentation" onClick={handleReveal}>
@@ -162,7 +166,7 @@ const Login = () => {
                     </div>
                   </div>
                   <div className="center">
-                    <Button buttonType="primary w-100" isSubmit handleClickedButton={handleSubmit} text="Masuk" />
+                    <Button buttonType="primary w-100" isSubmit handleClickedButton={() => {}} text="Masuk" />
                   </div>
                 </form>
                 <div className="hr-sect my-4"><b>ATAU</b></div>
