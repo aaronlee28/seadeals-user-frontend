@@ -15,9 +15,11 @@ import Button from '../../../components/Button/Button';
 import { ReactComponent as IconEdit } from '../../../assets/svg/icon_edit.svg';
 import storage from '../../../firebase/firebase';
 import { setAvatarURL } from '../../../features/navbarProfile/navbarProfileSlice';
+import useAuth from '../../../hooks/useAuth';
 
 const UserProfile:FC<any> = () => {
   const dispatch = useDispatch();
+  const { auth, setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const imageInputRef = useRef<any>();
   const [profile, setProfile] = useState<any>({});
@@ -31,36 +33,69 @@ const UserProfile:FC<any> = () => {
         toast.error('Photo tidak bisa lebih dari 2MB');
         return;
       }
-
       if (file) {
-        const namePhoto = `profile-photo-${profile.username}-${v4()}`;
-        const imgRef = ref(storage, `avatars/user/${namePhoto}`);
-
-        uploadBytes(imgRef, file).then((snapshot) => {
-          toast.success('image uploaded');
-          getDownloadURL(snapshot.ref).then((url) => {
-            setProfile({ ...profile, ...{ avatar_url: url, avatar_name: namePhoto } });
-            dispatch(setAvatarURL(url));
-          });
-        });
+        const fileLocal = file;
+        const reader = new FileReader();
+        reader.readAsDataURL(fileLocal);
         imageInputRef.current.value = '';
+        reader.onload = () => {
+          setProfile({
+            ...profile, avatar_file: file, avatar_local: reader.result,
+          });
+        };
       }
       return;
     }
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
-    const body = {
-      ...profile,
-    };
+  const handlePatchProfile = async (body:any) => {
+    console.log('BODY: ', body);
+
     await Users.UpdateProfile(axiosPrivate, body)
       .then(() => {
+        setAuth({
+          ...auth,
+          user: {
+            ...auth.user,
+            email: body.email,
+            name: body.full_name,
+            avatar_url: body.avatar_url,
+            username: body.username,
+          },
+        });
         toast.success('Profil berhasil diperbaharui');
       })
       .catch((err: any) => {
         toast.error(err.response?.data?.message);
       });
+  };
+
+  const handleSubmit = async () => {
+    const body = {
+      ...profile,
+      avatar_file: '',
+      avatar_local: '',
+    };
+    if (profile.avatar_file) {
+      const namePhoto = `profile-photo-${profile.username}-${v4()}`;
+      const imgRef = ref(storage, `avatars/user/${namePhoto}`);
+
+      await uploadBytes(imgRef, profile.avatar_file).then(async (snapshot) => {
+        await getDownloadURL(snapshot.ref).then((url) => {
+          setProfile({
+            ...profile,
+            avatar_url: url,
+            avatar_name: namePhoto,
+            avatar_local: '',
+            avatar_file: '',
+          });
+          body.avatar_url = url;
+          dispatch(setAvatarURL(url));
+        });
+      });
+    }
+    await handlePatchProfile(body).then();
   };
 
   const findProfile = async () => {
@@ -76,6 +111,7 @@ const UserProfile:FC<any> = () => {
     findProfile().then();
   }, []);
 
+  console.log(profile);
   return (
     <div className="profile__container">
       <form
@@ -87,7 +123,7 @@ const UserProfile:FC<any> = () => {
         }}
       >
         <div className="profile__image-container col-12 col-lg-6">
-          <img className="profile__image" src={profile.avatar_url} alt={profile.full_name} />
+          <img className="profile__image" src={profile.avatar_local || profile.avatar_url} alt={profile.full_name} />
           {
             isEdit
               && (
@@ -123,7 +159,14 @@ const UserProfile:FC<any> = () => {
             {!isEdit && <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(true)} text="Edit" /> }
             {isEdit && (
               <div className="d-flex gap-2">
-                <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(false)} text="Batal" />
+                <Button
+                  buttonType="secondary alt"
+                  handleClickedButton={() => {
+                    findProfile().then();
+                    setIsEdit(false);
+                  }}
+                  text="Batal"
+                />
                 <Button buttonType="secondary" handleClickedButton={() => {}} isSubmit text="Simpan" />
               </div>
             )}

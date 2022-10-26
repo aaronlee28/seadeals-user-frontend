@@ -17,9 +17,10 @@ const InputUserProfile:FC<any> = ({
         setValue(displayDatetime(data));
       }
     } else if (!isChangeable && typeElement === 'date') {
-      setValue(dateFormatter(data, false));
+      const tmp = dateFormatter(data, false);
+      setValue(tmp);
     }
-  }, []);
+  }, [data, isChangeable]);
 
   return (
     <div className="my-2">

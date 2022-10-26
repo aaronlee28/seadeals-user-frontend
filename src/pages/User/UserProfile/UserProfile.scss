@@ -29,6 +29,10 @@
 }
 
 .icon-edit {
+  cursor: pointer;
+  &:hover{
+    fill: #1E46A2;
+  }
   &.small {
     width: 20px;
     height: 20px;
