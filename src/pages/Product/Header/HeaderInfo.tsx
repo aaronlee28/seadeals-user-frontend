@@ -227,9 +227,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 ],
               };
             }
-            if (item.name === items[i].product_variant2.name) {
-              const isExistValue = item.items.find(
-                (el: any) => el.value === items[i].variant2_value,
+            if (item.name === items[i]?.product_variant2?.name) {
+              const isExistValue = item?.items?.find(
+                (el: any) => el.value === items[i]?.variant2_value,
               );
               if (isExistValue) {
                 const updatedItems = item.items.map(
@@ -273,7 +273,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       if (!isExistName) {
         if (items[i].product_variant1) {
           const variant1 = {
-            name: items[i].product_variant1.name,
+            name: items[i]?.product_variant1?.name,
             items: [
               {
                 value: items[i].variant1_value,
@@ -286,7 +286,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         }
         if (items[i].product_variant2) {
           const variant2 = {
-            name: items[i].product_variant2.name,
+            name: items[i]?.product_variant2?.name,
             items: [
               {
                 value: items[i].variant2_value,

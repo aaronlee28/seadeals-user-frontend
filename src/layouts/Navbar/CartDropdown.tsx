@@ -5,15 +5,16 @@ import Button from '../../components/Button/Button';
 import LoadingPlain from '../../components/Loading/LoadingPlain';
 
 interface Props {
-  cart: any,
+  cartItems: any[],
+  cartTotal: number,
   loadingCart: boolean,
   setShowCart: ()=>void
 }
 
-const CartDropdown:FC<Props> = ({ cart, loadingCart, setShowCart }) => {
+const CartDropdown:FC<Props> = ({
+  cartItems, cartTotal, loadingCart, setShowCart,
+}) => {
   const navigate = useNavigate();
-  const cartItems = cart.cart_items || [];
-  const cartTotal = cart.total_data;
   return (
     <div
       className="cart_dropdown mt-5"
@@ -21,7 +22,7 @@ const CartDropdown:FC<Props> = ({ cart, loadingCart, setShowCart }) => {
     >
       <div className="cart_dropdown_content">
         {loadingCart
-          ? <LoadingPlain height={56} />
+          ? <div className="text-center"><LoadingPlain height={56} /></div>
           : (
             <>
               {cartItems.length <= 0 && <small className="text-secondary fw-bold">Belum Ada Barang</small>}

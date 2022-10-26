@@ -85,14 +85,14 @@ const OrderHistoryItems = () => {
     }
     if (getTypeParams === 'delivered') {
       // return '&filter=on delivery';
-      return '&filter=delivered';
+      return '&filter=on delivery,delivered';
     }
     if (getTypeParams === 'completed') {
       return '&filter=done';
     }
     if (getTypeParams === 'canceled') {
       // return '&filter=refunded';
-      return '&filter=complaint';
+      return '&filter=complaint,refunded';
     }
     return '';
   };
