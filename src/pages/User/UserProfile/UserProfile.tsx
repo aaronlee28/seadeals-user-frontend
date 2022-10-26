@@ -17,7 +17,16 @@ const UserProfile:FC<any> = () => {
   };
 
   const handleSubmit = async () => {
-    console.log('Handle Submit');
+    const body = {
+      ...profile,
+    };
+    await Users.UpdateProfile(axiosPrivate, body)
+      .then(() => {
+        toast.success('Profil berhasil diperbaharui');
+      })
+      .catch((err: any) => {
+        toast.error(err.response?.data?.message);
+      });
   };
 
   const findProfile = async () => {

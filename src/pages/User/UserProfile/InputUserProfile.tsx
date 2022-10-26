@@ -16,7 +16,7 @@ const InputUserProfile:FC<any> = ({
       if (typeElement === 'date') {
         setValue(displayDatetime(data));
       }
-    } else if (typeElement === 'date') {
+    } else if (!isChangeable && typeElement === 'date') {
       setValue(dateFormatter(data, false));
     }
   }, []);
