@@ -1,10 +1,9 @@
-import { StyleSheet } from '@react-pdf/renderer';
-
 export interface OrderItem {
   name: string
   weight: number
   quantity: number
   price_per_item: number
+  discount: number
   subtotal: number
   variant: string
 }
@@ -54,40 +53,3 @@ export interface Receipt {
     service:string
   }
 }
-
-export const styles = StyleSheet.create(
-  {
-    page: {
-      flexDirection: 'column',
-      backgroundColor: 'white',
-      fontSize: '12px',
-    },
-    container: {
-      width: '90%',
-      margin: '0 auto',
-    },
-
-    content: {
-      marginTop: '24px',
-    },
-    content_row: {
-      flexDirection: 'row',
-      width: '100%',
-      justifyContent: 'space-between',
-    },
-    content_column: {
-      flexDirection: 'column',
-    },
-    content_table: {
-      flexDirection: 'column',
-      display: 'flex',
-    },
-
-    image: {
-      maxWidth: '150px',
-    },
-    subtitle: {
-      fontWeight: 'bold',
-    },
-  },
-);
