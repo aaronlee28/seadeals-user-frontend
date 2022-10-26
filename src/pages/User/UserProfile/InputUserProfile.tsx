@@ -23,7 +23,7 @@ const InputUserProfile:FC<any> = ({
 
   return (
     <div className="my-2">
-      <p className="caption-input">{name}</p>
+      <p className="caption-input">{name.replace('_', ' ')}</p>
       <input
         className="form-control"
         name={name}

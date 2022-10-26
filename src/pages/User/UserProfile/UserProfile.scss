@@ -8,18 +8,32 @@
   background: white;
   padding: 32px;
   border-radius: 8px;
-  .profile__image{
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin: 16px auto;
+  .profile__image-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    height: fit-content;
+    .profile__image{
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 }
 
 .divider{
   margin: 18px 0;
   border-bottom: 1px dashed #bdbdbd;
+}
+
+.icon-edit {
+  &.small {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
 }
 
 .caption-input{

@@ -1,5 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useEffect, useRef, useState,
+} from 'react';
 import toast from 'react-hot-toast';
+import { v4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useDispatch } from 'react-redux';
 import Users from '../../../api/users';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
@@ -7,12 +12,41 @@ import './UserProfile.scss';
 import InputUserProfile from './InputUserProfile';
 import Button from '../../../components/Button/Button';
 
+import { ReactComponent as IconEdit } from '../../../assets/svg/icon_edit.svg';
+import storage from '../../../firebase/firebase';
+import { setAvatarURL } from '../../../features/navbarProfile/navbarProfileSlice';
+
 const UserProfile:FC<any> = () => {
+  const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
+  const imageInputRef = useRef<any>();
   const [profile, setProfile] = useState<any>({});
   const [isEdit, setIsEdit] = useState(false);
 
   const handleChange = (e:any) => {
+    if (e.target.name === 'avatar_url') {
+      const [file] = e.target.files;
+      // In MegaByte
+      if ((file.size / 1024 / 1024) > 2) {
+        toast.error('Photo tidak bisa lebih dari 2MB');
+        return;
+      }
+
+      if (file) {
+        const namePhoto = `profile-photo-${profile.username}-${v4()}`;
+        const imgRef = ref(storage, `avatars/user/${namePhoto}`);
+
+        uploadBytes(imgRef, file).then((snapshot) => {
+          toast.success('image uploaded');
+          getDownloadURL(snapshot.ref).then((url) => {
+            setProfile({ ...profile, ...{ avatar_url: url, avatar_name: namePhoto } });
+            dispatch(setAvatarURL(url));
+          });
+        });
+        imageInputRef.current.value = '';
+      }
+      return;
+    }
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
@@ -52,10 +86,28 @@ const UserProfile:FC<any> = () => {
           handleSubmit().then();
         }}
       >
-        <div className="d-flex align-items-center mx-auto col-12 col-lg-6">
+        <div className="profile__image-container col-12 col-lg-6">
           <img className="profile__image" src={profile.avatar_url} alt={profile.full_name} />
+          {
+            isEdit
+              && (
+              <span className="d-flex align-self-end">
+                {React.createElement(IconEdit, {
+                  className: 'icon-edit small',
+                  onClick: () => { imageInputRef.current.click(); },
+                })}
+              </span>
+              )
+          }
         </div>
         <div className="col-12 col-lg-6">
+          <input
+            className="form-control d-none"
+            name="avatar_url"
+            type="file"
+            onChange={handleChange}
+            ref={imageInputRef}
+          />
           <div className="profile__input"><InputUserProfile name="username" data={profile.username} handleChange={handleChange} isChangeable={isEdit} /></div>
           <div className="profile__input"><InputUserProfile name="full_name" data={profile.full_name} handleChange={handleChange} isChangeable={isEdit} /></div>
           <div className="profile__input"><InputUserProfile name="email" data={profile.email} handleChange={handleChange} isChangeable={isEdit} typeElement="email" /></div>
@@ -69,7 +121,12 @@ const UserProfile:FC<any> = () => {
           <div className="profile__input"><InputUserProfile name="birth_date" data={profile.birth_date} handleChange={handleChange} isChangeable={isEdit} typeElement="date" /></div>
           <div className="d-flex justify-content-end mt-4">
             {!isEdit && <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(true)} text="Edit" /> }
-            {isEdit && <Button buttonType="secondary" handleClickedButton={() => {}} isSubmit text="Simpan" />}
+            {isEdit && (
+              <div className="d-flex gap-2">
+                <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(false)} text="Batal" />
+                <Button buttonType="secondary" handleClickedButton={() => {}} isSubmit text="Simpan" />
+              </div>
+            )}
           </div>
         </div>
       </form>
