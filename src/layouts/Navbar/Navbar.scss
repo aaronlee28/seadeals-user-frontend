@@ -40,6 +40,44 @@
       .icon {
         max-width: 40px;
       }
+      .cart_icon {
+        position: relative;
+        .cart_total_number{
+          position: absolute;
+          width: 32px;
+          top: 14px;
+          left: -10px;
+        }
+        .cart_dropdown {
+          top: 1rem;
+          transform: translate(-75%, 0%);
+          width: 458px;
+          height: 458px;
+          position: absolute;
+          .cart_dropdown_content{
+            background: #fff;
+            padding: 1em;
+            border: 1px #efefef solid;
+            border-radius: 6px;
+            .cart_item_image {
+              border: 1px #eee solid;
+              min-width: 48px;
+              max-width: 48px;
+              height: 48px;
+            }
+            .cart_item_image img {
+              object-fit: cover;
+              width: 100%;
+              height: 100%;
+            }
+            .text-overflow-ellipsis{
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
     }
     .right_content {
       width: 100%;

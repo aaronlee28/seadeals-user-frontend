@@ -19,12 +19,15 @@ import { parseToCartItemState } from '../../../utils/CartCheckoutHelper';
 
 type HeaderInfoProps = {
   data: any,
+  sellerUserID: number,
 };
 
 const HeaderInfo = (props: HeaderInfoProps) => {
+  const { auth } = useAuth();
   const dispatch = useDispatch();
-  const { data } = props;
+  const { data, sellerUserID } = props;
   const { product } = data;
+  const isOwnProduct = sellerUserID === auth.user.user_id;
   const minPrice = data.min_price;
   const maxPrice = data.max_price;
 
@@ -37,7 +40,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     variant1: '',
     variant2: '',
   });
-  const { auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
@@ -501,6 +503,8 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 </p>
               </div>
             </div>
+            {!isOwnProduct
+            && (
             <div className="info sixth_content">
               <Button
                 buttonType="primary alt add_to_cart"
@@ -515,6 +519,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 handleClickedButton={buyNow}
               />
             </div>
+            )}
           </div>
         )
       }
