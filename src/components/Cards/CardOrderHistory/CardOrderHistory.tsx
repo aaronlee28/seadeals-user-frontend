@@ -13,6 +13,7 @@ import ModalReview from '../../Modal/ModalReview/ModalReview';
 import Carts from '../../../api/carts';
 import { checkCartBuyNow } from '../../../features/cart/cartSlice';
 import ModalComplaint from '../../Modal/ComplaintModal/ComplaintModal';
+import formatTime from '../../../utils/dateFormatter';
 
 type CardOrderHistoryProps = {
   data: {
@@ -128,7 +129,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
           </div>
           <div className="status_content">
             <p className="status">{ status }</p>
-            <p className="update">{ updatedAt }</p>
+            <p className="update">{ formatTime(updatedAt) }</p>
           </div>
         </div>
         <div className="center_content">
