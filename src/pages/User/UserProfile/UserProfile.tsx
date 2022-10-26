@@ -44,31 +44,37 @@ const UserProfile:FC<any> = () => {
 
   return (
     <div className="profile__container">
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        setIsEdit(false);
-        handleSubmit().then();
-      }}
+      <form
+        className="row"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setIsEdit(false);
+          handleSubmit().then();
+        }}
       >
-        <div className="d-flex mx-auto">
+        <div className="d-flex align-items-center mx-auto col-12 col-lg-6">
           <img className="profile__image" src={profile.avatar_url} alt={profile.full_name} />
         </div>
-        <div><InputUserProfile name="username" data={profile.username} handleChange={handleChange} isChangeable={isEdit} /></div>
-        <div><InputUserProfile name="full_name" data={profile.full_name} handleChange={handleChange} isChangeable={isEdit} /></div>
-        <div><InputUserProfile name="email" data={profile.email} handleChange={handleChange} isChangeable={isEdit} typeElement="email" /></div>
-        <div>
-          <p className="caption-input">gender</p>
-          <select name="gender" className="form-control" onChange={handleChange} value={profile.gender} disabled={!isEdit}>
-            <option value="male">male</option>
-            <option value="female">female</option>
-          </select>
-        </div>
-        <div><InputUserProfile name="birth_date" data={profile.birth_date} handleChange={handleChange} isChangeable={isEdit} typeElement="date" /></div>
-        <div className="d-flex justify-content-end mt-4">
-          {!isEdit && <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(true)} text="Edit" /> }
-          {isEdit && <Button buttonType="secondary" handleClickedButton={() => {}} isSubmit text="Simpan" />}
+        <div className="col-12 col-lg-6">
+          <div className="profile__input"><InputUserProfile name="username" data={profile.username} handleChange={handleChange} isChangeable={isEdit} /></div>
+          <div className="profile__input"><InputUserProfile name="full_name" data={profile.full_name} handleChange={handleChange} isChangeable={isEdit} /></div>
+          <div className="profile__input"><InputUserProfile name="email" data={profile.email} handleChange={handleChange} isChangeable={isEdit} typeElement="email" /></div>
+          <div className="profile__input">
+            <p className="caption-input">gender</p>
+            <select name="gender" className="form-control" onChange={handleChange} value={profile.gender} disabled={!isEdit}>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </select>
+          </div>
+          <div className="profile__input"><InputUserProfile name="birth_date" data={profile.birth_date} handleChange={handleChange} isChangeable={isEdit} typeElement="date" /></div>
+          <div className="d-flex justify-content-end mt-4">
+            {!isEdit && <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(true)} text="Edit" /> }
+            {isEdit && <Button buttonType="secondary" handleClickedButton={() => {}} isSubmit text="Simpan" />}
+          </div>
         </div>
       </form>
+      <span className="divider" />
+      <Button buttonType="primary alt" handleClickedButton={() => {}} text="Ganti password" />
     </div>
   );
 };
