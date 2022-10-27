@@ -13,8 +13,12 @@ import SellerTopProductList from './TopProducts/SellerTopProductList';
 import CategoryList from './CategoryList';
 import './SellerPage.css';
 import URL_PARAM from '../../constants/URLParamOptions';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useAuth from '../../hooks/useAuth';
 
 const SellerPage = () => {
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const allProductRef = useRef<null | HTMLDivElement>(null);
   const { sellerID } = useParams();
   const navigate = useNavigate();
@@ -45,17 +49,22 @@ const SellerPage = () => {
   useEffect(() => { // get seller info
     let isMounted = true;
     const controller = new AbortController();
+    let ax = axios;
+    if (auth?.user) {
+      ax = axiosPrivate;
+    }
 
     const getSellerInfo = async () => {
       try {
         if (!sellerID || Number.isNaN(parseInt(sellerID, 10))) navigate('/404');
 
-        const response = await axios.get(`sellers/${sellerID}`, {
+        const response = await ax.get(`sellers/${sellerID}`, {
           signal: controller.signal,
         });
         const { data } = response.data;
         if (isMounted) {
           const info = {
+            id: data.id,
             name: data.name,
             imgUrl: data.profile_url,
             followers: data.followers,
@@ -63,6 +72,7 @@ const SellerPage = () => {
             rating: data.rating,
             reviewer: data.total_reviewer,
             city: data.address.city,
+            isFollowing: data.is_follow,
           };
           setSellerInfo(info);
           setLoadingSellerInfo(false);
