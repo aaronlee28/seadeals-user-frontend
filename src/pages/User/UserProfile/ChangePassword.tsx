@@ -22,6 +22,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   });
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
   const handleChange = (e:any) => {
     if (e.target.name === 'repeat_new_password') {
@@ -70,20 +71,25 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
       >
         <h3 className="change-password__title"><b>Ganti Password</b></h3>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Password saat ini</p>
+          <p className="caption-input">Password Saat Ini</p>
           <div className="input-group">
             <input
               type="text"
-              placeholder="Masukakan password lama"
+              placeholder="Masukakan password saat ini"
               onChange={handleChange}
               name="current_password"
               className="form-control"
               required
             />
+            <div className="input-group-append" role="presentation" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+              <span className="input-group-text">
+                { !showCurrentPassword ? <BsEyeSlash /> : <BsEye /> }
+              </span>
+            </div>
           </div>
         </div>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Password baru</p>
+          <p className="caption-input">Password Baru</p>
           <div className="input-group">
             <input
               type={!showNewPassword ? 'password' : 'text'}
@@ -102,7 +108,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           {invalidMsg.new_password !== '' && <p className="invalid-input">{invalidMsg.new_password}</p>}
         </div>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Ulangi password baru</p>
+          <p className="caption-input">Ulangi Password Baru</p>
           <div className="input-group">
             <input
               type={!showRepeatPassword ? 'password' : 'text'}
