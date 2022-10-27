@@ -32,6 +32,12 @@ export interface Receipt {
       amount: number
       total_reduce: number
     }
+    global_voucher_for_order: {
+      type: string
+      name: string
+      amount: number
+      total_reduce: number
+    }
     order_items: Array<OrderItem>
   }
   transaction: {
