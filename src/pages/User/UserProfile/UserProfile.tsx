@@ -16,6 +16,8 @@ import { ReactComponent as IconEdit } from '../../../assets/svg/icon_edit.svg';
 import storage from '../../../firebase/firebase';
 import { setAvatarURL } from '../../../features/navbarProfile/navbarProfileSlice';
 import useAuth from '../../../hooks/useAuth';
+import Modal from '../../../components/Modal/Modal';
+import ChangePassword from './ChangePassword';
 
 const UserProfile:FC<any> = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ const UserProfile:FC<any> = () => {
   const axiosPrivate = useAxiosPrivate();
   const imageInputRef = useRef<any>();
   const [profile, setProfile] = useState<any>({});
+  const [isChangePassword, setIsChangePassword] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const handleChange = (e:any) => {
@@ -114,6 +117,14 @@ const UserProfile:FC<any> = () => {
   console.log(profile);
   return (
     <div className="profile__container">
+      {
+        isChangePassword
+          && (
+          <Modal modalType="" isOpen={isChangePassword} cancel={() => setIsChangePassword(false)}>
+            <ChangePassword />
+          </Modal>
+          )
+      }
       <form
         className="row"
         onSubmit={(e) => {
@@ -174,7 +185,7 @@ const UserProfile:FC<any> = () => {
         </div>
       </form>
       <span className="divider" />
-      <Button buttonType="primary alt" handleClickedButton={() => {}} text="Ganti password" />
+      <Button buttonType="primary alt" handleClickedButton={() => setIsChangePassword(true)} text="Ganti password" />
     </div>
   );
 };
