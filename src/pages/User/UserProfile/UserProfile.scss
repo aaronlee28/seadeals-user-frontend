@@ -23,9 +23,29 @@
   }
 }
 
+.input-container.medium{
+  width: 280px;
+}
+
+.modal_container.modal__change-password{
+  .modal_content{
+    width: fit-content;
+    padding: 42px;
+  }
+  .change-password__title{
+    color: #1E46A2;
+  }
+}
+
 .divider{
   margin: 18px 0;
   border-bottom: 1px dashed #bdbdbd;
+}
+
+.invalid-input{
+  margin-top: 2px;
+  color: #ff4c4c;
+  font-size: 0.8em;
 }
 
 .icon-edit {

@@ -53,8 +53,6 @@ const UserProfile:FC<any> = () => {
   };
 
   const handlePatchProfile = async (body:any) => {
-    console.log('BODY: ', body);
-
     await Users.UpdateProfile(axiosPrivate, body)
       .then(() => {
         setAuth({
@@ -120,8 +118,8 @@ const UserProfile:FC<any> = () => {
       {
         isChangePassword
           && (
-          <Modal modalType="" isOpen={isChangePassword} cancel={() => setIsChangePassword(false)}>
-            <ChangePassword />
+          <Modal modalType="modal__change-password" isOpen={isChangePassword} cancel={() => setIsChangePassword(false)}>
+            <ChangePassword handleClose={() => setIsChangePassword(false)} />
           </Modal>
           )
       }
