@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SLPIFrameProps {
   url:string
@@ -6,6 +7,7 @@ interface SLPIFrameProps {
 }
 
 const SLPIframeFull:FC<SLPIFrameProps> = ({ url, closeModal }) => {
+  const navigate = useNavigate();
   const onLoad = () => {
     // @ts-ignore
     const iframeLocation = document.getElementById('spay-iframe').contentWindow.location;
@@ -14,11 +16,11 @@ const SLPIframeFull:FC<SLPIFrameProps> = ({ url, closeModal }) => {
     if (status === 'TXN_FAILED') { // @ts-ignore
       // window.top.location.href = '/';
       closeModal();
+      navigate('/cart');
     }
     if (status === 'TXN_PAID') {
       // fetch transaction_id from slp_trx_holders where txn_id = urlParams.get('txn_id');
       // redirect to orders/transaction_id/
-      console.log(url);
     }
   };
 
