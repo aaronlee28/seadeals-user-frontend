@@ -34,7 +34,7 @@ const SellerProfile: FC<any> = ({ profile }) => {
       const { data } = response.data;
       setFollowStatus(data?.is_follow || false);
     } catch (e:any) {
-      toast.error(e?.response?.message);
+      toast.error('failed updating following status');
     } finally {
       setLoadingUpdate(false);
     }
