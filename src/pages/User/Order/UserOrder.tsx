@@ -23,6 +23,9 @@ const UserOrder = () => {
       shop_voucher: {
         amount: 0, name: '', total_reduce: 0, type: '',
       },
+      global_voucher_for_order: {
+        amount: 0, name: '', total_reduce: 0, type: '',
+      },
       total: 0,
       total_order: 0,
       total_quantity: 0,
