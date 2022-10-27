@@ -10,9 +10,11 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const username = auth.user.username.toLowerCase();
+  const { email } = auth.user;
   const [password, setPassword] = useState({
     new_password: '',
     repeat_new_password: '',
+    current_password: '',
   });
   const [invalidMsg, setInvalidMsg] = useState({
     new_password: '',
@@ -43,6 +45,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   const handleSubmit = async () => {
     const body = {
       ...password,
+      email,
     };
     await Users.ChangePassword(axiosPrivate, body)
       .then(() => {
@@ -67,7 +70,20 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
       >
         <h3 className="change-password__title"><b>Ganti Password</b></h3>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Password Baru</p>
+          <p className="caption-input">Password saat ini</p>
+          <div className="input-group">
+            <input
+              type="text"
+              placeholder="Masukakan password lama"
+              onChange={handleChange}
+              name="current_password"
+              className="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div className="my-4 input-container medium">
+          <p className="caption-input">Password baru</p>
           <div className="input-group">
             <input
               type={!showNewPassword ? 'password' : 'text'}
@@ -85,8 +101,8 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           </div>
           {invalidMsg.new_password !== '' && <p className="invalid-input">{invalidMsg.new_password}</p>}
         </div>
-        <div className="my-4">
-          <p className="caption-input">Ulangi Password Baru</p>
+        <div className="my-4 input-container medium">
+          <p className="caption-input">Ulangi password baru</p>
           <div className="input-group">
             <input
               type={!showRepeatPassword ? 'password' : 'text'}
