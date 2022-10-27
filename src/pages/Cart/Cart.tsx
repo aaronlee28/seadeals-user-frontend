@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCartItem, checkCartItem, uncheckCartItem } from '../../features/cart/cartSlice';
-import Card from '../../components/Cards/Card';
+import {
+  removeCartItem, checkCartItem, uncheckCartItem, getCartItems,
+} from '../../features/cart/cartSlice';
+import { AppDispatch } from '../../app/store';
 
+import Card from '../../components/Cards/Card';
 import './Cart.scss';
 import CardCartAll from '../../components/Cards/CardCart/CardCartAll';
 import Carts from '../../api/carts';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const Cart = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { checkedIDs } = useSelector((store:any) => store.cart);
 
   const [cartItems, setCartItems] = useState<any>([]);
@@ -287,7 +290,7 @@ const Cart = () => {
     setTotal({ totalPriceBase, totalProduct, totalPricePromotion });
   };
 
-  const getCartItems = async () => {
+  const fetchCartItems = async () => {
     await Carts.GetCartItem(axiosPrivate)
       .then((resp: any) => {
         const allItems = resp.data.data.cart_items;
@@ -303,7 +306,7 @@ const Cart = () => {
     await Carts.DeleteCartItem(axiosPrivate, val)
       .then(() => {
         toast.success('Barang berhasil dihapus dari keranjang');
-        getCartItems().then();
+        fetchCartItems().then();
       })
       .catch(() => {
         toast.error('Barang gagal dihapus');
@@ -313,11 +316,12 @@ const Cart = () => {
   const handleDeleteItem = (storeId: number, id: number) => {
     deleteItem(id).then(() => {
       dispatch(removeCartItem(id));
+      dispatch(getCartItems());
     });
   };
 
   useEffect(() => {
-    getCartItems().then();
+    fetchCartItems().then();
   }, []);
 
   useEffect(() => {

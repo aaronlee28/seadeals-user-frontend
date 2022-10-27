@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addCartItem, checkCartBuyNow } from '../../../features/cart/cartSlice';
+import { addCartItem, checkCartBuyNow, getCartItems } from '../../../features/cart/cartSlice';
 import { ReactComponent as IconStar } from '../../../assets/svg/icon_star.svg';
 import titleFormatter from '../../../utils/titleFormatter';
 import { formatPrice, formatSoldCount, validatePrice } from '../../../utils/product';
@@ -16,15 +16,19 @@ import useAuth from '../../../hooks/useAuth';
 import Carts from '../../../api/carts';
 import Promotion from '../../../components/Promotion/Promotion';
 import { parseToCartItemState } from '../../../utils/CartCheckoutHelper';
+import { AppDispatch } from '../../../app/store';
 
 type HeaderInfoProps = {
   data: any,
+  sellerUserID: number,
 };
 
 const HeaderInfo = (props: HeaderInfoProps) => {
-  const dispatch = useDispatch();
-  const { data } = props;
+  const { auth } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, sellerUserID } = props;
   const { product } = data;
+  const isOwnProduct = sellerUserID === auth.user.user_id;
   const minPrice = data.min_price;
   const maxPrice = data.max_price;
 
@@ -37,7 +41,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
     variant1: '',
     variant2: '',
   });
-  const { auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
@@ -225,9 +228,9 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 ],
               };
             }
-            if (item.name === items[i].product_variant2.name) {
-              const isExistValue = item.items.find(
-                (el: any) => el.value === items[i].variant2_value,
+            if (item.name === items[i]?.product_variant2?.name) {
+              const isExistValue = item?.items?.find(
+                (el: any) => el.value === items[i]?.variant2_value,
               );
               if (isExistValue) {
                 const updatedItems = item.items.map(
@@ -271,7 +274,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       if (!isExistName) {
         if (items[i].product_variant1) {
           const variant1 = {
-            name: items[i].product_variant1.name,
+            name: items[i]?.product_variant1?.name,
             items: [
               {
                 value: items[i].variant1_value,
@@ -284,7 +287,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
         }
         if (items[i].product_variant2) {
           const variant2 = {
-            name: items[i].product_variant2.name,
+            name: items[i]?.product_variant2?.name,
             items: [
               {
                 value: items[i].variant2_value,
@@ -342,6 +345,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       postToCart().then((cartId) => {
         const cartItem = parseToCartItemState(parseInt(cartId || '0', 10), product, variantDetail);
         dispatch(addCartItem(cartItem));
+        dispatch(getCartItems());
       });
     }
     if (!auth.user) {
@@ -358,6 +362,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             const cartItem = parseToCartItemState(parseInt(res || '0', 10), product, variantDetail);
             dispatch(addCartItem(cartItem));
             dispatch(checkCartBuyNow(res));
+            dispatch(getCartItems());
             if (checkSelectedVariant()) {
               navigate('/cart');
             }
@@ -501,6 +506,8 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 </p>
               </div>
             </div>
+            {!isOwnProduct
+            && (
             <div className="info sixth_content">
               <Button
                 buttonType="primary alt add_to_cart"
@@ -515,6 +522,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 handleClickedButton={buyNow}
               />
             </div>
+            )}
           </div>
         )
       }

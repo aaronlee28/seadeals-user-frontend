@@ -9,3 +9,5 @@ export const store = configureStore({
     navbarProfile: navbarProfileReducer,
   },
 });
+
+export type AppDispatch = typeof store.dispatch;

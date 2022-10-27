@@ -73,7 +73,10 @@ const ProductPage = () => {
         Object.keys(product).length > 0
         && (
           <div className="product_page_content">
-            <ProductHeader product={product} />
+            <ProductHeader
+              product={product}
+              sellerUserID={productSeller.user_id}
+            />
             <SellerInfo seller={productSeller} />
             <ProductDetail
               description={productDetail.description}
