@@ -64,19 +64,20 @@ const WalletIframe:FC<WalletIframeProps> = ({
         headers: { Authorization: `Bearer ${data.id_token}` },
       };
       toast.loading('Requesting Payment');
-      const paymentRes = await axiosPrivate.post(
+      // const paymentRes = await axiosPrivate.post(
+      await axiosPrivate.post(
         'checkout-cart',
         JSON.stringify(payload),
         config,
       );
-      const { transaction } = paymentRes.data.data;
+      // const { transaction } = paymentRes.data.data;
       toast.dismiss();
       toast.success('Transaction Paid Successfully!');
       dispatch(clearChecked());
       dispatch(getCartItems());
       closeModal();
 
-      navigate(`/transactions/${transaction.transaction_id}`);
+      navigate('/user/order-history/');
     } catch (err:any) {
       const { message } = err.response.data;
       toast.dismiss();
