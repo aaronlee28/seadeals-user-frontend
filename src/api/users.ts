@@ -1,8 +1,14 @@
-import axios from './axios';
-
 class Users {
-  static GetUserProfile() {
-    return axios.get('/user/profiles');
+  static GetProfiles(ax: any) {
+    return ax.get('/user/profiles');
+  }
+
+  static UpdateProfile(ax: any, data:any) {
+    return ax.patch('/user/change-profiles', data);
+  }
+
+  static ChangePassword(ax: any, data:any) {
+    return ax.patch('/user/change-password', data);
   }
 }
 

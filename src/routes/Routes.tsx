@@ -30,6 +30,7 @@ import Address from '../pages/User/Address/Address';
 import SimilarPage from '../pages/Similar/SimilarPage';
 import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
 import UserOrder from '../pages/User/Order/UserOrder';
+import UserProfile from '../pages/User/UserProfile/UserProfile';
 
 const AppRoutes = () => (
   <Routes>
@@ -54,6 +55,7 @@ const AppRoutes = () => (
               <Route path="addresses" element={<Address />} />
               <Route path="order-history" element={<OrderHistory />} />
               <Route path="order/:id" element={<UserOrder />} />
+              <Route path="profile" element={<UserProfile />} />
             </Route>
 
             <Route path="/wallet">
