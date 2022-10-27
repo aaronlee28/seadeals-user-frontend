@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import toast from 'react-hot-toast';
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import Button from '../../../components/Button/Button';
 import Users from '../../../api/users';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
@@ -17,6 +18,8 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
     new_password: '',
     repeat_new_password: '',
   });
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   const handleChange = (e:any) => {
     if (e.target.name === 'repeat_new_password') {
@@ -65,26 +68,40 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
         <h3 className="change-password__title"><b>Ganti Password</b></h3>
         <div className="my-4 input-container medium">
           <p className="caption-input">Password Baru</p>
-          <input
-            type="text"
-            placeholder="Masukakan password"
-            onChange={handleChange}
-            name="new_password"
-            className="form-control"
-            required
-          />
+          <div className="input-group">
+            <input
+              type={!showNewPassword ? 'password' : 'text'}
+              placeholder="Masukakan password"
+              onChange={handleChange}
+              name="new_password"
+              className="form-control"
+              required
+            />
+            <div className="input-group-append" role="presentation" onClick={() => setShowNewPassword(!showNewPassword)}>
+              <span className="input-group-text">
+                { !showNewPassword ? <BsEyeSlash /> : <BsEye /> }
+              </span>
+            </div>
+          </div>
           {invalidMsg.new_password !== '' && <p className="invalid-input">{invalidMsg.new_password}</p>}
         </div>
         <div className="my-4">
           <p className="caption-input">Ulangi Password Baru</p>
-          <input
-            type="text"
-            placeholder="Masukkan password"
-            onChange={handleChange}
-            name="repeat_new_password"
-            className="form-control"
-            required
-          />
+          <div className="input-group">
+            <input
+              type={!showRepeatPassword ? 'password' : 'text'}
+              placeholder="Masukkan password"
+              onChange={handleChange}
+              name="repeat_new_password"
+              className="form-control"
+              required
+            />
+            <div className="input-group-append" role="presentation" onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
+              <span className="input-group-text">
+                { !showRepeatPassword ? <BsEyeSlash /> : <BsEye /> }
+              </span>
+            </div>
+          </div>
           {invalidMsg.repeat_new_password !== '' && <p className="invalid-input">{invalidMsg.repeat_new_password}</p>}
         </div>
         <div className="d-flex justify-content-end mt-4 gap-3">
