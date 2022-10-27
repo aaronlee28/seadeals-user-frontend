@@ -13,7 +13,7 @@ const PostTopupSLP = () => {
 
   const redirectToOrders = () => {
     // @ts-ignore
-    window.top.location.href = '/transactions/';
+    window.top.location.href = '/user/order-history/';
   };
 
   const initializePage = (status:string | null) => {
