@@ -75,7 +75,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           <div className="input-group">
             <input
               type="text"
-              placeholder="Masukakan password saat ini"
+              placeholder="Masukkan password"
               onChange={handleChange}
               name="current_password"
               className="form-control"
@@ -93,7 +93,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           <div className="input-group">
             <input
               type={!showNewPassword ? 'password' : 'text'}
-              placeholder="Masukakan password"
+              placeholder="Masukkan password"
               onChange={handleChange}
               name="new_password"
               className="form-control"

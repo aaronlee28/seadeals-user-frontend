@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import dateFormatter from '../../../utils/dateFormatter';
 
 const InputUserProfile:FC<any> = ({
-  name, data, handleChange, isChangeable, typeElement,
+  name, data, label, handleChange, isChangeable, typeElement,
 }) => {
   const [value, setValue] = useState('');
 
@@ -24,7 +24,7 @@ const InputUserProfile:FC<any> = ({
 
   return (
     <div className="my-2">
-      <p className="caption-input">{name.replace('_', ' ')}</p>
+      <p className="caption-input">{label}</p>
       <input
         className="form-control"
         name={name}
