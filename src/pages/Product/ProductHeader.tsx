@@ -6,11 +6,12 @@ import ProductFavorite from './Favorite/ProductFavorite';
 
 type ProductHeaderProps = {
   product: any,
+  sellerUserID: number,
 };
 
 const ProductHeader = (props: ProductHeaderProps) => {
   const {
-    product,
+    product, sellerUserID,
   } = props;
 
   const [photos, setPhotos] = useState([]);
@@ -34,7 +35,7 @@ const ProductHeader = (props: ProductHeaderProps) => {
           </div>
         </div>
         <div className="right_content">
-          <HeaderInfo data={product} />
+          <HeaderInfo data={product} sellerUserID={sellerUserID} />
         </div>
       </div>
     </div>

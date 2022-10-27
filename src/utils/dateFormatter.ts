@@ -5,8 +5,8 @@ const months = [
 const formatTime = (dateStr:string, isDateTime:boolean = true) => {
   if (!dateStr) return '';
   const date = new Date(dateStr);
-  const timeString = `,${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-  return `${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]} ${date.getFullYear()}${isDateTime ? timeString : ''}`;
+  const timeString = `,${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
+  return `${String(date.getUTCDate()).padStart(2, '0')} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}${isDateTime ? timeString : ''}`;
 };
 
 export default formatTime;

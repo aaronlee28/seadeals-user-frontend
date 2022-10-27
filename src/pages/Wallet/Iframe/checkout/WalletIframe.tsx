@@ -7,7 +7,8 @@ import Button from '../../../../components/Button/Button';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
 import { generateCheckoutPayload } from '../../../../utils/CartCheckoutHelper';
 import PAYMENT_TYPE, { WALLET_BLOCKED } from '../../../../constants/payment';
-import { clearChecked } from '../../../../features/cart/cartSlice';
+import { clearChecked, getCartItems } from '../../../../features/cart/cartSlice';
+import { AppDispatch } from '../../../../app/store';
 
 const PINDefault = new Array(6).fill('');
 
@@ -21,7 +22,7 @@ interface WalletIframeProps {
 const WalletIframe:FC<WalletIframeProps> = ({
   orderItems, address, closeModal, globalVoucher,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [PIN, setPIN] = useState<string[]>(PINDefault);
@@ -72,6 +73,7 @@ const WalletIframe:FC<WalletIframeProps> = ({
       toast.dismiss();
       toast.success('Transaction Paid Successfully!');
       dispatch(clearChecked());
+      dispatch(getCartItems());
       closeModal();
 
       navigate(`/transactions/${transaction.transaction_id}`);

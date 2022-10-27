@@ -26,14 +26,18 @@ const formatSoldCount = (count: number) => {
 };
 
 const formatPrice = (price: number) => {
-  const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
-  return priceSplit.join('.');
+  const str = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price || 0);
+  return str.substring(2, str.length - 3);
+  // const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
+  // return priceSplit.join('.');
 };
 
 const formatPriceWithCurrency = (price: number) => {
-  const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
-  const priceJoin = priceSplit.join('.');
-  return `Rp${priceJoin}`;
+  const str = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price || 0);
+  return str.substring(0, str.length - 3);
+  // const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
+  // const priceJoin = priceSplit.join('.');
+  // return `Rp${priceJoin}`;
 };
 
 const validatePrice = (minPrice: number, maxPrice: number) => {
