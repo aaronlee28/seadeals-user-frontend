@@ -28,7 +28,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, sellerUserID } = props;
   const { product } = data;
-  const isOwnProduct = sellerUserID === auth.user.user_id;
+  const isOwnProduct = sellerUserID === auth?.user?.user_id;
   const minPrice = data.min_price;
   const maxPrice = data.max_price;
 
