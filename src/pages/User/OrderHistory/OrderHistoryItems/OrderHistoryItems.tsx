@@ -7,8 +7,10 @@ import CardOrderHistory from '../../../../components/Cards/CardOrderHistory/Card
 
 import './OrderHistoryItems.scss';
 import ORDER_STATUS from '../../../../constants/order';
+import LoadingPlain from '../../../../components/Loading/LoadingPlain';
 
 const OrderHistoryItems = () => {
+  const [loadingOrders, setLoadingOrders] = useState(true);
   const [orders, setOrders] = useState<any>([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -92,12 +94,13 @@ const OrderHistoryItems = () => {
     }
     if (getTypeParams === 'canceled') {
       // return '&filter=refunded';
-      return '&filter=complaint,refunded';
+      return '&filter=complained,refunded';
     }
     return '';
   };
 
   const getOrders = async () => {
+    setLoadingOrders(true);
     const filter = `?page=${pagination.page}${getStatusFilter()}`;
     await Orders.GetAllOrdersByUser(axiosPrivate, filter)
       .then((resp: any) => {
@@ -108,6 +111,7 @@ const OrderHistoryItems = () => {
             ...prevState,
             totalPage: result.total_page,
           }));
+          setLoadingOrders(false);
         }
         if (!result.orders) {
           setOrders([]);
@@ -144,8 +148,17 @@ const OrderHistoryItems = () => {
   return (
     <div className="order-history-items_container">
       <div className="order-history-items_content" ref={innerRef}>
+        {loadingOrders
+            && (
+            <div className="empty">
+              <p className="fs-3 fw-bold">Memuat Pesanan</p>
+              <div className="text-center">
+                <LoadingPlain height={86} />
+              </div>
+            </div>
+            )}
         {
-          orders.length === 0
+          !loadingOrders && orders.length === 0
           && (
             <div className="empty">
               <p className="text">Belum ada pesanan</p>
@@ -153,7 +166,7 @@ const OrderHistoryItems = () => {
           )
         }
         {
-          orders.length > 0
+          !loadingOrders && orders.length > 0
           && (
             <div className="items">
               {
