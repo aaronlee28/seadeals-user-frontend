@@ -36,6 +36,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
   } = props;
 
   const {
+    orderId,
     storeName,
     storeItems,
   } = data;
@@ -129,6 +130,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
               <div className="card-order-history_content">
                 <div className="center_content">
                   <CardOrderHistoryItem
+                    orderId={orderId}
                     data={item}
                   />
                 </div>

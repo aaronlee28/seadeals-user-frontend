@@ -162,7 +162,6 @@ const OrderHistoryItems = () => {
                     <CardOrderHistory
                       key={`${order.orderId}-${order.storeName}`}
                       data={order}
-                      handleReview={() => console.log('NO')}
                     />
                   ),
                 )

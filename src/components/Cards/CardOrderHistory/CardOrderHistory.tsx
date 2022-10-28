@@ -28,8 +28,6 @@ type CardOrderHistoryProps = {
     transaction: any,
     storeItems: any[],
   },
-  // eslint-disable-next-line react/no-unused-prop-types
-  handleReview: () => void,
 };
 
 const CardOrderHistory = (props: CardOrderHistoryProps) => {
@@ -143,6 +141,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
                 <CardOrderHistoryItem
                   key={`${item.id}-${item.name}`}
                   data={item}
+                  orderId={orderId}
                 />
               ),
             )
