@@ -146,7 +146,7 @@ const Login = () => {
                   }}
                 >
                   <input
-                    className="form-control mb-4"
+                    className="form__input p-2 mb-4"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     type="email"
@@ -154,19 +154,19 @@ const Login = () => {
                     placeholder="Email"
                     required
                   />
-                  <div className="input-group mb-4">
+                  <div className="input-group suffix mb-4">
                     <input
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
                       type={(revealed) ? 'text' : 'password'}
                       name="password"
                       id="password"
-                      className="form-control"
+                      className="form__input p-2"
                       placeholder="Kata sandi"
                       required
                     />
-                    <div className="input-group-append" role="presentation" onClick={handleReveal}>
-                      <span className="input-group-text">
+                    <div className="input-group-addon" role="presentation" onClick={handleReveal}>
+                      <span className="">
                         { !revealed ? <BsEyeSlash /> : <BsEye /> }
                       </span>
                     </div>
