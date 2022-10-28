@@ -1,12 +1,11 @@
-const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
-];
+import moment from 'moment';
 
 const formatTime = (dateStr:string, isDateTime:boolean = true) => {
   if (!dateStr) return '';
-  const date = new Date(dateStr);
-  const timeString = `,${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
-  return `${String(date.getUTCDate()).padStart(2, '0')} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()}${isDateTime ? timeString : ''}`;
+  if (isDateTime) {
+    return moment(dateStr).format('MMM DD YYYY, HH:mm');
+  }
+  return moment(dateStr).format('MMM DD YYYY');
 };
 
 export default formatTime;
