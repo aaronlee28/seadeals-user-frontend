@@ -62,7 +62,7 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
 
         <View style={styles.content}>
           <View style={styles.content_row}>
-            <View style={styles.content_column}>
+            <View style={[styles.content_column, { width: '45%' }]}>
               <Text style={styles.subtitle}>Diterbitkan Atas Nama</Text>
               <Text> </Text>
 
@@ -72,36 +72,36 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
                 {data?.seller_name}
               </Text>
             </View>
-            <View style={styles.content_column}>
+            <View style={[styles.content_column, { width: '45%' }]}>
               <Text style={styles.subtitle}>Untuk</Text>
               <Text> </Text>
 
-              <View style={styles.content_row}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Pembeli
                 </Text>
                 <Text style={{ width: '25px' }} />
-                <Text>
+                <Text style={{ width: '125px' }}>
                   {data?.buyer?.name}
                 </Text>
               </View>
 
-              <View style={styles.content_row}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Tanggal Pembelian
                 </Text>
                 <Text style={{ width: '25px' }} />
-                <Text>
+                <Text style={{ width: '125px' }}>
                   {dateFormatter(data?.buyer?.bought_date)}
                 </Text>
               </View>
 
-              <View style={styles.content_row}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Alamat Pengiriman
                 </Text>
                 <Text style={{ width: '25px' }} />
-                <Text>
+                <Text style={{ width: '125px' }}>
                   {data?.buyer?.address}
                 </Text>
               </View>
@@ -132,6 +132,18 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
                     </Text>
                     <Text style={{ color: 'gray', marginRight: '25px' }} />
                     <Text style={{ color: 'gray' }}>{`-${priceFormat(data?.order_detail?.shop_voucher.total_reduce)}`}</Text>
+                  </View>
+              )}
+              {data?.order_detail.global_voucher_for_order != null
+                  && data?.order_detail.global_voucher_for_order.amount && (
+                  <View style={styles.content_row}>
+                    <Text style={{ color: 'gray' }}>
+                      Diskon
+                      {' '}
+                      {data.order_detail.global_voucher_for_order.name}
+                    </Text>
+                    <Text style={{ color: 'gray', marginRight: '25px' }} />
+                    <Text style={{ color: 'gray' }}>{`-${priceFormat(data?.order_detail?.global_voucher_for_order.total_reduce)}`}</Text>
                   </View>
               )}
               <View style={styles.content_row}>

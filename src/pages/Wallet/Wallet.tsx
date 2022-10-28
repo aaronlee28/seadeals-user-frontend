@@ -75,7 +75,7 @@ const Wallet = () => {
     <div className="mini-w-screen mx-auto">
       <div className="px-4 py-2 bg-white rounded shadow-sm mb-4 d-flex align-items-center gap-3">
         <div className="normal-link mb-2">
-          <Link to="/">
+          <Link to="/user/profile">
             <h3>&#8249;</h3>
           </Link>
         </div>
@@ -86,9 +86,7 @@ const Wallet = () => {
           <div className="text-start">
             <p className="fw-bold fs-2">SeaDeals Wallet</p>
             <p className="text-secondary mb-2 fs-6">
-              Selamat datang kembali,
-              {' '}
-              {auth?.user?.name}
+              {`Selamat datang kembali, ${auth?.user?.name}`}
             </p>
           </div>
           <div className="normal-link">

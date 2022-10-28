@@ -5,4 +5,10 @@ const formatCardNumber = (cardNum:string) => {
   return split.join('·');
 };
 
+export const parseTrxDesc = (trx:any) => {
+  if (trx.transaction_id && trx.description.includes('Refund')) return trx.description;
+  if (trx.transaction_id) return `${trx.description} for Transaction ID ${trx.transaction_id}`;
+  return trx.description;
+};
+
 export default formatCardNumber;

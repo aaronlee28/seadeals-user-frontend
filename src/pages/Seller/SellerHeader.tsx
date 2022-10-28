@@ -14,13 +14,15 @@ interface SellerInfo {
 }
 
 type SellerHeaderProps = {
+  id: number,
   name: string
   imgUrl: string,
-  followers: string
-  joinDate: string
-  rating: string
-  reviewer: string
+  followers: string,
+  joinDate: string,
+  rating: string,
+  reviewer: string,
   city: string,
+  isFollowing: boolean,
 };
 
 const SellerHeader: FC<SellerInfo> = ({ loading, sellerInfo }) => (

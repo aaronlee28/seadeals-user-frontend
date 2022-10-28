@@ -3,6 +3,7 @@ import formatTitle from '../../../utils/titleFormatter';
 import formatDate from '../../../utils/dateFormatter';
 import { formatPrice } from '../../../utils/product';
 import Button from '../../../components/Button/Button';
+import { parseTrxDesc } from '../../../utils/walletFormatter';
 
 interface Props {
   trx: any,
@@ -17,7 +18,7 @@ const WalletHistoryItem:FC<Props> = ({ trx, innerRef, setTrx }) => (
         <h6 className="mb-1">{formatTitle(trx?.payment_method)}</h6>
         <div>
           <small>
-            {trx.description}
+            {parseTrxDesc(trx)}
           </small>
         </div>
         <div>
