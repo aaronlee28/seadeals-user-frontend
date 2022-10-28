@@ -102,6 +102,17 @@
             }
           }
         }
+        .favorite{
+          position: relative;
+          .favorite_count_number{
+            position: absolute;
+            width: 32px;
+            top: 17px;
+            left: -20px;
+            z-index: 2;
+            color: rgb(238, 87, 78);
+          }
+        }
         .profile {
           width: fit-content;
           display: flex;
