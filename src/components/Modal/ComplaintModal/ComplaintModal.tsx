@@ -25,6 +25,7 @@ type ModalComplaintProps = {
   title: string,
   isOpen: boolean,
   handleCloseModal: () => void;
+  refreshData: ()=>void,
 };
 
 const ModalComplaint = (props: ModalComplaintProps) => {
@@ -33,6 +34,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
     isOpen,
     title,
     handleCloseModal,
+    refreshData,
   } = props;
 
   const {
@@ -107,6 +109,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
       .then(() => {
         toast.success('Komplain berhasil dikirimkan');
         handleClose();
+        refreshData();
       })
       .catch((err: any) => {
         toast.error(err.response?.data?.message);

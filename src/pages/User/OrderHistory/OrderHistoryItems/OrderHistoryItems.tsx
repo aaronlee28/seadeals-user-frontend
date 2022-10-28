@@ -130,6 +130,10 @@ const OrderHistoryItems = () => {
     setParams(params);
   };
 
+  const refreshOrderList = () => {
+    getOrders().then();
+  };
+
   useEffect(() => {
     params.set('page', String(pagination.page));
     params.set('type', 'all');
@@ -175,6 +179,7 @@ const OrderHistoryItems = () => {
                     <CardOrderHistory
                       key={`${order.orderId}-${order.storeName}`}
                       data={order}
+                      refreshData={() => refreshOrderList()}
                     />
                   ),
                 )
