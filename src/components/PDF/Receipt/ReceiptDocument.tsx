@@ -76,7 +76,7 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
               <Text style={styles.subtitle}>Untuk</Text>
               <Text> </Text>
 
-              <View style={styles.content_row}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Pembeli
                 </Text>
@@ -86,7 +86,7 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
                 </Text>
               </View>
 
-              <View style={[styles.content_row]}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Tanggal Pembelian
                 </Text>
@@ -96,7 +96,7 @@ const ReceiptDocument = ({ data }:{ data:Receipt }) => (
                 </Text>
               </View>
 
-              <View style={styles.content_row}>
+              <View style={[styles.content_row, { marginTop: '12px' }]}>
                 <Text style={{ width: '125px' }}>
                   Alamat Pengiriman
                 </Text>
