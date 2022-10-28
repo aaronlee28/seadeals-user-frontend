@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Promotion from '../../Promotion/Promotion';
 import { formatPrice, formatPriceWithCurrency } from '../../../utils/product';
 import './CardOrderHistory.scss';
@@ -15,10 +16,11 @@ type CardOrderHistoryItemProps = {
     variant: string,
     quantity: number,
   },
+  orderId: number,
 };
 
 const CardOrderHistoryItem = (props: CardOrderHistoryItemProps) => {
-  const { data } = props;
+  const { data, orderId } = props;
   const {
     // id,
     imgUrl,
@@ -50,7 +52,9 @@ const CardOrderHistoryItem = (props: CardOrderHistoryItemProps) => {
                 />
               )
             }
-            <p className="name">{ name }</p>
+            <p className="name normal-link">
+              <Link to={`/user/order/${orderId}`}>{ name }</Link>
+            </p>
             {
               variant !== ''
               && (

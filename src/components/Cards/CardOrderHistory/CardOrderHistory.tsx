@@ -28,14 +28,13 @@ type CardOrderHistoryProps = {
     transaction: any,
     storeItems: any[],
   },
-  // eslint-disable-next-line react/no-unused-prop-types
-  handleReview: () => void,
+  refreshData: ()=>void
 };
 
 const CardOrderHistory = (props: CardOrderHistoryProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    data,
+    data, refreshData,
   } = props;
   const {
     orderId,
@@ -69,7 +68,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
   };
 
   const moveToDone = () => {
-    finishOrder().then();
+    finishOrder().then(() => refreshData());
   };
 
   const moveToComplaint = () => {
@@ -143,6 +142,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
                 <CardOrderHistoryItem
                   key={`${item.id}-${item.name}`}
                   data={item}
+                  orderId={orderId}
                 />
               ),
             )
@@ -238,6 +238,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
             data={data}
             isOpen={isModalReviewOpen}
             handleCloseModal={closeModalReview}
+            refreshData={refreshData}
           />
         )
       }
@@ -249,6 +250,7 @@ const CardOrderHistory = (props: CardOrderHistoryProps) => {
             title="Komplain Pesanan"
             isOpen={isModalComplaintOpen}
             handleCloseModal={closeModalComplaint}
+            refreshData={refreshData}
           />
         )
       }

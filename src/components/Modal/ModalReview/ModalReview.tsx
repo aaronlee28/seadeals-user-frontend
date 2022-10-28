@@ -20,6 +20,7 @@ type ModalReviewProps = {
   },
   isOpen: boolean,
   handleCloseModal: () => void;
+  refreshData: ()=>void
 };
 
 const ModalReview = (props: ModalReviewProps) => {
@@ -27,6 +28,7 @@ const ModalReview = (props: ModalReviewProps) => {
     data,
     isOpen,
     handleCloseModal,
+    refreshData,
   } = props;
 
   const {
@@ -54,7 +56,6 @@ const ModalReview = (props: ModalReviewProps) => {
         JSON.stringify({ product_id: Number(productID) }),
       );
       const { val } = response.data;
-      console.log(val);
       if (val.id !== 0) {
         setReview(val);
       }
@@ -132,6 +133,7 @@ const ModalReview = (props: ModalReviewProps) => {
         .then(() => {
           toast.success('Review berhasil dikirimkan');
           handleClose();
+          refreshData();
         })
         .catch((err: any) => {
           toast.error(err.response?.data?.message);

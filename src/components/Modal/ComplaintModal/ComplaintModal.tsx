@@ -25,6 +25,7 @@ type ModalComplaintProps = {
   title: string,
   isOpen: boolean,
   handleCloseModal: () => void;
+  refreshData: ()=>void,
 };
 
 const ModalComplaint = (props: ModalComplaintProps) => {
@@ -33,9 +34,11 @@ const ModalComplaint = (props: ModalComplaintProps) => {
     isOpen,
     title,
     handleCloseModal,
+    refreshData,
   } = props;
 
   const {
+    orderId,
     storeName,
     storeItems,
   } = data;
@@ -106,6 +109,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
       .then(() => {
         toast.success('Komplain berhasil dikirimkan');
         handleClose();
+        refreshData();
       })
       .catch((err: any) => {
         toast.error(err.response?.data?.message);
@@ -129,6 +133,7 @@ const ModalComplaint = (props: ModalComplaintProps) => {
               <div className="card-order-history_content">
                 <div className="center_content">
                   <CardOrderHistoryItem
+                    orderId={orderId}
                     data={item}
                   />
                 </div>
