@@ -112,7 +112,6 @@ const UserProfile:FC<any> = () => {
     findProfile().then();
   }, []);
 
-  console.log(profile);
   return (
     <div className="profile__container">
       {

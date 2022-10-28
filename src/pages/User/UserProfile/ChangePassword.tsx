@@ -5,9 +5,11 @@ import Button from '../../../components/Button/Button';
 import Users from '../../../api/users';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import useAuth from '../../../hooks/useAuth';
+import useLogout from '../../../hooks/useLogout';
 
 const ChangePassword:FC<any> = ({ handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
+  const logout = useLogout();
   const { auth } = useAuth();
   const username = auth.user.username.toLowerCase();
   const { email } = auth.user;
@@ -44,6 +46,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   };
 
   const handleSubmit = async () => {
+    const loadingToast = toast.loading('Please wait a second...');
     const body = {
       ...password,
       email,
@@ -52,9 +55,12 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
       .then(() => {
         toast.success('Password berhasil diubah');
         handleClose();
+        logout();
       })
       .catch((err: any) => {
         toast.error(err.response?.data?.message);
+      }).finally(() => {
+        toast.dismiss(loadingToast);
       });
   };
 
@@ -74,7 +80,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           <p className="caption-input">Password Saat Ini</p>
           <div className="input-group">
             <input
-              type="text"
+              type={!showCurrentPassword ? 'password' : 'text'}
               placeholder="Masukkan password"
               onChange={handleChange}
               name="current_password"
