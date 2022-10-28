@@ -6,15 +6,16 @@ import Button from '../../components/Button/Button';
 import useAuth from '../../hooks/useAuth';
 import { ReactComponent as IconHeart } from '../../assets/svg/icon_heart.svg';
 import { ReactComponent as IconChevron } from '../../assets/svg/icon_chevron_right.svg';
-import { setAvatarURL } from '../../features/navbarProfile/navbarProfileSlice';
-import useFavoriteCount from '../../hooks/useFavoriteCount';
+import { setAvatarURL, getFavoriteCount } from '../../features/navbarProfile/navbarProfileSlice';
+import { AppDispatch } from '../../app/store';
 
 const NavbarRightContent = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const navbarProfileSlice = useSelector((state:any) => state.navbarProfile);
+  const { favoriteCount, avatarURL } = useSelector((state:any) => state.navbarProfile);
   const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/avatars%2Fuser%2Fanonym.jpeg?alt=media&token=66dbb36a-2ac1-4b1f-ad67-b2834eefdcef';
+  const hasUser = !!auth?.user?.user_id;
 
   const goToRegisterPage = () => {
     navigate('/register');
@@ -29,12 +30,9 @@ const NavbarRightContent = () => {
     navigate('/user/addresses');
   };
 
-  // DATA FAVORITE COUNT EXAMPLE USAGE, IT MEANS THAT THIS FAVORITE CHANGE EVERY TIME AUTH CHANGE
-  const { loadingFavorite, favoriteCount } = useFavoriteCount(auth);
   useEffect(() => {
-    console.log('IT IS NOW', (loadingFavorite ? 'LOADING' : 'DONE LOADING'));
-    console.log('AND FAVORITE COUNT IS', favoriteCount);
-  }, [favoriteCount]);
+    if (hasUser) { dispatch(getFavoriteCount()); }
+  }, [hasUser]);
 
   useEffect(() => {
     if (auth?.user?.avatar_url) {
@@ -65,18 +63,26 @@ const NavbarRightContent = () => {
         auth.user
         && (
           <div className="buttons auth">
-            {/* FAVORITE COUNT AND ITS LOADING IS USING useFavoriteCount HOOKS */}
-            <Button
-              buttonType="plain"
-              iconUrl={IconHeart}
-              iconName="favorite"
-              handleClickedButton={goToLoginPage}
-            />
+            <div className="favorite">
+              {hasUser && favoriteCount !== 0 && (
+              <div className="favorite_count_number d-flex align-items-center justify-content-center rounded">
+                <small className="text-center mb-0 fw-bold d-flex align-items-center mt-1">
+                  {favoriteCount}
+                </small>
+              </div>
+              )}
+              <Button
+                buttonType="plain"
+                iconUrl={IconHeart}
+                iconName="favorite"
+                handleClickedButton={goToLoginPage}
+              />
+            </div>
             <div className="profile">
               <div className="image_content">
                 <img
                   className="image"
-                  src={navbarProfileSlice.avatarURL || defaultPic}
+                  src={avatarURL || defaultPic}
                   alt={auth.user.username}
                 />
               </div>
