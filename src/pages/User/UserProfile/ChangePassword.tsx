@@ -5,9 +5,11 @@ import Button from '../../../components/Button/Button';
 import Users from '../../../api/users';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import useAuth from '../../../hooks/useAuth';
+import useLogout from '../../../hooks/useLogout';
 
 const ChangePassword:FC<any> = ({ handleClose }) => {
   const axiosPrivate = useAxiosPrivate();
+  const logout = useLogout();
   const { auth } = useAuth();
   const username = auth.user.username.toLowerCase();
   const { email } = auth.user;
@@ -22,6 +24,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   });
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
   const handleChange = (e:any) => {
     if (e.target.name === 'repeat_new_password') {
@@ -43,6 +46,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
   };
 
   const handleSubmit = async () => {
+    const loadingToast = toast.loading('Please wait a second...');
     const body = {
       ...password,
       email,
@@ -51,9 +55,12 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
       .then(() => {
         toast.success('Password berhasil diubah');
         handleClose();
+        logout();
       })
       .catch((err: any) => {
         toast.error(err.response?.data?.message);
+      }).finally(() => {
+        toast.dismiss(loadingToast);
       });
   };
 
@@ -70,24 +77,29 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
       >
         <h3 className="change-password__title"><b>Ganti Password</b></h3>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Password saat ini</p>
+          <p className="caption-input">Password Saat Ini</p>
           <div className="input-group">
             <input
-              type="text"
-              placeholder="Masukakan password lama"
+              type={!showCurrentPassword ? 'password' : 'text'}
+              placeholder="Masukkan password"
               onChange={handleChange}
               name="current_password"
               className="form-control"
               required
             />
+            <div className="input-group-append" role="presentation" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+              <span className="input-group-text">
+                { !showCurrentPassword ? <BsEyeSlash /> : <BsEye /> }
+              </span>
+            </div>
           </div>
         </div>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Password baru</p>
+          <p className="caption-input">Password Baru</p>
           <div className="input-group">
             <input
               type={!showNewPassword ? 'password' : 'text'}
-              placeholder="Masukakan password"
+              placeholder="Masukkan password"
               onChange={handleChange}
               name="new_password"
               className="form-control"
@@ -102,7 +114,7 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
           {invalidMsg.new_password !== '' && <p className="invalid-input">{invalidMsg.new_password}</p>}
         </div>
         <div className="my-4 input-container medium">
-          <p className="caption-input">Ulangi password baru</p>
+          <p className="caption-input">Ulangi Password Baru</p>
           <div className="input-group">
             <input
               type={!showRepeatPassword ? 'password' : 'text'}

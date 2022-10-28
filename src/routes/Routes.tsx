@@ -31,6 +31,7 @@ import SimilarPage from '../pages/Similar/SimilarPage';
 import OrderHistory from '../pages/User/OrderHistory/OrderHistory';
 import UserOrder from '../pages/User/Order/UserOrder';
 import UserProfile from '../pages/User/UserProfile/UserProfile';
+import PageNotFound from '../pages/PageNotFound';
 
 const AppRoutes = () => (
   <Routes>
@@ -91,6 +92,8 @@ const AppRoutes = () => (
       </Route>
 
     </Route>
+    <Route path="*" element={<PageNotFound />} />
+
   </Routes>
 );
 

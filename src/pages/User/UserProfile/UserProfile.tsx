@@ -112,7 +112,6 @@ const UserProfile:FC<any> = () => {
     findProfile().then();
   }, []);
 
-  console.log(profile);
   return (
     <div className="profile__container">
       {
@@ -153,17 +152,17 @@ const UserProfile:FC<any> = () => {
             onChange={handleChange}
             ref={imageInputRef}
           />
-          <div className="profile__input"><InputUserProfile name="username" data={profile.username} handleChange={handleChange} isChangeable={isEdit} /></div>
-          <div className="profile__input"><InputUserProfile name="full_name" data={profile.full_name} handleChange={handleChange} isChangeable={isEdit} /></div>
-          <div className="profile__input"><InputUserProfile name="email" data={profile.email} handleChange={handleChange} isChangeable={isEdit} typeElement="email" /></div>
+          <div className="profile__input"><InputUserProfile label="Username" name="username" data={profile.username} handleChange={handleChange} isChangeable={isEdit} /></div>
+          <div className="profile__input"><InputUserProfile label="Full Name" name="full_name" data={profile.full_name} handleChange={handleChange} isChangeable={isEdit} /></div>
+          <div className="profile__input"><InputUserProfile label="Email" name="email" data={profile.email} handleChange={handleChange} isChangeable={isEdit} typeElement="email" /></div>
           <div className="profile__input">
-            <p className="caption-input">gender</p>
+            <p className="caption-input">Gender</p>
             <select name="gender" className="form-control" onChange={handleChange} value={profile.gender} disabled={!isEdit}>
               <option value="male">male</option>
               <option value="female">female</option>
             </select>
           </div>
-          <div className="profile__input"><InputUserProfile name="birth_date" data={profile.birth_date} handleChange={handleChange} isChangeable={isEdit} typeElement="date" /></div>
+          <div className="profile__input"><InputUserProfile label="Birth Date" name="birth_date" data={profile.birth_date} handleChange={handleChange} isChangeable={isEdit} typeElement="date" /></div>
           <div className="d-flex justify-content-end mt-4">
             {!isEdit && <Button buttonType="secondary alt" handleClickedButton={() => setIsEdit(true)} text="Edit" /> }
             {isEdit && (

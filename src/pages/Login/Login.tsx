@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import toast from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../api/axios';
 import logo_xs from '../../assets/images/logo_xs.png';
@@ -21,6 +22,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async () => {
+    const loadingToast = toast.loading('Waiting for login');
     const response = await axios.post(
       LOGIN_URL,
       JSON.stringify({ email, password }),
@@ -38,10 +40,12 @@ const Login = () => {
     setEmail('');
     setPassword('');
 
+    toast.dismiss(loadingToast);
     navigate(from, { replace: true });
   };
 
   const handleCallbackResponse = async (response: any) => {
+    const loadingToast = toast.loading('Waiting for login');
     try {
       const res = await axios.post(
         '/google/sign-in',
@@ -64,6 +68,8 @@ const Login = () => {
       navigate(from, { replace: true });
     } catch (err:any) {
       navigate('/register', { replace: true, state: err.response.data.data });
+    } finally {
+      toast.dismiss(loadingToast);
     }
   };
 
