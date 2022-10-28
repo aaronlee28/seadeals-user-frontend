@@ -111,11 +111,11 @@ const OrderHistoryItems = () => {
             ...prevState,
             totalPage: result.total_page,
           }));
-          setLoadingOrders(false);
         }
         if (!result.orders) {
           setOrders([]);
         }
+        setLoadingOrders(false);
       })
       .catch((err: any) => err);
   };

@@ -79,7 +79,7 @@ const parseToCartItemState = (id:number | undefined, product:any, variant:any) =
   return {
     cartItemID: id,
     name,
-    thumbnail: product.product_photos[0].photo_url,
+    thumbnail: product?.product_photos[0]?.photo_url,
     price: variant.price,
   };
 };

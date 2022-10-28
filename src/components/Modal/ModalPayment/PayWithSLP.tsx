@@ -135,7 +135,14 @@ const PayWithSLP:FC<PayWithSLPProps> = ({
               )
               : (
                 <>
-                  <p className="fs-5 text-center mb-3">Register SeaLabs Pay Account</p>
+                  <div className="my-4">
+                    <p className="fs-5 text-center mb-1">Register SeaLabs Pay Account</p>
+                    <small
+                      className="d-block text-center text-secondary"
+                    >
+                      account will be registered after payment is finished
+                    </small>
+                  </div>
                   <RegisterSLP
                     selectSLP={setSelectedSLP}
                     checkSLPAlreadyExists={checkSLPAlreadyExists}

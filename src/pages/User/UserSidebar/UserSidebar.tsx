@@ -22,11 +22,13 @@ const UserSidebar = () => {
     <div className="user-sidebar_container">
       <div className="user-sidebar_content">
         <div className="header">
-          <img
-            className="image"
-            src={avatar}
-            alt={name}
-          />
+          <div className="col-auto px-0">
+            <img
+              className="image"
+              src={avatar}
+              alt={name}
+            />
+          </div>
           <p className="name">{ name }</p>
         </div>
         {

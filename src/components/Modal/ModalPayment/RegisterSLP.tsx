@@ -86,7 +86,7 @@ const RegisterSLP:FC<Props> = ({ selectSLP, checkSLPAlreadyExists }) => {
           onChange={handleChangeInput}
         />
         <Button
-          text={`${hasNewAcc ? 'Edit' : 'Gunakan'}`}
+          text={`${hasNewAcc ? 'Edit' : 'Use Account'}`}
           buttonType={`primary w-100 mt-3 ${hasNewAcc && 'alt'}`}
           handleClickedButton={() => setNewAccount()}
         />
