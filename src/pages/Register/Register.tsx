@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import toast from 'react-hot-toast';
 import axios from '../../api/axios';
 import logo from '../../assets/images/logo.png';
 import logo_xs from '../../assets/images/logo_xs.png';
@@ -68,6 +69,7 @@ const Register = () => {
   const handleSubmit = async (e:any) => {
     e.preventDefault();
 
+    const loadingToast = toast.loading('Waiting for register');
     try {
       const response = await axios.post(
         uRL,
@@ -103,6 +105,8 @@ const Register = () => {
       navigate('/', { replace: true });
     } catch (err) {
       navigate('/register', { replace: true });
+    } finally {
+      toast.dismiss(loadingToast);
     }
   };
 
