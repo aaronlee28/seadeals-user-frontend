@@ -10,7 +10,7 @@ const USER_SIDEBAR = [
     link: '/user/addresses',
   },
   {
-    name: 'Akun Sea Labs Pay',
+    name: 'My Wallet',
     link: '/wallet',
   },
   {
