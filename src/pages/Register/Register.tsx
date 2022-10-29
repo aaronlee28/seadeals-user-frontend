@@ -229,7 +229,7 @@ const Register = () => {
                     </div>
                     {
                       passwordCorrect ? '' : (
-                        <div id="invalid-password" className="invalid-feedback">
+                        <div id="invalid-password" className="text-accent">
                           Passwords are not the same!
                         </div>
                       )
