@@ -50,7 +50,7 @@ const Register = () => {
       return;
     }
     setPasswordValidity(true);
-  }, [userName]);
+  }, [password, userName]);
 
   const [userNameValidity, setUserNameValidity] = useState(true);
   useEffect(() => {
