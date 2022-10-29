@@ -31,6 +31,7 @@ const Register = () => {
   const [gender, setGender] = useState('male');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const timeNow = `${new Date().toISOString().split('.')[0]}`;
 
   const [passwordCorrect, setPasswordCorrect] = useState(true);
 
@@ -103,7 +104,8 @@ const Register = () => {
       setBirthDate('');
 
       navigate('/', { replace: true });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/register', { replace: true });
     } finally {
       toast.dismiss(loadingToast);
@@ -193,7 +195,7 @@ const Register = () => {
                       {/* eslint-disable-next-line max-len */}
                       <div className="input-group-addon" role="presentation" onClick={handleReveal}>
                         <span className="">
-                          { !revealed ? <BsEyeSlash /> : <BsEye /> }
+                          { !revealed ? <BsEyeSlash className="password-vis-button" /> : <BsEye className="password-vis-button" /> }
                         </span>
                       </div>
                     </div>
@@ -221,7 +223,7 @@ const Register = () => {
                       {/* eslint-disable-next-line max-len */}
                       <div className="input-group-addon" role="presentation" onClick={handleCPVis}>
                         <span className="">
-                          { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
+                          { !confirmPasswordVis ? <BsEyeSlash className="password-vis-button" /> : <BsEye className="password-vis-button" /> }
                         </span>
                       </div>
                     </div>
@@ -290,6 +292,7 @@ const Register = () => {
                   <input
                     value={birthDate}
                     onChange={(event) => setBirthDate(event.target.value)}
+                    max={timeNow.toString().substring(0, 10)}
                     className="form__input p-2 mb-2"
                     type="date"
                     id="birthDate-m"
