@@ -23,8 +23,8 @@
       display: flex;
       justify-content: space-between;
       &.first_content {
-        width: 100px;
-        height: 100px;
+        width: fit-content;
+        height: fit-content;
         border: 2px solid #2658CD;
         border-radius: 50%;
         .image {

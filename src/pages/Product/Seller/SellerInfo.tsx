@@ -13,6 +13,7 @@ type SellerInfoProps = {
 
 const SellerInfo = (props: SellerInfoProps) => {
   const { seller } = props;
+  const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/avatars%2Fuser%2Fanonym.jpeg?alt=media&token=66dbb36a-2ac1-4b1f-ad67-b2834eefdcef';
 
   const [sellerItems, setSellerItems] = useState<any>([]);
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const SellerInfo = (props: SellerInfoProps) => {
         <div className="info first_content">
           <img
             className="image"
-            src={seller.profile_url}
+            src={seller.profile_url || defaultPic}
             alt={seller.name}
             onClick={goToSellerPage}
             role="presentation"
