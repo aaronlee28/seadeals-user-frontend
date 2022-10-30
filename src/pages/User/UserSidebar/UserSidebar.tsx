@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { USER_SIDEBAR } from '../../../constants/user';
+import noUserIcon from '../../../assets/png/anonym.png';
 
 import './UserSidebar.scss';
 import useAuth from '../../../hooks/useAuth';
@@ -14,6 +15,12 @@ const UserSidebar = () => {
   const avatar = auth.user.avatar_url;
   const { name } = auth.user;
 
+  const hasSellerAcc = (authData:any) => {
+    if (!authData) return false;
+    const roles = authData.roles || [];
+    return roles.includes('seller');
+  };
+
   const goToLink = (link: string) => {
     navigate(link);
   };
@@ -25,7 +32,7 @@ const UserSidebar = () => {
           <div className="col-auto px-0">
             <img
               className="image"
-              src={avatar}
+              src={avatar || noUserIcon}
               alt={name}
             />
           </div>
@@ -54,6 +61,15 @@ const UserSidebar = () => {
           )
         }
       </div>
+      {!hasSellerAcc(auth) && (
+      <div className="user-sidebar_content">
+        <a href="https://seller.reivaldo-julianto.com">
+          <div className="item text-main">
+            <p className="">Buka Toko SeaDeals</p>
+          </div>
+        </a>
+      </div>
+      )}
     </div>
   );
 };

@@ -18,6 +18,7 @@ import { setAvatarURL } from '../../../features/navbarProfile/navbarProfileSlice
 import useAuth from '../../../hooks/useAuth';
 import Modal from '../../../components/Modal/Modal';
 import ChangePassword from './ChangePassword';
+import noUserIcon from '../../../assets/png/anonym.png';
 
 const UserProfile:FC<any> = () => {
   const dispatch = useDispatch();
@@ -131,7 +132,7 @@ const UserProfile:FC<any> = () => {
         }}
       >
         <div className="profile__image-container col-12 col-lg-6">
-          <img className="profile__image" src={profile.avatar_local || profile.avatar_url} alt={profile.full_name} />
+          <img className="profile__image" src={profile.avatar_local || profile.avatar_url || noUserIcon} alt={profile.full_name} />
           {
             isEdit
               && (
