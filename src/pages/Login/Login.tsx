@@ -22,26 +22,32 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async () => {
-    const loadingToast = toast.loading('Waiting for login');
-    const response = await axios.post(
-      LOGIN_URL,
-      JSON.stringify({ email, password }),
-      {
-        withCredentials: true,
-      },
-    );
-    const decode:any = jwt_decode(response.data.data.id_token);
-    const accessToken = response?.data?.data.id_token;
-    const { user, scope } = decode;
+    try {
+      toast.loading('Waiting for login');
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
+        {
+          withCredentials: true,
+        },
+      );
+      const decode:any = jwt_decode(response.data.data.id_token);
+      const accessToken = response?.data?.data.id_token;
+      const { user, scope } = decode;
 
-    setAuth({ user, roles: scope.split(' '), accessToken });
-    localStorage.setItem('access_token', accessToken);
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
 
-    setEmail('');
-    setPassword('');
+      setEmail('');
+      setPassword('');
 
-    toast.dismiss(loadingToast);
-    navigate(from, { replace: true });
+      toast.dismiss();
+      toast.success('loading successful');
+      navigate(from, { replace: true });
+    } catch (e:any) {
+      toast.dismiss();
+      toast.error(e?.response?.data?.message);
+    }
   };
 
   const handleCallbackResponse = async (response: any) => {
