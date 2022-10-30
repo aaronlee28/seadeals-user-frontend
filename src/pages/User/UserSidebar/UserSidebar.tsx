@@ -14,6 +14,12 @@ const UserSidebar = () => {
   const avatar = auth.user.avatar_url;
   const { name } = auth.user;
 
+  const hasSellerAcc = (authData:any) => {
+    if (!authData) return false;
+    const roles = authData.roles || [];
+    return roles.includes('seller');
+  };
+
   const goToLink = (link: string) => {
     navigate(link);
   };
@@ -54,6 +60,15 @@ const UserSidebar = () => {
           )
         }
       </div>
+      {!hasSellerAcc(auth) && (
+      <div className="user-sidebar_content">
+        <a href="https://seller.reivaldo-julianto.com">
+          <div className="item text-main">
+            <p className="">Buka Toko SeaDeals</p>
+          </div>
+        </a>
+      </div>
+      )}
     </div>
   );
 };
