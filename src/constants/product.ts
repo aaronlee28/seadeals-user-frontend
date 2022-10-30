@@ -20,7 +20,7 @@ const PRODUCT_SPECIFICATION = [
     value: '',
   },
   {
-    variable: 'Berat (kg)',
+    variable: 'Berat (gr)',
     value: '',
   },
   {
