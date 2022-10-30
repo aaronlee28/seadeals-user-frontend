@@ -11,42 +11,42 @@ const CATEGORY_ITEMS = [
   {
     imgUrl: Audio,
     name: 'Audio',
-    path: '',
+    path: 'category?categoryName=Audio',
   },
   {
     imgUrl: Photography,
     name: 'Fotografi',
-    path: '',
+    path: 'category?categoryName=Fotografi',
   },
   {
     imgUrl: HandphoneAndAccessories,
     name: 'Handphone & Aksesoris',
-    path: '',
+    path: 'category?categoryName=Handphone%20&%20Aksesoris',
   },
   {
     imgUrl: Hobbies,
     name: 'Hobi',
-    path: '',
+    path: 'category?categoryName=Hobi',
   },
   {
     imgUrl: Watches,
     name: 'Jam Tangan',
-    path: '',
+    path: 'category?categoryName=Jam%20Tangan',
   },
   {
     imgUrl: ComputerAndAccessories,
     name: 'Komputer & Aksesoris',
-    path: '',
+    path: 'category?categoryName=Komputer%20&%20Aksesoris',
   },
   {
     imgUrl: HomeAppliances,
     name: 'Peralatan Rumah Tangga',
-    path: '',
+    path: 'category?categoryName=Peralatan%20Rumah%20Tangga',
   },
   {
     imgUrl: Others,
     name: 'Lainnya',
-    path: '',
+    path: 'category?categoryName=Lainnya',
   },
 ];
 
