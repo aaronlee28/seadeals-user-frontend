@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { ReactComponent as IconHeart } from '../../assets/svg/icon_heart.svg';
 import { ReactComponent as IconChevron } from '../../assets/svg/icon_chevron_right.svg';
 import { setAvatarURL, getFavoriteCount } from '../../features/navbarProfile/navbarProfileSlice';
 import { AppDispatch } from '../../app/store';
+import UserDropdown from './UserDropdown/UserDropdown';
 
 const NavbarRightContent = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +17,8 @@ const NavbarRightContent = () => {
   const { favoriteCount, avatarURL } = useSelector((state:any) => state.navbarProfile);
   const defaultPic = 'https://firebasestorage.googleapis.com/v0/b/bucket-seadeals.appspot.com/o/avatars%2Fuser%2Fanonym.jpeg?alt=media&token=66dbb36a-2ac1-4b1f-ad67-b2834eefdcef';
   const hasUser = !!auth?.user?.user_id;
+
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const goToRegisterPage = () => {
     navigate('/register');
@@ -26,8 +29,8 @@ const NavbarRightContent = () => {
   };
 
   const openDropdown = () => {
-    console.log('OPEN DROPDOWN');
-    navigate('/user/addresses');
+    if (!hasUser) return;
+    setShowDropdown(true);
   };
 
   useEffect(() => {
@@ -78,7 +81,12 @@ const NavbarRightContent = () => {
                 handleClickedButton={goToLoginPage}
               />
             </div>
-            <div className="profile">
+            <div
+              className="profile"
+              role="presentation"
+              onMouseEnter={() => openDropdown()}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
               <div className="image_content">
                 <img
                   className="image"
@@ -93,6 +101,12 @@ const NavbarRightContent = () => {
                 iconName="chevron"
                 handleClickedButton={openDropdown}
               />
+              {
+                showDropdown
+                && (
+                  <UserDropdown />
+                )
+              }
             </div>
           </div>
         )
