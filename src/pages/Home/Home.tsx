@@ -21,7 +21,7 @@ const Home = () => {
   };
 
   const getRecommendedProducts = async () => {
-    await Products.GetRecommendedProducts()
+    await Products.GetRecommendedProducts('?limit=20')
       .then((resp) => {
         if (resp.data.data.products.length > 18) {
           setHaveMoreRecommended(true);
