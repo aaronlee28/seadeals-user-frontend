@@ -40,6 +40,11 @@ const Checkout = () => {
 
   useEffect(() => {
     if (orderIsIncomplete(cartPerStore)) return;
+    if (!selectedAddr.id) {
+      navigate('/user/profile');
+      toast.error('Anda perlu mengatur alamat terlebih dahulu');
+      return;
+    }
 
     const predictPrice = async () => {
       toast.dismiss();
