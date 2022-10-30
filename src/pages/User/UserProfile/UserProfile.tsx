@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useDispatch } from 'react-redux';
+import moment from 'moment';
 import Users from '../../../api/users';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
@@ -76,6 +77,7 @@ const UserProfile:FC<any> = () => {
   const handleSubmit = async () => {
     const body = {
       ...profile,
+      birth_date: moment(profile.birth_date),
       avatar_file: '',
       avatar_local: '',
     };
