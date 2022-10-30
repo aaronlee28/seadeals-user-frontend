@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { USER_SIDEBAR } from '../../../constants/user';
+import noUserIcon from '../../../assets/png/anonym.png';
 
 import './UserSidebar.scss';
 import useAuth from '../../../hooks/useAuth';
@@ -31,7 +32,7 @@ const UserSidebar = () => {
           <div className="col-auto px-0">
             <img
               className="image"
-              src={avatar}
+              src={avatar || noUserIcon}
               alt={name}
             />
           </div>
