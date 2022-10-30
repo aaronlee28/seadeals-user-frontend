@@ -193,7 +193,7 @@ const ReviewInfo = (props: ReviewInfoProps) => {
             }
           </div>
           {
-            reviews.length > 0
+            totalReviews > 0
             && (
               <ReviewFilter
                 items={getReviewFilterItems()}
@@ -207,7 +207,7 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         </div>
         <div className="items">
           {
-            reviews.length > 0
+            totalReviews > 0
             && (
               reviews.map(
                 (item: any) => (
@@ -221,7 +221,7 @@ const ReviewInfo = (props: ReviewInfoProps) => {
             )
           }
           {
-            reviews.length === 0
+            (totalReviews === 0 || reviews.length === 0)
             && (
               <p className="empty">Belum ada Penilaian</p>
             )

@@ -28,6 +28,8 @@
         border: 2px solid #2658CD;
         border-radius: 50%;
         .image {
+          width: 100px;
+          height: 100px;
           border-radius: 50%;
           object-fit: cover;
           cursor: pointer;

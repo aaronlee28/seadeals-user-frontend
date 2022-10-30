@@ -10,6 +10,7 @@ import PromotionBanner from './PromotionBanner/PromotionBanner';
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [haveMoreRecommended, setHaveMoreRecommended] = useState(false);
 
   const getAllCategories = async () => {
     await ProductCategories.GetAllCategories()
@@ -22,12 +23,10 @@ const Home = () => {
   const getRecommendedProducts = async () => {
     await Products.GetRecommendedProducts()
       .then((resp) => {
-        // const temp1 = resp.data.data.products;
-        // const temp2 = temp1.concat(temp1);
-        // const temp3 = temp2.concat(temp2);
-        // const temp4 = temp3.concat(temp2);
+        if (resp.data.data.products.length > 18) {
+          setHaveMoreRecommended(true);
+        }
         setRecommendedProducts(resp.data.data.products.slice(0, 18));
-        // setRecommendedProducts(resp.data.data.searched_product);
       })
       .catch((err) => err);
   };
@@ -50,7 +49,10 @@ const Home = () => {
         {
           recommendedProducts.length !== 0
           && (
-            <Recommendation data={recommendedProducts} />
+            <Recommendation
+              data={recommendedProducts}
+              haveMore={haveMoreRecommended}
+            />
           )
         }
       </div>

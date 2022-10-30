@@ -39,6 +39,7 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const getSearchParams = searchParams.get('searchInput');
   const getCategoryParams = searchParams.get('categoryName');
+  console.log(getCategoryParams);
 
   const sortOptions = SORT_SEARCH;
   const priceItems = FILTER_PRICE;

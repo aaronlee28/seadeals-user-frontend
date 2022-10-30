@@ -22,13 +22,10 @@ const SellerProduct = (props: SellerProductProps) => {
   const navigate = useNavigate();
 
   const getSellerProduct = async () => {
-    const filter = `?limit=12&sellerID=${sellerId}`;
+    const filter = `?limit=12&sellerID=${sellerId}&excludedID=${productId}`;
     await Products.GetAllProducts(filter)
       .then((resp) => {
-        const filtered = resp.data.data.products.filter(
-          (el: any) => el.product.id !== productId,
-        );
-        setSellerProduct(filtered);
+        setSellerProduct(resp.data.data.products);
       })
       .catch((err) => err);
   };

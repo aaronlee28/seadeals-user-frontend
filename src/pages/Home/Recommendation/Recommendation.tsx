@@ -7,10 +7,14 @@ import Button from '../../../components/Button/Button';
 
 type RecommendationProps = {
   data: any[];
+  haveMore: boolean;
 };
 
 const Recommendation = (props: RecommendationProps) => {
-  const { data } = props;
+  const {
+    data,
+    haveMore,
+  } = props;
   const navigate = useNavigate();
 
   const goToRecommendationPage = () => {
@@ -36,11 +40,16 @@ const Recommendation = (props: RecommendationProps) => {
             )
           }
         </div>
-        <Button
-          buttonType="primary alt show_all"
-          text="Lihat Semua"
-          handleClickedButton={goToRecommendationPage}
-        />
+        {
+          haveMore
+          && (
+            <Button
+              buttonType="primary alt show_all"
+              text="Lihat Semua"
+              handleClickedButton={goToRecommendationPage}
+            />
+          )
+        }
       </div>
     </div>
   );
