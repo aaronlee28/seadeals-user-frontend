@@ -64,8 +64,16 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
+    console.log(slug);
+    setLoadingProduct(true);
+    setProduct({});
+    setProductDetail({
+      description: '',
+      specification: [],
+    });
+    setProductSeller({});
     getProduct().then();
-  }, []);
+  }, [slug]);
 
   return (
     <div className="product_page_container">
