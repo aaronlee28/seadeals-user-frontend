@@ -73,6 +73,7 @@ const SellerPage = () => {
             reviewer: data.total_reviewer,
             city: data.address.city,
             isFollowing: data.is_follow,
+            totalProduct: data.total_product || 0,
           };
           setSellerInfo(info);
           setLoadingSellerInfo(false);
