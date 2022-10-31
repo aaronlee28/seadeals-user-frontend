@@ -24,49 +24,66 @@ const PromotionBanner = () => {
   return (
     <div className="promotion_container row justify-content-center">
       <div className="banner_container col-12" style={{ textAlign: 'center' }}>
-        <div id="carouselExampleControls" className="d-flex mx-auto carousel slide justify-content-center" data-ride="carousel">
-          <ol className="carousel-indicators">
-            <li className={counter === 0 ? 'active' : ''} onClick={handleInd1} />
-            <li className={counter === 1 ? 'active' : ''} onClick={handleInd2} />
-            <li className={counter === 2 ? 'active' : ''} onClick={handleInd3} />
-          </ol>
-          <div className="carousel-inner">
-            <div className={counter === 0 ? 'carousel-item active' : 'carousel-item'}>
-              <a href="/">
-                <img
-                  className="d-block img-fluid mx-auto"
-                  src={banner1}
-                  alt="First slide"
-                />
-              </a>
-            </div>
-            <div className={counter === 1 ? 'carousel-item active' : 'carousel-item'}>
-              <a href="/">
-                <img
-                  className="d-block img-fluid mx-auto"
-                  src={banner2}
-                  alt="Second slide"
-                />
-              </a>
-            </div>
-            <div className={counter === 2 ? 'carousel-item active' : 'carousel-item'}>
-              <a href="/">
-                <img
-                  className="d-block img-fluid mx-auto"
-                  src={banner3}
-                  alt="Third slide"
-                />
-              </a>
-            </div>
-            <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-              <span className="carousel-control-prev-icon" aria-hidden="true" />
-              <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-              <span className="carousel-control-next-icon" aria-hidden="true" />
-              <span className="sr-only">Next</span>
-            </a>
+        <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-indicators">
+            <button
+              id="indicator"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="0"
+              className={counter === 0 ? 'active' : ''}
+              aria-current="true"
+              aria-label="Slide 1"
+              onClick={handleInd1}
+            />
+            <button
+              id="indicator"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="1"
+              className={counter === 1 ? 'active' : ''}
+              aria-label="Slide 2"
+              onClick={handleInd2}
+            />
+            <button
+              id="indicator"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="2"
+              className={counter === 2 ? 'active' : ''}
+              aria-label="Slide 3"
+              onClick={handleInd3}
+            />
           </div>
+          <div className="carousel-inner">
+            <div className="carousel-item active">
+              <img src={banner1} className="d-block w-100" alt="banner 1" />
+            </div>
+            <div className="carousel-item">
+              <img src={banner2} className="d-block w-100" alt="banner 2" />
+            </div>
+            <div className="carousel-item">
+              <img src={banner3} className="d-block w-100" alt="banner 3" />
+            </div>
+          </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
     </div>
