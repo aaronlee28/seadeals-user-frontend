@@ -23,6 +23,7 @@ type SellerHeaderProps = {
   reviewer: string,
   city: string,
   isFollowing: boolean,
+  totalProduct: number,
 };
 
 const SellerHeader: FC<SellerInfo> = ({ loading, sellerInfo }) => (
@@ -50,7 +51,7 @@ const SellerHeader: FC<SellerInfo> = ({ loading, sellerInfo }) => (
               <>
                 <SellerInfoItem icon={joined_icon} info="Join:" desc={sellerInfo?.joinDate} />
                 <SellerInfoItem icon={rating_icon} info="Rating:" desc={`${sellerInfo?.rating} (${sellerInfo?.reviewer} Penilaian)`} />
-                <SellerInfoItem icon={products_icon} info="Produk:" desc="78" />
+                <SellerInfoItem icon={products_icon} info="Produk:" desc={`${sellerInfo?.totalProduct}`} />
                 <SellerInfoItem icon={followers_icon} info="Followers:" desc={sellerInfo?.followers} />
               </>
             )
