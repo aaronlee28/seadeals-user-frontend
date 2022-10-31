@@ -53,6 +53,7 @@ const RegisterSLP:FC<Props> = ({ selectSLP, checkSLPAlreadyExists }) => {
     } catch (err:any) {
       let errMsg = err.response?.data?.message;
       if (!errMsg) errMsg = 'Gagal mengecek Akun SeaLabsPay!';
+      toast.dismiss();
       toast.error(errMsg);
       setAccNumber('');
     }
