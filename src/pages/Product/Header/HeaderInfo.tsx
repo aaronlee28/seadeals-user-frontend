@@ -398,7 +398,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                 {
                   React.createElement(IconStar, { className: 'star' })
                 }
-                <p className="rating">5</p>
+                <p className="rating">{ data.average_rating }</p>
               </div>
               <div className="sold_content">
                 <p className="count">{ formatSoldCount(product.sold_count) }</p>
