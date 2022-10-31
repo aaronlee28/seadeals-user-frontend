@@ -78,17 +78,17 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
         <h3 className="change-password__title"><b>Ganti Password</b></h3>
         <div className="my-4 input-container medium">
           <p className="caption-input">Password Saat Ini</p>
-          <div className="input-group">
+          <div className="input-group suffix">
             <input
               type={!showCurrentPassword ? 'password' : 'text'}
               placeholder="Masukkan password"
               onChange={handleChange}
               name="current_password"
-              className="form-control"
+              className="form__input p-2"
               required
             />
-            <div className="input-group-append" role="presentation" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
-              <span className="input-group-text">
+            <div className="input-group-addon" role="presentation" onClick={() => setShowCurrentPassword(!showCurrentPassword)}>
+              <span className="">
                 { !showCurrentPassword ? <BsEyeSlash /> : <BsEye /> }
               </span>
             </div>
@@ -96,17 +96,17 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
         </div>
         <div className="my-4 input-container medium">
           <p className="caption-input">Password Baru</p>
-          <div className="input-group">
+          <div className="input-group suffix">
             <input
               type={!showNewPassword ? 'password' : 'text'}
               placeholder="Masukkan password"
               onChange={handleChange}
               name="new_password"
-              className="form-control"
+              className="form__input p-2"
               required
             />
-            <div className="input-group-append" role="presentation" onClick={() => setShowNewPassword(!showNewPassword)}>
-              <span className="input-group-text">
+            <div className="input-group-addon" role="presentation" onClick={() => setShowNewPassword(!showNewPassword)}>
+              <span className="">
                 { !showNewPassword ? <BsEyeSlash /> : <BsEye /> }
               </span>
             </div>
@@ -115,17 +115,17 @@ const ChangePassword:FC<any> = ({ handleClose }) => {
         </div>
         <div className="my-4 input-container medium">
           <p className="caption-input">Ulangi Password Baru</p>
-          <div className="input-group">
+          <div className="input-group suffix">
             <input
               type={!showRepeatPassword ? 'password' : 'text'}
               placeholder="Masukkan password"
               onChange={handleChange}
               name="repeat_new_password"
-              className="form-control"
+              className="form__input p-2"
               required
             />
-            <div className="input-group-append" role="presentation" onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
-              <span className="input-group-text">
+            <div className="input-group-addon" role="presentation" onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
+              <span className="">
                 { !showRepeatPassword ? <BsEyeSlash /> : <BsEye /> }
               </span>
             </div>
