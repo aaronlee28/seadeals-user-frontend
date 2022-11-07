@@ -21,7 +21,7 @@ const FooterRightContent = () => {
     {
       iconUrl: IconMail,
       iconName: 'email',
-      name: 'contact.person@seadeals.com',
+      name: 'aaron.lee28@outlook.com',
       path: 'email',
     },
   ];
