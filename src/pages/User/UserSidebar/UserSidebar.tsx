@@ -63,7 +63,7 @@ const UserSidebar = () => {
       </div>
       {!hasSellerAcc(auth) && (
       <div className="user-sidebar_content">
-        <a href="https://seller.reivaldo-julianto.com">
+        <a href="https://seadeals-admin-frontend.herokuapp.com/">
           <div className="item text-main">
             <p className="">Buka Toko SeaDeals</p>
           </div>
